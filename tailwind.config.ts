@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        urbane: ['"urbane-rounded"', 'sans-serif'],
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",

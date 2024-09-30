@@ -1,0 +1,44 @@
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+
+  :root {
+    --background: #ffffff;
+    --foreground: #171717;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background: #0a0a0a;
+      --foreground: #ededed;
+    }
+  }
+  @font-face {
+    font-family: 'Urbane Rounded';
+    src: url('../public/fonts/UrbaneRounded-Medium.woff2') format('woff2'),
+         url('../public/fonts/UrbaneRounded-Medium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  /* Si quieres incluir la fuente en bold */
+  @font-face {
+    font-family: 'Urbane Rounded';
+    src: url('../public/fonts/UrbaneRounded-Bold.woff2') format('woff2'),
+         url('../public/fonts/UrbaneRounded-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+  }
+  
+  body {
+    color: var(--foreground);
+    background: var(--background);
+    font-family: 'Urbane Rounded', sans-serif;
+    font-display: swap;
+  }
+
+  @layer utilities {
+    .text-balance {
+      text-wrap: balance;
+    }
+  }
