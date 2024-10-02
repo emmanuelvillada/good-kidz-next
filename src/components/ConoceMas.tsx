@@ -6,18 +6,23 @@ export default function ConoceMas() {
     <section className="min-h-screen flex flex-col p-8 md:p-12 bg-white justify-between">
       {/* Columna superior con el título y subtítulo */}
       <div className="md:flex md:justify-between items-start">
-        <div className="md:w-[50%]">
+        <div className="md:w-[50%] mb-8 md:mb-0">
           <h1 className="text-5xl md:text-7xl font-bold text-green-500 leading-tight">
-            <span className="text-7xl">1</span><span className="align-top text-4xl underline">er</span> Encuentro <br /> Arte y Vida
+            <span className="text-7xl">1</span>
+            <span className="align-top text-4xl underline">er</span> Encuentro <br /> Arte y Vida
           </h1>
           <h2 className="text-3xl md:text-4xl text-green-300 mb-6">PLANETA VERDE</h2>
-          <Image
-            src={Categorias}
-            alt="Imagen de categorías"
-            width={242}
-            height={242}
-            className="mr-4"
-          />
+
+          {/* En pantallas grandes, la imagen aparece alineada a la izquierda */}
+          <div className="hidden md:block">
+            <Image
+              src={Categorias}
+              alt="Imagen de categorías"
+              width={242}
+              height={242}
+              className="mr-4"
+            />
+          </div>
         </div>
 
         {/* Columna derecha con texto en dos columnas */}
@@ -38,6 +43,17 @@ export default function ConoceMas() {
             Ver documento completo
           </a>
         </div>
+      </div>
+
+      {/* Imagen de categorías, aparece debajo del contenido en pantallas pequeñas */}
+      <div className="block md:hidden mt-8">
+        <Image
+          src={Categorias}
+          alt="Imagen de categorías"
+          width={150}
+          height={150}
+          className="mx-auto"
+        />
       </div>
     </section>
   );
