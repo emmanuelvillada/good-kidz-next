@@ -3,10 +3,10 @@ import Image from 'next/image';
 
 export default function TerminosCondiciones() {
   return (
-    <section className="p-4 md:p-12 bg-white flex flex-col md:flex-row justify-between items-start text-gray-600">
+    <section className="p-4 md:p-12 bg-white flex flex-col md:flex-row justify-evenly items-start text-gray-600">
       
       {/* Columna izquierda con la imagen de categorías (ubicada abajo en pantallas pequeñas, izquierda en grandes) */}
-      <div className="w-full md:w-[40%] flex justify-center md:justify-start mb-8 md:mb-0">
+      <div className="w-full md:w-[40%] flex justify-center md:justify-center mb-8 md:mb-0">
         <Image
           src={Categorias}
           alt="Imagen de categorías"

@@ -1,20 +1,21 @@
 import Image from 'next/image';
 import Categorias from '@/public/categorias_blanca.png';
 import { useState, ChangeEvent, FormEvent } from 'react';
+import { supabase } from '@/lib/supabase'; // Asegúrate de tener configurado Supabase Client
 
 export default function Registro() {
     const [formData, setFormData] = useState({
         email: '',
+        password: '', // Contraseña para la autenticación de Supabase
         name: '',
         apellido: '',
-        contraseña: '', // Añadir campo de contraseña
         age: '',
         ciudad: '',
     });
 
     const [message, setMessage] = useState('');
 
-    // Tipamos 'e' como un evento de cambio de input
+    // Manejar los cambios en los campos del formulario
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setFormData({
             ...formData,
@@ -22,30 +23,43 @@ export default function Registro() {
         });
     };
 
-    // Tipamos 'e' como un evento de envío de formulario
+    // Manejar el envío del formulario
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         try {
-            const res = await fetch('/api/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
+            // Registrar al usuario en Supabase (con email y password)
+            const { data, error } = await supabase.auth.signUp({
+                email: formData.email,
+                password: formData.password,
             });
 
-            const data = await res.json();
+            if (error) throw error;
 
-            if (res.ok) {
-                setMessage('Registro exitoso');
-                setFormData({ email: '', name: '', apellido: '', contraseña: '', age: '', ciudad: '' });
-            } else {
-                setMessage(data.error || 'Error en el registro');
+            // Si el registro es exitoso, guardamos los datos adicionales en la tabla "users"
+            const user = data.user;
+            if (user) {
+                const { error: dbError } = await supabase
+                    .from('users')
+                    .insert([
+                        {
+                            id: user.id, // El ID del usuario que devuelve Supabase
+                            name: formData.name,
+                            apellido: formData.apellido,
+                            age: formData.age,
+                            ciudad: formData.ciudad,
+                        },
+                    ]);
+
+                if (dbError) throw dbError;
+
+                setMessage('Registro exitoso. Por favor, revisa tu correo para verificar la cuenta.');
+                // Limpiar el formulario
+                setFormData({ email: '', password: '', name: '', apellido: '', age: '', ciudad: '' });
             }
         } catch (error) {
             console.error(error);
-            setMessage('Error al conectar con el servidor');
+            setMessage('Error al registrar el usuario.');
         }
     };
 
@@ -62,6 +76,18 @@ export default function Registro() {
                         onChange={handleChange}
                         className="w-full bg-transparent border-b-2 border-white p-2 focus:outline-none text-white placeholder-white"
                         placeholder="correo@gmail.com"
+                        required
+                    />
+                </div>
+                <div>
+                    <label htmlFor="password" className="block text-lg md:text-xl text-gray-700">Contraseña</label>
+                    <input
+                        type="password"
+                        id="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        className="w-full bg-transparent border-b-2 border-white p-2 focus:outline-none text-white placeholder-white"
+                        placeholder="Contraseña"
                         required
                     />
                 </div>
@@ -86,18 +112,6 @@ export default function Registro() {
                         onChange={handleChange}
                         className="w-full bg-transparent border-b-2 border-white p-2 focus:outline-none text-white placeholder-white"
                         placeholder="Apellido"
-                        required
-                    />
-                </div>
-                <div>
-                    <label htmlFor="contraseña" className="block text-lg md:text-xl text-gray-700">Contraseña</label>
-                    <input
-                        type="password"
-                        id="contraseña"
-                        value={formData.contraseña}
-                        onChange={handleChange}
-                        className="w-full bg-transparent border-b-2 border-white p-2 focus:outline-none text-white placeholder-white"
-                        placeholder="Contraseña"
                         required
                     />
                 </div>
@@ -142,7 +156,7 @@ export default function Registro() {
             </form>
             <div>{message && <p>{message}</p>}</div>
 
-            {/* Imagen de categorías en la parte inferior (visible solo en pantallas grandes con posición absoluta) */}
+            {/* Imagen de categorías en la parte inferior izquierda (visible solo en pantallas grandes) */}
             <div className="mt-10 md:mt-0 md:absolute md:bottom-40 md:left-4">
                 <Image
                     src={Categorias}

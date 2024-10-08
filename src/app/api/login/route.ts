@@ -1,4 +1,4 @@
-// src/app/api/register/route.ts
+// src/app/api/login/route.ts
 import { supabase } from '@/lib/supabase';
 import { NextResponse } from 'next/server';
 
@@ -9,7 +9,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'El correo y la contraseña son obligatorios' }, { status: 400 });
   }
 
-  const { data, error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password: contraseña,
   });
@@ -18,5 +18,5 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ message: 'Registro exitoso', data }, { status: 200 });
+  return NextResponse.json({ message: 'Inicio de sesión exitoso', data }, { status: 200 });
 }

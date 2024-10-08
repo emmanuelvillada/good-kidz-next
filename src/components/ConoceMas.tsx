@@ -1,11 +1,11 @@
-import Categorias from'@/public/categorias.png';
+import Categorias from '@/public/categorias.png';
 import Image from 'next/image';
 
 export default function ConoceMas() {
   return (
     <section className="min-h-screen flex flex-col p-8 md:p-12 bg-white justify-between">
       {/* Columna superior con el título y subtítulo */}
-      <div className="md:flex md:justify-between items-start">
+      <div className="md:flex md:justify-center items-start">
         <div className="md:w-[50%] mb-8 md:mb-0">
           <h1 className="text-5xl md:text-7xl font-bold text-green-500 leading-tight">
             <span className="text-7xl">1</span>
@@ -29,14 +29,18 @@ export default function ConoceMas() {
         <div className="md:w-[45%] grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="mb-6">
             <p className="text-lg text-gray-600">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
-            </p>
+              La Fundación <b>Good Kidz,</b> entidad sin ánimo de lucro que propende por la sensibilización, bienestar y apoyo a niños, jóvenes y adultos a través de proyectos y actividades artísticas, culturales y de recreación, con sede en la ciudad de <b>Medellín, Colombia,</b>  llevará a cabo la actividad artística:
+              “<b>Encuentro Arte y Vida, Fundación Good Kidz Colombia 2024: PLANETA VERDE</b> ”.
+
+              Es una convocatoria abierta a artistas y
+              público en general para participar en una exposición de <b>ARTE</b> para <b>niñas, niños,
+                jóvenes y personas adultas</b> con la temática “ <b>Preservación del Medio Ambiente</b>”.            </p>
           </div>
 
           <div className="mb-6">
             <p className="text-lg text-gray-600">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat.
-            </p>
+              Este tópico será motivo de reflexión, análisis, crítica y representación en este acontecimiento artístico que hace parte del evento musical <b>FERXXOCALIPSIS</b>  del artista colombiano <b>Feid, Ferxxo</b>  en la ciudad de <b>Medellín,</b>  los días <b>6, 7 y 8 de diciembre
+                de 2024.</b>             </p>
           </div>
 
           <a href="#" className="text-green-500 font-bold hover:underline col-span-2 text-right">
