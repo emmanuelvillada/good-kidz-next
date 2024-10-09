@@ -1,39 +1,57 @@
-// src/components/Header.tsx
+'use client';
+
 import Image from 'next/image';
-import logo from 'public/logo.png';  // Ajusta esta ruta según dónde guardes la imagen
+import logo from '@/public/logo.png';
+import corazon from '@/public/corazon.png';
 
-export default function Header() {
+export default function Header({ activeSection, setActiveSection }: { activeSection: string, setActiveSection: (section: string) => void }) {
+
+  const handleClick = (section: string) => {
+    if (activeSection === section) {
+      setActiveSection('homeSection');
+    } else {
+      setActiveSection(section);
+    }
+  };
+
   return (
-    <header className="flex justify-between items-center p-4 bg-white border-b-2">
-      {/* Logo de la Fundación */}
-      <div className="flex items-center">
-        <Image src={logo} alt="Good Kidz Logo" width={80} height={80} />
-        <div className="ml-2 text-4xl font-bold">
-          <span className="text-black">FUN</span>
-          <span className="text-green-500">DA</span>
-          <span className="text-blue-500">CIÓN</span>
-        </div>
-      </div>
+    <header className="flex justify-between items-center p-4 md:p-6 bg-white w-full">
+      <Image
+        src={logo}
+        alt="Logo Good Kidz"
+        className="cursor-pointer w-[30vw] h-auto sm:w-[100px] sm:h-auto md:w-[150px] md:h-auto lg:w-[200px] lg:h-auto"
+        onClick={() => setActiveSection('homeSection')}
+      />
 
-      {/* Botón de registro */}
-      <div className="flex items-center space-x-4">
-        <svg
-          className="w-8 h-8 text-green-500"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M12 21c-.858 0-2.253-.485-3.279-1.512C6.344 17.11 3 13.565 3 9.5 3 6.419 5.418 4 8.5 4c1.74 0 3.307.895 4.5 2.29C14.193 4.895 15.76 4 17.5 4 20.582 4 23 6.419 23 9.5c0 4.065-3.344 7.61-5.721 9.988C14.253 20.515 12.858 21 12 21z"
-          ></path>
-        </svg>
-        <button className="border-2 border-green-500 text-green-500 px-4 py-2 rounded-full hover:bg-green-500 hover:text-white transition">
-          CONOCE MÁS + TÉRMINOS Y CONDICIONES ¡REGÍSTRATE!
-        </button>
+
+      {/* Corazón e icono */}
+      <div className="flex items-center space-x-2 md:space-x-4">
+       <Image
+  src={corazon}
+  alt="Corazón"
+  className="hidden md:block cursor-pointer w-[8vw] h-auto sm:w-[40px] sm:h-[34px] md:w-[40px] md:h-[34px] lg:w-[60px] lg:h-[50px]" // Ajustes responsivos
+/>
+        {/* Contenedor de botones con bordes unidos */}
+        <div className="flex border-2 border-green-500 rounded-full overflow-hidden">
+          <button
+            onClick={() => handleClick('conoceMas')}
+            className={`px-1 py-1 text-xs sm:px-1 sm:py-2 sm:text-sm md:text-base transition ${activeSection === 'conoceMas' ? 'text-green-500' : 'text-gray-500 hover:text-green-500'}`}
+          >
+            Conoce Más +
+          </button>
+          <button
+            onClick={() => handleClick('terminosCondiciones')}
+            className={`px-1 py-1 text-xs sm:px-1 sm:py-2 sm:text-sm md:text-base transition ${activeSection === 'terminosCondiciones' ? 'text-green-500' : 'text-gray-500 hover:text-green-500'}`}
+          >
+            Términos y Condiciones
+          </button>
+          <button
+            onClick={() => handleClick('registrate')}
+            className={`px-1 py-1 text-xs sm:px-1 sm:py-2 sm:text-sm md:text-base transition ${activeSection === 'registrate' ? 'text-green-500' : 'text-gray-500 hover:text-green-500'}`}
+          >
+            ¡Regístrate!
+          </button>
+        </div>
       </div>
     </header>
   );
