@@ -19,21 +19,18 @@ export default function Header({ activeSection, setActiveSection }: { activeSect
       <Image
         src={logo}
         alt="Logo Good Kidz"
-        className="cursor-pointer w-[30vw] h-auto sm:w-[116px] sm:h-[54px] md:w-[116px] md:h-[54px] lg:w-[268px] lg:h-[125px]" // Ajustes para diferentes tamaños
+        className="cursor-pointer w-[30vw] h-auto sm:w-[100px] sm:h-auto md:w-[150px] md:h-auto lg:w-[200px] lg:h-auto"
         onClick={() => setActiveSection('homeSection')}
       />
 
+
       {/* Corazón e icono */}
       <div className="flex items-center space-x-2 md:space-x-4">
-      <Image
+       <Image
   src={corazon}
   alt="Corazón"
-  className="cursor-pointer w-[8vw] h-auto sm:w-[40px] sm:h-[34px] md:w-[40px] md:h-[34px] lg:w-[60px] lg:h-[50px]" // Ajustes responsivos con vw y tamaños específicos para pantallas pequeñas
+  className="hidden md:block cursor-pointer w-[8vw] h-auto sm:w-[40px] sm:h-[34px] md:w-[40px] md:h-[34px] lg:w-[60px] lg:h-[50px]" // Ajustes responsivos
 />
-
-
-
-
         {/* Contenedor de botones con bordes unidos */}
         <div className="flex border-2 border-green-500 rounded-full overflow-hidden">
           <button
