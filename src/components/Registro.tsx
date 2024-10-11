@@ -16,87 +16,95 @@ export default function Registro() {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [fileError, setFileError] = useState<string | null>(null);
     const [acceptsEmails, setAcceptsEmails] = useState(false);
+    const [availableCategories, setAvailableCategories] = useState<string[]>([]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { id, value } = e.target;
+
         setFormData({
             ...formData,
-            [e.target.id]: e.target.value,
+            [id]: value,
         });
+
+        if (id === 'age') {
+            updateCategories(value);
+        }
     };
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            // Validar el tipo de archivo
-            const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg' , 'application/pdf'];
+            const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'application/pdf'];
             if (!allowedTypes.includes(file.type)) {
                 setMessage('Solo se permiten archivos PNG, JPG, PDF y JPEG.');
                 return;
             }
-    
-            // Validar el tamaño del archivo (5 MB en bytes)
+
             const maxSize = 5 * 1024 * 1024; // 5 MB
             if (file.size > maxSize) {
                 setMessage('El archivo debe ser menor de 5 MB.');
                 return;
             }
-    
-            // Renombrar el archivo eliminando caracteres especiales
+
             const sanitizedFileName = file.name
-                .normalize("NFD") // Normaliza el nombre
-                .replace(/[\u0300-\u036f]/g, "") // Elimina acentos
-                .replace(/[^a-zA-Z0-9.-_]/g, "_"); // Reemplaza caracteres no permitidos por "_"
-    
-            // Crear un nuevo archivo con el nombre limpio
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^a-zA-Z0-9.-_]/g, "_");
+
             const renamedFile = new File([file], sanitizedFileName, { type: file.type });
-    
             setSelectedFile(renamedFile);
             setMessage('');
         }
     };
-    
 
-    const validateEmail = (email: string) => {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email);
+    const updateCategories = (age: string) => {
+        const parsedAge = parseInt(age, 10);
+
+        let categories: string[] = [];
+
+        if (!isNaN(parsedAge)) {
+            if (parsedAge >= 6 && parsedAge <= 10) {
+                categories = ['Cuento Infantil Ilustrado'];
+            }
+            if (parsedAge >= 8 && parsedAge <= 12) {
+                categories.push('Dibujo', 'Pintura');
+            }
+            if (parsedAge > 12) {
+                categories = ['Obra Gráfica', 'Cartel', 'Dibujo', 'Pintura'];
+            }
+        }
+
+        setAvailableCategories(categories);
+        if (!categories.includes(formData.categoria)) {
+            setFormData((prev) => ({ ...prev, categoria: categories[0] || '' }));
+        }
     };
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // Validar si aceptó recibir correos electrónicos
         if (!acceptsEmails) {
             setMessage('Debes aceptar recibir correos electrónicos para continuar.');
             return;
         }
 
-        // Validar que todos los campos estén llenos
         if (!formData.email || !formData.name.trim() || !formData.apellido.trim() || !formData.age) {
             setMessage('Todos los campos son obligatorios.');
             return;
         }
 
-        // Validar que el correo tenga un formato válido
-        if (!validateEmail(formData.email)) {
-            setMessage('Por favor, ingresa un correo electrónico válido.');
-            return;
-        }
-
-        // Validar que la edad sea un número válido entre 5 y 120
         const age = parseInt(formData.age, 10);
         if (isNaN(age) || age < 5 || age > 120) {
             setMessage('Por favor, ingresa una edad válida entre 5 y 120 años.');
             return;
         }
 
-        // Validar que se haya seleccionado un archivo
         if (!selectedFile) {
             setFileError('Por favor, selecciona un archivo PNG o JPEG válido.');
             return;
         }
 
         try {
-            // Subir la imagen a Supabase Storage
             const { data: storageData, error: storageError } = await supabase.storage
                 .from('obras')
                 .upload(`public/${selectedFile.name}`, selectedFile);
@@ -105,7 +113,6 @@ export default function Registro() {
 
             const imageUrl = storageData?.path;
 
-            // Guardar los datos en la tabla "users" de Supabase
             const { error: dbError } = await supabase
                 .from('users')
                 .insert([
@@ -123,17 +130,27 @@ export default function Registro() {
             if (dbError) throw dbError;
 
             setMessage('Registro exitoso y obra subida correctamente.');
-            setFormData({ email: '', name: '', apellido: '', age: '', ciudad: 'Medellin', categoria: 'Pintura' });
+            setFormData({ email: '', name: '', apellido: '', age: '', ciudad: 'Medellin', categoria: '' });
             setFileError(null);
         } catch (error) {
             console.error(error);
             setMessage('Error al registrar y subir la obra.');
         }
     };
-
     return (
         <section className="p-6 md:p-12 bg-green-500 text-gray-700 flex flex-col items-center min-h-screen relative">
             <h1 className="text-4xl md:text-5xl font-bold mb-8">¡Regístrate y sube tu obra!</h1>
+            <p className="text-center text-gray-700 mb-6">
+                Registra tus datos y sube tu obra en formato JPG, JPEG o PDF, el archivo debe ser menor a 5MB.
+            </p>
+            <div className="bg-transparent p-4 rounded-lg  text-gray-800 w-full md:w-[60%] mb-6">
+            <h2 className="text-xl font-bold mb-2">Categorías:</h2>
+                <ul className="list-disc ml-6 space-y-2">
+                    <li><strong>6 a 10 años:</strong> Cuento Infantil Ilustrado.</li>
+                    <li><strong>8 a 12 años:</strong>  Dibujo y Pintura.</li>
+                    <li><strong>Adultos:</strong> Obra Gráfica, Cartel, Dibujo y Pintura.</li>
+                </ul>
+            </div>
             <form className="w-full md:w-[60%] space-y-4" onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="email" className="block text-lg md:text-xl text-gray-700">E-mail</label>
@@ -179,7 +196,7 @@ export default function Registro() {
                         value={formData.age}
                         onChange={handleChange}
                         className="w-full bg-transparent border-b-2 border-white p-2  text-gray-700 placeholder-gray-700"
-                        placeholder="20"
+                        placeholder="Edad"
                         required
                     />
                 </div>
@@ -213,14 +230,11 @@ export default function Registro() {
                         className="w-full bg-transparent border-b-2 border-white p-2  text-gray-700"
                         required
                     >
-                        <option value="Pintura">Pintura</option>
-                        <option value="Cuento Infantil">Cuento Infantil</option>
-                        <option value="Ilustrado">Ilustrado</option>
-                        <option value="Collage">Collage</option>
-                        <option value="Cartel">Cartel</option>
-                        <option value="Grabado">Grabado</option>
-                        <option value="Fotografia">Fotografia</option>
-                        <option value="Dibujo">Dibujo</option>
+                        {availableCategories.map((category) => (
+                            <option key={category} value={category}>
+                                {category}
+                            </option>
+                        ))}
                     </select>
                 </div>
                 <div>
