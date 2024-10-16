@@ -17,6 +17,7 @@ export default function Registro() {
     const [fileError, setFileError] = useState<string | null>(null);
     const [acceptsEmails, setAcceptsEmails] = useState(false);
     const [availableCategories, setAvailableCategories] = useState<string[]>([]);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { id, value } = e.target;
@@ -128,6 +129,9 @@ export default function Registro() {
                 ]);
 
             if (dbError) throw dbError;
+
+             // Mostrar modal de éxito
+             setShowSuccessModal(true);
 
             setMessage('Registro exitoso y obra subida correctamente.');
             setFormData({ email: '', name: '', apellido: '', age: '', ciudad: 'Medellin', categoria: '' });
@@ -280,6 +284,21 @@ export default function Registro() {
                 </button>
             </form>
             <div>{message && <p>{message}</p>}</div>
+             {/* Modal de éxito */}
+             {showSuccessModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                    <div className="bg-white p-8 rounded-lg text-center shadow-lg">
+                        <h2 className="text-2xl font-bold text-green-500 mb-4">¡Registro Exitoso!</h2>
+                        <p className="text-gray-600">Tu obra ha sido registrada correctamente.</p>
+                        <button
+                            className="mt-4 bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-all"
+                            onClick={() => setShowSuccessModal(false)}
+                        >
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            )}
             {/* Imagen de categorías en la parte inferior (visible solo en pantallas grandes con posición absoluta) */}
             <div className="mt-10 md:mt-0 md:absolute md:bottom-40 md:left-4">
                 <Image
