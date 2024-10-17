@@ -46,9 +46,17 @@ export default function ConoceMas() {
             </p>
           </div>
 
-          <a href="#" className="text-green-500 font-bold hover:underline col-span-1 md:col-span-2 text-center md:text-right">
-            Ver documento completo
-          </a>
+          <a
+  href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/sign/obras/public/Abstract,%20Encuentro%20Arte%20y%20Vida.pdf?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJvYnJhcy9wdWJsaWMvQWJzdHJhY3QsIEVuY3VlbnRybyBBcnRlIHkgVmlkYS5wZGYiLCJpYXQiOjE3MjkxMjI4ODQsImV4cCI6NDg4MjcyMjg4NH0.Y9fxfD4RQ-TItVf9lbADOryys9n5OoyMCaAVzEd25SU&t=2024-10-16T23%3A54%3A44.564Z"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="text-green-500 font-bold hover:underline col-span-1 md:col-span-2 text-center md:text-right"
+>
+  Ver documento completo
+</a>
+
+
+
         </div>
       </div>
 

@@ -1,7 +1,7 @@
 // src/app/layout.tsx
 import '@/styles/globals.css';
 import Footer from '@/components/Footer';
-
+import Head from 'next/head';
 export const metadata = {
   title: 'Fundación Good Kidz',
   description: 'Encuentro Arte y Vida | Planeta Verde',
@@ -10,6 +10,9 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
+      <Head>
+      <link rel="icon" href="../public/favicon.ico" type="image/x-icon" />
+      </Head>
       <body className="min-h-screen flex flex-col">
         <main className="flex-grow h-full">
           {children} {/* Aquí irá el contenido de cada página */}
