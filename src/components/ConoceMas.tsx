@@ -8,7 +8,7 @@ export default function ConoceMas() {
       <div className="md:flex md:justify-center items-start">
         <div className="flex flex-col items-start md:w-[50%] mb-8 md:mb-0">
           {/* Contenedor del título y subtítulo */}
-          <h1 className="text-5xl md:text-8xl font-bold text-green-500 leading-tight text-center md:text-left">
+          <h1 className="text-5xl md:text-8xl font-bold text-verde-goodkidz leading-tight text-center md:text-left">
             <span className="text-8xl">1</span>
             <span className="align-top text-4xl underline">er</span> <br /> Encuentro <br /> Arte y Vida
           </h1>

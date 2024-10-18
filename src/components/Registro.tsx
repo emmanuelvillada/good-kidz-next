@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import Categorias from '@/public/categorias_blanca.png';
+import Categorias from '@/public/estrella_blanca.png';
 import { useState, ChangeEvent, FormEvent } from 'react';
 import { supabase } from '@/lib/supabase';
 
@@ -130,8 +130,8 @@ export default function Registro() {
 
             if (dbError) throw dbError;
 
-             // Mostrar modal de éxito
-             setShowSuccessModal(true);
+            // Mostrar modal de éxito
+            setShowSuccessModal(true);
 
             setMessage('Registro exitoso y obra subida correctamente.');
             setFormData({ email: '', name: '', apellido: '', age: '', ciudad: 'Medellin', categoria: '' });
@@ -142,14 +142,14 @@ export default function Registro() {
         }
     };
     return (
-        <section className="p-6 md:p-12 bg-green-500 text-gray-700 flex flex-col items-center min-h-screen relative">
+        <section className="p-6 md:p-12 bg-verde-goodkidz text-gray-800 flex flex-col items-center min-h-screen relative">
             <h1 className="text-4xl md:text-5xl font-bold mb-8">¡Regístrate y sube tu obra!</h1>
-            <p className="text-center text-gray-700 mb-6">
+            <p className="lg:text-center md:text-center sm:text-start text-gray-700 mb-6">
                 Registra tus datos y sube tu obra en formato JPG, JPEG o PDF, el archivo debe ser menor a 5MB.
             </p>
             <div className="bg-transparent p-4 rounded-lg  text-gray-800 w-full md:w-[60%] mb-6">
-            <h2 className="text-xl font-bold mb-2">Categorías:</h2>
-                <ul className="list-disc ml-6 space-y-2">
+                <h2 className="text-xl font-bold mb-2">Categorías:</h2>
+                <ul className="list-disc space-y-2">
                     <li><strong>6 a 10 años:</strong> Cuento Infantil Ilustrado.</li>
                     <li><strong>8 a 12 años:</strong>  Dibujo y Pintura.</li>
                     <li><strong>Adultos:</strong> Obra Gráfica, Cartel, Dibujo y Pintura.</li>
@@ -253,16 +253,31 @@ export default function Registro() {
                         />
                         <button
                             type="button"
-                            className="w-60 bg-transparent border-2 border-white text-gray-700 py-2 px-4 rounded-lg cursor-pointer 
-                              hover:bg-white hover:text-green-500 transition-all"
+                            className="w-60 flex items-center justify-center bg-transparent border-2 border-white text-gray-700 py-2 px-4 rounded-lg cursor-pointer 
+            hover:bg-white hover:text-verde-goodkidz transition-all duration-300 ease-in-out shadow-md"
                         >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-5 w-5 mr-2"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M3 16l4 4m0 0l4-4m-4 4V4"
+                                />
+                            </svg>
                             Seleccionar archivo
                         </button>
                         <p className="text-sm text-gray-700 mt-2">
                             {selectedFile ? selectedFile.name : "Ningún archivo seleccionado"}
                         </p>
-                        {fileError && <p className="text-red-500">{fileError}</p>}
+                        {fileError && <p className="text-red-500 mt-1">{fileError}</p>}
                     </div>
+
                 </div>
                 <div className="flex items-center">
                     <input
@@ -284,14 +299,14 @@ export default function Registro() {
                 </button>
             </form>
             <div>{message && <p>{message}</p>}</div>
-             {/* Modal de éxito */}
-             {showSuccessModal && (
+            {/* Modal de éxito */}
+            {showSuccessModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
                     <div className="bg-white p-8 rounded-lg text-center shadow-lg">
-                        <h2 className="text-2xl font-bold text-green-500 mb-4">¡Registro Exitoso!</h2>
+                        <h2 className="text-2xl font-bold text-verde-goodkidz mb-4">¡Registro Exitoso!</h2>
                         <p className="text-gray-600">Tu obra ha sido registrada correctamente.</p>
                         <button
-                            className="mt-4 bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-all"
+                            className="mt-4 bg-verde-goodkidz text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-all"
                             onClick={() => setShowSuccessModal(false)}
                         >
                             Cerrar
