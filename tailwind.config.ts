@@ -14,6 +14,9 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        'verde-goodkidz': '#00E58D',
+        'gris-goodkidz': '#525156',
+        'blanco-goodkidz': '#FCFCFC',
       },
       screens: {
         sm: '640px',  // small devices

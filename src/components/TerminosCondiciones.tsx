@@ -5,9 +5,9 @@ export default function TerminosCondiciones() {
   return (
     <section className="p-4 md:p-12 bg-white flex flex-col md:flex-row justify-evenly items-start text-gray-600">
 
-      <div className="flex flex-col items-start md:w-[50%] mb-8 md:mb-0">
+      <div className="flex flex-col items-start md:w-[50%] lg:pl-11 mb-8 md:mb-0">
         {/* Contenedor del título y subtítulo */}
-        <h1 className="text-5xl md:text-8xl font-bold text-green-500 leading-tight text-center md:text-left">
+        <h1 className="text-5xl md:text-8xl font-bold text-verde-goodkidz leading-tight text-center md:text-left">
           <span className="text-8xl">1</span>
           <span className="align-top text-4xl underline">er</span> <br /> Encuentro <br /> Arte y Vida
         </h1>
@@ -58,15 +58,12 @@ export default function TerminosCondiciones() {
             <strong>7. Responsabilidad Limitada</strong> <br />
             La Fundación GOOD KIDZ no será responsable por cualquier daño o pérdida derivada del uso de este sitio web.
           </p>
-          <p className="text-base md:text-lg text-gray-600 mb-6 md:hidden">
-            <strong>8. Contacto</strong> <br />
-            Para cualquier pregunta relacionada con estos Términos y Condiciones, puede contactarnos a través de [email].
-          </p>
+
 
         </div>
 
         {/* Línea verde divisora (solo visible en pantallas grandes) */}
-        <div className="hidden lg:block md:block border-l-4 border-green-500 pl-6">
+        <div className="hidden lg:block md:block pt-20 border-l-4 border-verde-goodkidz pl-6">
           <p className="text-base md:text-lg text-gray-600 mb-6">
             <strong>5. Uso Aceptable del Sitio</strong> <br />
             El uso de nuestro sitio debe cumplir con las leyes locales y nacionales.
@@ -79,10 +76,7 @@ export default function TerminosCondiciones() {
             <strong>7. Responsabilidad Limitada</strong> <br />
             La Fundación GOOD KIDZ no será responsable por cualquier daño o pérdida derivada del uso de este sitio web.
           </p>
-          <p className="text-base md:text-lg text-gray-600 mb-6">
-            <strong>8. Contacto</strong> <br />
-            Para cualquier pregunta relacionada con estos Términos y Condiciones, puede contactarnos a través de [email].
-          </p>
+
         </div>
       </div>
       {/* Imagen de categorías, aparece debajo del contenido en pantallas pequeñas */}

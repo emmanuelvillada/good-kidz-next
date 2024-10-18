@@ -32,22 +32,22 @@ export default function Header({ activeSection, setActiveSection }: { activeSect
   className="hidden md:block cursor-pointer w-[8vw] h-auto sm:w-[40px] sm:h-[34px] md:w-[40px] md:h-[34px] lg:w-[60px] lg:h-[50px]" // Ajustes responsivos
 />
         {/* Contenedor de botones con bordes unidos */}
-        <div className="flex border-2 border-green-500 rounded-full overflow-hidden">
+        <div className="flex border-2 border-verde-goodkidz rounded-full overflow-hidden">
           <button
             onClick={() => handleClick('conoceMas')}
-            className={`px-1 py-1 text-xs sm:px-1 sm:py-2 sm:text-sm md:text-base transition ${activeSection === 'conoceMas' ? 'text-green-500' : 'text-gray-500 hover:text-green-500'}`}
+            className={`px-1 py-1 text-xs sm:px-1 sm:py-2 sm:text-sm md:text-base transition ${activeSection === 'conoceMas' ? 'text-verde-goodkidz' : 'text-gray-500 hover:text-verde-goodkidz'}`}
           >
             Conoce Más +
           </button>
           <button
             onClick={() => handleClick('terminosCondiciones')}
-            className={`px-1 py-1 text-xs sm:px-1 sm:py-2 sm:text-sm md:text-base transition ${activeSection === 'terminosCondiciones' ? 'text-green-500' : 'text-gray-500 hover:text-green-500'}`}
+            className={`px-1 py-1 text-xs sm:px-1 sm:py-2 sm:text-sm md:text-base transition ${activeSection === 'terminosCondiciones' ? 'text-verde-goodkidz' : 'text-gray-500 hover:text-verde-goodkidz'}`}
           >
             Términos y Condiciones
           </button>
           <button
             onClick={() => handleClick('registrate')}
-            className={`px-1 py-1 text-xs sm:px-1 sm:py-2 sm:text-sm md:text-base transition ${activeSection === 'registrate' ? 'text-green-500' : 'text-gray-500 hover:text-green-500'}`}
+            className={`px-1 py-1 text-xs sm:px-1 sm:py-2 sm:text-sm md:text-base transition ${activeSection === 'registrate' ? 'text-verde-goodkidz' : 'text-gray-500 hover:text-verde-goodkidz'}`}
           >
             ¡Regístrate!
           </button>

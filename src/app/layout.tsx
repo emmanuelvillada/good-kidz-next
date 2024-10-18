@@ -11,7 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es">
       <Head>
-      <link rel="icon" href="/icono.ico"/>
+      <link rel="icon" href="/favicon.ico" sizes="any"/>
       </Head>
       <body className="min-h-screen flex flex-col">
         <main className="flex-grow h-full">
