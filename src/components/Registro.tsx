@@ -40,23 +40,27 @@ export default function Registro() {
                 setMessage('Solo se permiten archivos PNG, JPG, PDF y JPEG.');
                 return;
             }
-
+    
             const maxSize = 5 * 1024 * 1024; // 5 MB
             if (file.size > maxSize) {
                 setMessage('El archivo debe ser menor de 5 MB.');
                 return;
             }
-
+    
             const sanitizedFileName = file.name
                 .normalize("NFD")
                 .replace(/[\u0300-\u036f]/g, "")
                 .replace(/[^a-zA-Z0-9.-_]/g, "_");
-
-            const renamedFile = new File([file], sanitizedFileName, { type: file.type });
+    
+            // Generar un nombre único añadiendo un timestamp al nombre original
+            const uniqueFileName = `${Date.now()}_${sanitizedFileName}`;
+    
+            const renamedFile = new File([file], uniqueFileName, { type: file.type });
             setSelectedFile(renamedFile);
             setMessage('');
         }
     };
+    
 
     const updateCategories = (age: string) => {
         const parsedAge = parseInt(age, 10);
@@ -128,7 +132,16 @@ export default function Registro() {
                     },
                 ]);
 
-            if (dbError) throw dbError;
+           // Verificar si hubo un error de inserción
+        if (dbError) {
+            // Manejar el error si el código es 23505 (conflicto por correo duplicado)
+            if (dbError.code === '23505') {
+                setMessage('Ya has registrado una obra. Solo se permite una obra por persona.');
+            } else {
+                setMessage('Error al registrar y subir la obra.');
+            }
+            return;
+        }
 
             // Mostrar modal de éxito
             setShowSuccessModal(true);
