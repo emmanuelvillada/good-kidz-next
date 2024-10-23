@@ -1,4 +1,15 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
-
-export default nextConfig;
+const nextConfig = {
+    async redirects() {
+      return [
+        {
+          source: '/:path((?!maintenance).*)',
+          destination: '/maintenance',
+          permanent: false,
+        },
+      ];
+    },
+  };
+  
+  export default nextConfig;
+  
