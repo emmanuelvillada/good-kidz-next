@@ -4,6 +4,7 @@ export default function Modal() {
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [acceptsEmails, setAcceptsEmails] = useState(false);
 
   useEffect(() => {
     // Abre el modal automáticamente cuando se carga la página
@@ -72,6 +73,18 @@ export default function Modal() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
+            </div>
+            <div className="mb-4">
+            <input
+                        type="checkbox"
+                        id="aceptar"
+                        checked={acceptsEmails}
+                        onChange={() => setAcceptsEmails(!acceptsEmails)} // Manejar el cambio de la casilla
+                        className="mr-2"
+                    />
+                    <label htmlFor="aceptar" className="text-sm md:text-base text-gray-700">
+                        Acepto recibir correos electrónicos de la fundación Good Kidz.
+                    </label>
             </div>
             <button
               type="submit"
