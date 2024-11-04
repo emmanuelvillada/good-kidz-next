@@ -75,15 +75,16 @@ export default function HomeSection({ setActiveSection }: { setActiveSection: (s
                             className="mr-4 mb-4 md:mb-0"
                         />
                     </div>
-                    <div className="mt-16 p-4 w-full md:w-max text-center">
-                        <button
-                            className="font-bold text-verde-goodkidz border-2 border-verde-goodkidz px-6 py-3 rounded-lg 
-               hover:bg-verde-goodkidz hover:text-white hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105"
-                            onClick={() => setActiveSection('registrate')}
-                        >
-                            ¡Regístrate para participar!
-                        </button>
-                    </div>
+                    <div className="mt-10 p-4 w-full md:w-max text-center">
+    <button
+        className="bg-verde-goodkidz font-bold text-white text-2xl border-4 border-white px-10 py-4 rounded-xl 
+                    hover:bg-white hover:text-verde-goodkidz hover:border-verde-goodkidz hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-110"
+        onClick={() => setActiveSection('registrate')}
+    >
+        ¡Regístrate para participar!
+    </button>
+</div>
+
                 </div>
 
                 {/* Imagen del evento en la parte derecha */}
@@ -101,13 +102,13 @@ export default function HomeSection({ setActiveSection }: { setActiveSection: (s
             {/* Contador en la parte inferior, centrado */}
             {timeLeft && (
                 <div className="w-full flex justify-center mt-8">
-                <div className="bg-verde-goodkidz text-white text-2xl font-semibold py-2 px-6 rounded-lg shadow-lg text-center">
-                    <p className="text-lg mb-1">Tiempo límite para subir tu obra:</p>
-                    <div>{timeLeft}</div>
+                    <div className="bg- text-verde-goodkidz text-2xl font-semibold py-2 px-6 rounded-lg shadow-lg text-center">
+                        <p className="text-lg mb-1">Tiempo límite para subir tu obra:</p>
+                        <div>{timeLeft}</div>
+                    </div>
                 </div>
-            </div>
             )}
-            
+
         </section>
     );
 }
