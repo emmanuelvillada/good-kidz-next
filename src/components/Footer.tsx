@@ -1,21 +1,25 @@
 import Link from 'next/link';
 
+
 export default function Footer() {
     return (
         <footer className="bg-black text-white p-4">
             <div className="container mx-auto flex flex-col items-center space-y-4">
                 {/* Texto de derechos reservados */}
-                <p className="text-sm text-center">
+                <p className="text-sm   text-center">
                     © 2024 Fundación Good Kidz. Todos los derechos reservados.
                 </p>
 
                 {/* Enlaces a términos y condiciones y política de privacidad */}
                 <div className="flex space-x-4 text-sm">
-                    <Link href="/terminos-y-condiciones" className="hover:text-green-500">
+                    <a
+                        href="/terminos.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-green-500 hover:underline"
+                    >
                         Términos y Condiciones
-                    </Link>
-                    <Link href="/politica-de-privacidad">
-                    </Link>
+                    </a>
                 </div>
 
                 {/* Ícono de Instagram */}

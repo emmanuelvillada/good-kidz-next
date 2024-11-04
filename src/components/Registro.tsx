@@ -24,6 +24,8 @@ export default function Registro() {
         socialNetwork: 'Instagram',
         tecnica : '',
         dimensiones: '',
+        representante: '',
+        cedula: '',
     });
     const [message, setMessage] = useState('');
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -34,6 +36,8 @@ export default function Registro() {
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [ciudades, setCiudades] = useState<CityOption[]>([]);
     const [selectedCity, setSelectedCity] = useState<CityOption | null>(null);
+    const [showRepresentative, setShowRepresentative] = useState(false);
+
 
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -46,8 +50,17 @@ export default function Registro() {
 
         if (id === 'age') {
             updateCategories(value);
+            checkAge(value);
         }
     };
+
+    const checkAge = (age: string) => {
+        const parsedAge = parseInt(age, 10);
+        if (!isNaN(parsedAge)) {
+            setShowRepresentative(parsedAge < 18);
+        }
+    };
+    
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -111,12 +124,11 @@ export default function Registro() {
         let categories: string[] = [];
 
         if (!isNaN(parsedAge)) {
-
-            if (parsedAge >= 6 && parsedAge <= 12) {
+            if (parsedAge >= 8 && parsedAge <= 17) {
                 categories.push('Dibujo', 'Pintura');
             }
-            if (parsedAge > 12) {
-                categories = ['Obra Gráfica', 'Cartel', 'Dibujo', 'Pintura'];
+            if (parsedAge >= 18) {
+                categories = ['Grabado', 'Cartel', 'Dibujo', 'Afiche'];
             }
         }
 
@@ -149,6 +161,8 @@ export default function Registro() {
             setMessage('Por favor, ingresa una edad válida entre 5 y 120 años.');
             return;
         }
+
+        
 
         if (!selectedFile) {
             setFileError('Por favor, selecciona un archivo PNG o JPEG válido.');
@@ -196,7 +210,7 @@ export default function Registro() {
             setShowSuccessModal(true);
 
             setMessage('Registro exitoso y obra subida correctamente.');
-            setFormData({ email: '', name: '', apellido: '', age: '', ciudad: 'Medellin', categoria: '', descripcion: '', socialUsername: '', socialNetwork: '', titulo: '', tecnica: '', dimensiones: '' });
+            setFormData({ email: '', name: '', apellido: '', age: '', ciudad: 'Medellin', categoria: '', descripcion: '', socialUsername: '', socialNetwork: '', titulo: '', tecnica: '', dimensiones: '', representante: '', cedula: '' });
             setSelectedFile(null);
             setFileError(null);
         } catch (error) {
@@ -213,9 +227,10 @@ export default function Registro() {
             <div className="bg-transparent p-4 rounded-lg  text-gray-800 w-full md:w-[60%] mb-6">
                 <h2 className="text-xl font-bold mb-2">Categorías:</h2>
                 <ul className="list-disc space-y-2">
-                    <li><strong>6 a 10 años:</strong> Cuento Infantil Ilustrado.</li>
-                    <li><strong>8 a 12 años:</strong>  Dibujo y Pintura.</li>
-                    <li><strong>Adultos:</strong> Obra Gráfica, Cartel, Dibujo y Pintura.</li>
+                    <li><strong>8 a 17 años:</strong> Dibujo, Pintura y
+                    Grabado no tóxico.</li>
+                    <li><strong>Adultos:</strong> de Obra Gráfica (Grabado,
+                        Dibujo y Cartel o Afiche).</li>
                 </ul>
             </div>
             <form className="w-full md:w-[60%] space-y-4" onSubmit={handleSubmit}>
@@ -241,6 +256,7 @@ export default function Registro() {
                         className="w-full bg-transparent border-b-2 border-white p-2  text-gray-700 placeholder-gray-700"
                         placeholder="Nombre"
                         required
+                        maxLength={50}
                     />
                 </div>
                 <div>
@@ -253,20 +269,52 @@ export default function Registro() {
                         className="w-full bg-transparent border-b-2 border-white p-2  text-gray-700 placeholder-gray-700"
                         placeholder="Apellido"
                         required
+                        maxLength={70}
                     />
                 </div>
                 <div>
-                    <label htmlFor="age" className="block text-lg md:text-xl text-gray-700">Edad</label>
-                    <input
-                        type="number"
-                        id="age"
-                        value={formData.age}
-                        onChange={handleChange}
-                        className="w-full bg-transparent border-b-2 border-white p-2  text-gray-700 placeholder-gray-700"
-                        placeholder="Edad"
-                        required
-                    />
-                </div>
+    <label htmlFor="age" className="block text-lg md:text-xl text-gray-700">Edad</label>
+    <input
+        type="number"
+        id="age"
+        value={formData.age}
+        maxLength={3}
+        onChange={handleChange}
+        className="w-full bg-transparent border-b-2 border-white p-2 text-gray-700 placeholder-gray-700"
+        placeholder="Edad"
+        required
+    />
+</div>
+
+{showRepresentative && (
+    <div className="mt-4 flex flex-col md:flex-row md:space-x-4">
+        <div className="flex flex-col w-full md:w-1/2">
+            <label htmlFor="representante" className="text-lg md:text-xl text-gray-700">Nombre del representante legal</label>
+            <input
+                type="text"
+                id="representante"
+                value={formData.representante}
+                onChange={handleChange}
+                className="w-full bg-transparent border-b-2 border-white p-2 text-gray-700 placeholder-gray-700"
+                placeholder="Nombre Completo del representante legal del menor"
+                required
+            />
+        </div>
+        <div className="flex flex-col w-full md:w-1/2 mt-4 md:mt-0">
+            <label htmlFor="cedulaRepresentante" className="text-lg md:text-xl text-gray-700">Cédula del representante legal</label>
+            <input
+                type="number"
+                id="cedulaRepresentante"
+                value={formData.cedula}
+                maxLength={10}
+                onChange={handleChange}
+                className="w-full bg-transparent border-b-2 border-white p-2 text-gray-700 placeholder-gray-700"
+                placeholder="Cédula del representante legal del menor"
+                required
+            />
+        </div>
+    </div>
+)}
                 <div>
                     <label htmlFor="ciudad" className="block text-lg md:text-xl text-gray-700 ">Ciudad</label>
                     <Select
@@ -395,8 +443,6 @@ export default function Registro() {
                         placeholder="Ej: @miusuario"
                     />
                 </div>
-
-
                 <div>
                     <label htmlFor="file" className="block text-lg md:text-xl text-gray-700">Sube la imagen tu obra</label>
                     <div className="relative w-full">
