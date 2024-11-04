@@ -1,5 +1,6 @@
-import Categorias from '@/public/categorias.png';
+import timeline from '@/public/timeline.png';
 import Image from 'next/image';
+
 
 export default function ConoceMas() {
   return (
@@ -15,7 +16,7 @@ export default function ConoceMas() {
           <h2 className="text-3xl md:text-5xl text-green-300 my-6 text-center md:text-left">PLANETA VERDE</h2>
 
           {/* Imagen de categorías, visible solo en pantallas grandes, debajo del texto */}
-          <div className="mt-4 md:mt-0 flex justify-center md:justify-start hidden md:block">
+          {/* <div className="mt-4 md:mt-0 flex justify-center md:justify-start hidden md:block">
             <Image
               src={Categorias}
               alt="Imagen de categorías"
@@ -23,7 +24,7 @@ export default function ConoceMas() {
               height={242}
               className="w-[150px] md:w-[242px] h-auto"
             />
-          </div>
+          </div> */}
 
         </div>
 
@@ -47,13 +48,13 @@ export default function ConoceMas() {
           </div>
 
           <a
-  href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/sign/obras/public/Abstract,%20Encuentro%20Arte%20y%20Vida.pdf?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJvYnJhcy9wdWJsaWMvQWJzdHJhY3QsIEVuY3VlbnRybyBBcnRlIHkgVmlkYS5wZGYiLCJpYXQiOjE3MjkxMjI4ODQsImV4cCI6NDg4MjcyMjg4NH0.Y9fxfD4RQ-TItVf9lbADOryys9n5OoyMCaAVzEd25SU&t=2024-10-16T23%3A54%3A44.564Z"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="text-green-500 font-bold hover:underline col-span-1 md:col-span-2 text-center md:text-right"
->
-  Ver documento completo
-</a>
+            href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/sign/obras/public/Abstract,%20Encuentro%20Arte%20y%20Vida.pdf?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJvYnJhcy9wdWJsaWMvQWJzdHJhY3QsIEVuY3VlbnRybyBBcnRlIHkgVmlkYS5wZGYiLCJpYXQiOjE3MjkxMjI4ODQsImV4cCI6NDg4MjcyMjg4NH0.Y9fxfD4RQ-TItVf9lbADOryys9n5OoyMCaAVzEd25SU&t=2024-10-16T23%3A54%3A44.564Z"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-green-500 font-bold hover:underline col-span-1 md:col-span-2 text-center md:text-right"
+          >
+            Ver documento completo
+          </a>
 
 
 
@@ -61,13 +62,13 @@ export default function ConoceMas() {
       </div>
 
       {/* Imagen de categorías, aparece debajo del contenido en pantallas pequeñas */}
-      <div className="lg:hidden md:hidden mt-8 flex justify-center">
+      <div className=" mt-8 flex justify-center">
         <Image
-          src={Categorias}
+          src={timeline}
           alt="Imagen de categorías"
-          width={150}
-          height={150}
-          className="w-[150px] h-auto"
+          width={952}
+          height={170}
+          className="w-full h-auto"
         />
       </div>
     </section>

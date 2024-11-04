@@ -9,6 +9,15 @@ export default function Footer() {
                     © 2024 Fundación Good Kidz. Todos los derechos reservados.
                 </p>
 
+                {/* Enlaces a términos y condiciones y política de privacidad */}
+                <div className="flex space-x-4 text-sm">
+                    <Link href="/terminos-y-condiciones" className="hover:text-green-500">
+                        Términos y Condiciones
+                    </Link>
+                    <Link href="/politica-de-privacidad">
+                    </Link>
+                </div>
+
                 {/* Ícono de Instagram */}
                 <div className="flex justify-center">
                     <Link href="https://www.instagram.com/fundaciongoodkidz" target="_blank" rel="noopener noreferrer">
