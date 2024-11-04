@@ -22,6 +22,8 @@ export default function Registro() {
         descripcion: '',
         socialUsername: '',
         socialNetwork: 'Instagram',
+        tecnica : '',
+        dimensiones: '',
     });
     const [message, setMessage] = useState('');
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -194,7 +196,7 @@ export default function Registro() {
             setShowSuccessModal(true);
 
             setMessage('Registro exitoso y obra subida correctamente.');
-            setFormData({ email: '', name: '', apellido: '', age: '', ciudad: 'Medellin', categoria: '', descripcion: '', socialUsername: '', socialNetwork: '', titulo: '' });
+            setFormData({ email: '', name: '', apellido: '', age: '', ciudad: 'Medellin', categoria: '', descripcion: '', socialUsername: '', socialNetwork: '', titulo: '', tecnica: '', dimensiones: '' });
             setSelectedFile(null);
             setFileError(null);
         } catch (error) {
@@ -270,17 +272,18 @@ export default function Registro() {
                     <Select
                         id="ciudad"
                         options={ciudades}
+                        className="w-full text-gray-700 placeholder-gray-700"
                         value={selectedCity}
                         onChange={handleCityChange}
                         placeholder="Selecciona una ciudad..."
                         isClearable
-                        className="w-full text-gray-700 placeholder-gray-700"
+                        
                         styles={{
                             control: (base) => ({
                                 ...base,
                                 backgroundColor: 'transparent',
                                 borderColor: '#E5E7EB', // Ajusta el color del borde si es necesario
-                                color: 'gray',
+                                color: '#000',
                             }),
                             singleValue: (base) => ({
                                 ...base,
@@ -324,11 +327,39 @@ export default function Registro() {
                         value={formData.descripcion}
                         onChange={handleChange}
                         className="w-full bg-transparent border-b-2 border-white p-2 text-gray-700 placeholder-gray-700 resize-none"
-                        placeholder="Escribe una breve descripción de tu obra"
+                        placeholder="Escribe una breve descripción de tu obra en 250 caracteres"
+                        maxLength={250}
                         rows={4} // Define la altura del textarea
                         required
                     ></textarea>
                 </div>
+                <div className="mt-4 flex flex-col md:flex-row md:space-x-4">
+                    <div className="flex flex-col w-full md:w-1/2">
+                        <label htmlFor="tecnica" className="text-lg md:text-xl text-gray-700">Técnica utilizada</label>
+                        <input
+                            type="text"
+                            id="tecnica"
+                            value={formData.tecnica}
+                            onChange={handleChange}
+                            className="w-full bg-transparent border-b-2 border-white p-2 text-gray-700 placeholder-gray-700"
+                            placeholder="Técnica utilizada"
+                            required
+                        />
+                    </div>
+                    <div className="flex flex-col w-full md:w-1/2 mt-4 md:mt-0">
+                        <label htmlFor="dimensiones" className="text-lg md:text-xl text-gray-700">Dimensiones</label>
+                        <input
+                            type="text"
+                            id="dimensiones"
+                            value={formData.dimensiones}
+                            onChange={handleChange}
+                            className="w-full bg-transparent border-b-2 border-white p-2 text-gray-700 placeholder-gray-700"
+                            placeholder="50 x 25 cm"
+                            required
+                        />
+                    </div>
+                </div>
+
                 {/* Campo de Red Social y Nombre de Usuario */}
                 <div className="flex items-center space-x-4 mt-4">
                     <button
