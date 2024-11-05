@@ -1,9 +1,10 @@
 import Image from 'next/image';
-import Categorias from '@/public/estrella_blanca.png';
+import Categorias from '@/public/categorias2.png';
 import Select from 'react-select';
 import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { FaInstagram, FaTiktok } from 'react-icons/fa';
+import Link from 'next/link';
 
 interface CityOption {
     value: number;
@@ -413,7 +414,7 @@ export default function Registro() {
                     <button
                         type="button"
                         onClick={() => handleSocialNetworkSelect('Instagram')}
-                        className={`text-3xl ${formData.socialNetwork === 'Instagram' ? 'text-pink-700' : 'text-gray-400'}`}
+                        className={`text-3xl ${formData.socialNetwork === 'Instagram' ? 'text-black' : 'text-gray-400'}`}
 
                         aria-label="Seleccionar Instagram"
                     >
@@ -490,7 +491,7 @@ export default function Registro() {
                         className="mr-2"
                     />
                     <label htmlFor="aceptar" className="text-sm md:text-base text-gray-700">
-                        Conozco y acepto la politica de tratamiento de datos.
+                        Conozco y acepto la politica de <Link href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/sign/web%20files/politica_datos.pdf?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ3ZWIgZmlsZXMvcG9saXRpY2FfZGF0b3MucGRmIiwiaWF0IjoxNzMwNzczNTI5LCJleHAiOjIwNDYxMzM1Mjl9.NQcvjA5Vhim8letrU4rq-ylIjyWLfgEdKMpJ31VV3B4" target="_blank" className="text-blue-500 underline">  tratamiento de datos. </Link>
                     </label>
                 </div>
 
@@ -504,7 +505,7 @@ export default function Registro() {
                         className="mr-2"
                     />
                     <label htmlFor="acceptsTerms" className="text-sm md:text-base text-gray-700">
-                        Acepto los <a href="/terminos" target="_blank" className="text-blue-500 underline">términos y condiciones</a> del evento.
+                        Acepto los <Link href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/web%20files/terminos.pdf?t=2024-11-05T02%3A32%3A15.243Z" target="_blank" className="text-blue-500 underline">términos y condiciones</Link> del evento.
                     </label>
                 </div>
                 <button
