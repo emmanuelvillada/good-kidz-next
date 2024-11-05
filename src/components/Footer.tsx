@@ -13,7 +13,7 @@ export default function Footer() {
                 {/* Enlaces a términos y condiciones y política de privacidad */}
                 <div className="flex space-x-4 text-sm">
                     <a
-                        href="/terminos.pdf"
+                        href="../public/terminos.pdf"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="hover:text-green-500 hover:underline"
