@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Categorias from '@/public/categorias2.png';
-import Select from 'react-select';
+import Select, { SingleValue } from 'react-select';
 import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { FaInstagram, FaTiktok } from 'react-icons/fa';
@@ -10,6 +10,8 @@ interface CityOption {
     value: number;
     label: string;
 }
+const MAX_FILE_SIZE = 25 * 1024 * 1024; // 25 MB
+const ALLOWED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg', 'application/pdf'];
 
 export default function Registro() {
     const [formData, setFormData] = useState({
@@ -23,7 +25,7 @@ export default function Registro() {
         descripcion: '',
         socialUsername: '',
         socialNetwork: 'Instagram',
-        tecnica : '',
+        tecnica: '',
         dimensiones: '',
         representante: '',
         cedula: '',
@@ -36,19 +38,14 @@ export default function Registro() {
     const [availableCategories, setAvailableCategories] = useState<string[]>([]);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [ciudades, setCiudades] = useState<CityOption[]>([]);
-    const [selectedCity, setSelectedCity] = useState<CityOption | null>(null);
     const [showRepresentative, setShowRepresentative] = useState(false);
-
-
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { id, value } = e.target;
-
         setFormData({
             ...formData,
             [id]: value,
         });
-
         if (id === 'age') {
             updateCategories(value);
             checkAge(value);
@@ -57,24 +54,18 @@ export default function Registro() {
 
     const checkAge = (age: string) => {
         const parsedAge = parseInt(age, 10);
-        if (!isNaN(parsedAge)) {
-            setShowRepresentative(parsedAge < 18);
-        }
+        setShowRepresentative(!isNaN(parsedAge) && parsedAge < 18);
     };
-    
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'application/pdf'];
-            if (!allowedTypes.includes(file.type)) {
+            if (!ALLOWED_FILE_TYPES.includes(file.type)) {
                 setMessage('Solo se permiten archivos PNG, JPG, PDF y JPEG.');
                 return;
             }
-
-            const maxSize = 25 * 1024 * 1024; // 25 MB
-            if (file.size > maxSize) {
-                setMessage('El archivo debe ser menor de 5 MB.');
+            if (file.size > MAX_FILE_SIZE) {
+                setMessage('El archivo debe ser menor de 25 MB.');
                 return;
             }
 
@@ -82,28 +73,30 @@ export default function Registro() {
                 .normalize("NFD")
                 .replace(/[\u0300-\u036f]/g, "")
                 .replace(/[^a-zA-Z0-9.-_]/g, "_");
-
-            // Generar un nombre único añadiendo un timestamp al nombre original
             const uniqueFileName = `${Date.now()}_${sanitizedFileName}`;
 
-            const renamedFile = new File([file], uniqueFileName, { type: file.type });
-            setSelectedFile(renamedFile);
+            setSelectedFile(new File([file], uniqueFileName, { type: file.type }));
             setMessage('');
         }
     };
+
     const handleSocialNetworkSelect = (network: string) => {
         setFormData({
             ...formData,
             socialNetwork: network,
         });
     };
+    const handleCityChange = (selectedOption: SingleValue<CityOption>) => {
+        setFormData({
+            ...formData,
+            ciudad: selectedOption ? selectedOption.label : '', // Maneja `null` asignando una cadena vacía
+        });
+    };
 
     useEffect(() => {
-        // Solicitud a la API para obtener las ciudades
         fetch('https://api-colombia.com/api/v1/City')
             .then((response) => response.json())
             .then((data) => {
-                // Filtramos para quedarnos solo con los nombres de las ciudades
                 const cityOptions = data.map((city: { id: number; name: string }) => ({
                     value: city.id,
                     label: city.name
@@ -113,26 +106,16 @@ export default function Registro() {
             .catch((error) => console.error('Error al cargar ciudades:', error));
     }, []);
 
-    const handleCityChange = (selectedOption: CityOption | null) => {
-        setSelectedCity(selectedOption);
-        // Puedes actualizar el estado del formulario general aquí si es necesario
-        setFormData({ ...formData, ciudad: selectedOption ? selectedOption.label : '' });
-    };
-
     const updateCategories = (age: string) => {
         const parsedAge = parseInt(age, 10);
-
         let categories: string[] = [];
-
         if (!isNaN(parsedAge)) {
-            if (parsedAge >= 8 && parsedAge <= 17) {
-                categories.push('Dibujo', 'Pintura');
-            }
-            if (parsedAge >= 18) {
-                categories = ['Grabado', 'Cartel', 'Dibujo', 'Afiche'];
-            }
+            categories = parsedAge >= 8 && parsedAge <= 17
+                ? ['Dibujo', 'Pintura']
+                : parsedAge >= 18
+                    ? ['Grabado', 'Cartel', 'Dibujo', 'Afiche']
+                    : [];
         }
-
         setAvailableCategories(categories);
         if (!categories.includes(formData.categoria)) {
             setFormData((prev) => ({ ...prev, categoria: categories[0] || '' }));
@@ -142,17 +125,11 @@ export default function Registro() {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (!acceptsEmails) {
-            setMessage('Debes aceptar recibir correos electrónicos para continuar.');
+        if (!acceptsEmails || !acceptsTerms) {
+            setMessage('Debes aceptar recibir correos electrónicos y los términos para continuar.');
             return;
         }
-
-        if (!acceptsTerms) {
-            setMessage('Debes aceptar los términos y condiciones para continuar.');
-            return;
-        }
-
-        if (!formData.email || !formData.name.trim() || !formData.apellido.trim() || !formData.age || !formData.ciudad || !formData.categoria || !formData.descripcion || !formData.titulo) {
+        if (!formData.email || !formData.name || !formData.apellido || !formData.age || !formData.ciudad || !formData.categoria || !formData.descripcion || !formData.titulo) {
             setMessage('Todos los campos son obligatorios.');
             return;
         }
@@ -162,9 +139,6 @@ export default function Registro() {
             setMessage('Por favor, ingresa una edad válida entre 5 y 120 años.');
             return;
         }
-
-        
-
         if (!selectedFile) {
             setFileError('Por favor, selecciona un archivo PNG o JPEG válido.');
             return;
@@ -177,40 +151,34 @@ export default function Registro() {
 
             if (storageError) throw storageError;
 
-            const imageUrl = storageData?.path;
+            const { error: dbError } = await supabase.from('users').insert([{
+                email: formData.email,
+                name: formData.name,
+                lastname: formData.apellido,
+                age: formData.age,
+                city: formData.ciudad,
+                obra_url: storageData?.path,
+                categoria: formData.categoria,
+                description: formData.descripcion,
+                social_username: formData.socialUsername,
+                social_network: formData.socialNetwork,
+                title: formData.titulo,
+                technique: formData.tecnica,
+                dimensions: formData.dimensiones,
+            }]);
+            if (age < 18) {
+                const { error: dbError } = await supabase.from('users').insert([{
+                    
+                }])
+            }
 
-            const { error: dbError } = await supabase
-                .from('users')
-                .insert([
-                    {
-                        email: formData.email,
-                        name: formData.name,
-                        lastname: formData.apellido,
-                        age: formData.age,
-                        city: formData.ciudad,
-                        obra_url: imageUrl,
-                        categoria: formData.categoria,
-                        description: formData.descripcion,
-                        social_username: formData.socialUsername,
-                        social_network: formData.socialNetwork,
-                    },
-                ]);
-
-            // Verificar si hubo un error de inserción
             if (dbError) {
-                // Manejar el error si el código es 23505 (conflicto por correo duplicado)
-                if (dbError.code === '23505') {
-                    setMessage('Ya has registrado una obra. Solo se permite una obra por persona.');
-                } else {
-                    setMessage('Error al registrar y subir la obra.');
-                }
+                setMessage(dbError.code === '23505' ? 'Ya has registrado una obra.' : 'Error al registrar.');
                 return;
             }
 
-            // Mostrar modal de éxito
             setShowSuccessModal(true);
-
-            setMessage('Registro exitoso y obra subida correctamente.');
+            setMessage('Registro exitoso.');
             setFormData({ email: '', name: '', apellido: '', age: '', ciudad: 'Medellin', categoria: '', descripcion: '', socialUsername: '', socialNetwork: '', titulo: '', tecnica: '', dimensiones: '', representante: '', cedula: '' });
             setSelectedFile(null);
             setFileError(null);
@@ -229,7 +197,7 @@ export default function Registro() {
                 <h2 className="text-xl font-bold mb-2">Categorías:</h2>
                 <ul className="list-disc space-y-2">
                     <li><strong>8 a 17 años:</strong> Dibujo, Pintura y
-                    Grabado no tóxico.</li>
+                        Grabado no tóxico.</li>
                     <li><strong>Adultos:</strong> de Obra Gráfica (Grabado,
                         Dibujo y Cartel o Afiche).</li>
                 </ul>
@@ -274,64 +242,63 @@ export default function Registro() {
                     />
                 </div>
                 <div>
-    <label htmlFor="age" className="block text-lg md:text-xl text-gray-700">Edad</label>
-    <input
-        type="number"
-        id="age"
-        value={formData.age}
-        maxLength={3}
-        onChange={handleChange}
-        className="w-full bg-transparent border-b-2 border-white p-2 text-gray-700 placeholder-gray-700"
-        placeholder="Edad"
-        required
-    />
-</div>
+                    <label htmlFor="age" className="block text-lg md:text-xl text-gray-700">Edad</label>
+                    <input
+                        type="number"
+                        id="age"
+                        value={formData.age}
+                        maxLength={3}
+                        onChange={handleChange}
+                        className="w-full bg-transparent border-b-2 border-white p-2 text-gray-700 placeholder-gray-700"
+                        placeholder="Edad"
+                        required
+                    />
+                </div>
 
-{showRepresentative && (
-    <div className="mt-4 flex flex-col md:flex-row md:space-x-4">
-        <div className="flex flex-col w-full md:w-1/2">
-            <label htmlFor="representante" className="text-lg md:text-xl text-gray-700">Nombre del representante legal</label>
-            <input
-                type="text"
-                id="representante"
-                value={formData.representante}
-                onChange={handleChange}
-                className="w-full bg-transparent border-b-2 border-white p-2 text-gray-700 placeholder-gray-700"
-                placeholder="Nombre Completo del representante legal del menor"
-                required
-            />
-        </div>
-        <div className="flex flex-col w-full md:w-1/2 mt-4 md:mt-0">
-            <label htmlFor="cedulaRepresentante" className="text-lg md:text-xl text-gray-700">Cédula del representante legal</label>
-            <input
-                type="number"
-                id="cedulaRepresentante"
-                value={formData.cedula}
-                maxLength={10}
-                onChange={handleChange}
-                className="w-full bg-transparent border-b-2 border-white p-2 text-gray-700 placeholder-gray-700"
-                placeholder="Cédula del representante legal del menor"
-                required
-            />
-        </div>
-    </div>
-)}
+                {showRepresentative && (
+                    <div className="mt-4 flex flex-col md:flex-row md:space-x-4">
+                        <div className="flex flex-col w-full md:w-1/2">
+                            <label htmlFor="representante" className="text-lg md:text-xl text-gray-700">Nombre del representante legal</label>
+                            <input
+                                type="text"
+                                id="representante"
+                                value={formData.representante}
+                                onChange={handleChange}
+                                className="w-full bg-transparent border-b-2 border-white p-2 text-gray-700 placeholder-gray-700"
+                                placeholder="Nombre Completo del representante legal del menor"
+                                required
+                            />
+                        </div>
+                        <div className="flex flex-col w-full md:w-1/2 mt-4 md:mt-0">
+                            <label htmlFor="cedulaRepresentante" className="text-lg md:text-xl text-gray-700">Cédula del representante legal</label>
+                            <input
+                                type="number"
+                                id="cedulaRepresentante"
+                                value={formData.cedula}
+                                maxLength={10}
+                                onChange={handleChange}
+                                className="w-full bg-transparent border-b-2 border-white p-2 text-gray-700 placeholder-gray-700"
+                                placeholder="Cédula del representante legal del menor"
+                                required
+                            />
+                        </div>
+                    </div>
+                )}
                 <div>
                     <label htmlFor="ciudad" className="block text-lg md:text-xl text-gray-700 ">Ciudad</label>
                     <Select
                         id="ciudad"
                         options={ciudades}
                         className="w-full text-gray-700 placeholder-gray-700"
-                        value={selectedCity}
+                        value={ciudades.find((option) => option.label === formData.ciudad) || null} // Encuentra la opción seleccionada en `ciudades`
                         onChange={handleCityChange}
                         placeholder="Selecciona una ciudad..."
                         isClearable
-                        
                         styles={{
                             control: (base) => ({
                                 ...base,
                                 backgroundColor: 'transparent',
-                                borderColor: '#E5E7EB', // Ajusta el color del borde si es necesario
+                                borderColor: '#E5E7EB',
                                 color: '#000',
                             }),
                             singleValue: (base) => ({
