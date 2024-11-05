@@ -76,15 +76,14 @@ export default function HomeSection({ setActiveSection }: { setActiveSection: (s
                         />
                     </div>
                     <div className="mt-10 p-4 w-full md:w-max text-center">
-    <button
-        className="bg-verde-goodkidz font-bold text-white text-2xl border-4 border-white px-10 py-4 rounded-xl 
-                    hover:bg-white hover:text-verde-goodkidz hover:border-verde-goodkidz hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-110"
-        onClick={() => setActiveSection('registrate')}
-    >
-        ¡Regístrate para participar!
-    </button>
-</div>
-
+                        <button
+                            className="bg-verde-goodkidz font-bold text-white text-2xl border-4 border-white px-10 py-4 rounded-xl 
+                                        hover:bg-white hover:text-verde-goodkidz hover:border-verde-goodkidz hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-110"
+                            onClick={() => setActiveSection('registrate')}
+                        >
+                            ¡Regístrate para participar!
+                        </button>
+                    </div>
                 </div>
 
                 {/* Imagen del evento en la parte derecha */}
@@ -99,16 +98,26 @@ export default function HomeSection({ setActiveSection }: { setActiveSection: (s
                 </div>
             </div>
 
+            {/* Video de YouTube centrado, arriba del contador */}
+            <div className="w-full flex justify-center mt-12">
+    <iframe
+        className="w-full max-w-4xl h-[500px] rounded-lg shadow-lg"
+        src="https://www.youtube.com/embed/AYZ0FBqN7h4"
+        title="Video de YouTube - Encuentro Arte y Vida"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+    ></iframe>
+</div>
+
             {/* Contador en la parte inferior, centrado */}
             {timeLeft && (
                 <div className="w-full flex justify-center mt-8">
-                    <div className="bg- text-verde-goodkidz text-2xl font-semibold py-2 px-6 rounded-lg shadow-lg text-center">
+                    <div className="text-verde-goodkidz text-2xl font-semibold py-2 px-6 rounded-lg shadow-lg text-center">
                         <p className="text-lg mb-1">Tiempo límite para subir tu obra:</p>
                         <div>{timeLeft}</div>
                     </div>
                 </div>
             )}
-
         </section>
     );
 }

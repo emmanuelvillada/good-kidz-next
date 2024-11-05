@@ -5,6 +5,8 @@ import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { FaInstagram, FaTiktok } from 'react-icons/fa';
 import Link from 'next/link';
+import { v4 as uuidv4 } from 'uuid';
+
 
 interface CityOption {
     value: number;
@@ -42,6 +44,14 @@ export default function Registro() {
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { id, value } = e.target;
+        // Si es el campo de cédula, limitamos el valor a solo dígitos y a 10 caracteres
+        if (id === 'cedulaRepresentante') {
+            setFormData({
+                ...formData,
+                cedula: value,  // Cambiado a 'cedula' en lugar de '[id]'
+            });
+            return;
+        }
         setFormData({
             ...formData,
             [id]: value,
@@ -73,12 +83,15 @@ export default function Registro() {
                 .normalize("NFD")
                 .replace(/[\u0300-\u036f]/g, "")
                 .replace(/[^a-zA-Z0-9.-_]/g, "_");
-            const uniqueFileName = `${Date.now()}_${sanitizedFileName}`;
+
+            // Generar un nombre único utilizando uuid y timestamp
+            const uniqueFileName = `${Date.now()}_${uuidv4()}_${sanitizedFileName}`;
 
             setSelectedFile(new File([file], uniqueFileName, { type: file.type }));
             setMessage('');
         }
     };
+
 
     const handleSocialNetworkSelect = (network: string) => {
         setFormData({
@@ -139,19 +152,25 @@ export default function Registro() {
             setMessage('Por favor, ingresa una edad válida entre 5 y 120 años.');
             return;
         }
+        if (age < 18 && (!formData.representante || !formData.cedula)) {
+            setMessage('Por favor, ingresa los datos del representante legal.');
+            return;
+        }
         if (!selectedFile) {
             setFileError('Por favor, selecciona un archivo PNG o JPEG válido.');
             return;
         }
 
         try {
+            // Subir el archivo a Supabase Storage
             const { data: storageData, error: storageError } = await supabase.storage
                 .from('obras')
                 .upload(`public/${selectedFile.name}`, selectedFile);
 
             if (storageError) throw storageError;
 
-            const { error: dbError } = await supabase.from('users').insert([{
+            // Insertar el participante en la tabla `users`
+            const { data: participantData, error: dbError } = await supabase.from('users').insert([{
                 email: formData.email,
                 name: formData.name,
                 lastname: formData.apellido,
@@ -165,18 +184,31 @@ export default function Registro() {
                 title: formData.titulo,
                 technique: formData.tecnica,
                 dimensions: formData.dimensiones,
-            }]);
-            if (age < 18) {
-                const { error: dbError } = await supabase.from('users').insert([{
-                    
-                }])
-            }
+            }]).select();  // Usamos `.select()` para obtener el id del participante
 
             if (dbError) {
                 setMessage(dbError.code === '23505' ? 'Ya has registrado una obra.' : 'Error al registrar.');
                 return;
             }
 
+            // Si el participante es menor de edad, insertar el representante legal
+            if (age < 18) {
+                const participantId = participantData[0].id; // Obtener el `id` del participante
+
+                const { error: repError } = await supabase.from('represent').insert([{
+                    id: formData.cedula,  // Cedula del representante como `id`
+                    name: formData.representante,
+                    id_user: participantId, // `id_user` relacionado con el participante
+                }]);
+
+                if (repError) {
+                    console.error('Error al registrar el representante:', repError.message);
+                    setMessage('Error al registrar el representante.');
+                    return;
+                }
+            }
+
+            // Mostrar mensaje de éxito y restablecer el formulario
             setShowSuccessModal(true);
             setMessage('Registro exitoso.');
             setFormData({ email: '', name: '', apellido: '', age: '', ciudad: 'Medellin', categoria: '', descripcion: '', socialUsername: '', socialNetwork: '', titulo: '', tecnica: '', dimensiones: '', representante: '', cedula: '' });
@@ -187,6 +219,7 @@ export default function Registro() {
             setMessage('Error al registrar y subir la obra.');
         }
     };
+
     return (
         <section className="p-6 md:p-12 bg-verde-goodkidz text-gray-800 flex flex-col items-center min-h-screen relative">
             <h1 className="text-4xl md:text-5xl font-bold mb-8">¡Regístrate y sube tu obra!</h1>
@@ -248,6 +281,8 @@ export default function Registro() {
                         id="age"
                         value={formData.age}
                         maxLength={3}
+                        min={8}
+                        max={100}
                         onChange={handleChange}
                         className="w-full bg-transparent border-b-2 border-white p-2 text-gray-700 placeholder-gray-700"
                         placeholder="Edad"
@@ -270,13 +305,17 @@ export default function Registro() {
                             />
                         </div>
                         <div className="flex flex-col w-full md:w-1/2 mt-4 md:mt-0">
-                            <label htmlFor="cedulaRepresentante" className="text-lg md:text-xl text-gray-700">Cédula del representante legal</label>
+                            <label htmlFor="cedulaRepresentante" className="text-lg md:text-xl text-gray-700">
+                                Cédula del representante legal
+                            </label>
                             <input
-                                type="number"
+                                type="number"  // Cambiado a "text" para mayor control
                                 id="cedulaRepresentante"
-                                value={formData.cedula}
-                                maxLength={10}
+                                value={formData.cedula}  // Asegura que sea una cadena
                                 onChange={handleChange}
+                                maxLength={10}
+                                minLength={10}
+                                pattern="[0-9]*"
                                 className="w-full bg-transparent border-b-2 border-white p-2 text-gray-700 placeholder-gray-700"
                                 placeholder="Cédula del representante legal del menor"
                                 required
