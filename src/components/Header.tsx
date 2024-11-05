@@ -15,8 +15,7 @@ export default function Header({ activeSection, setActiveSection }: { activeSect
   };
 
   return (
-    <header className="flex justify-between items-center p-4 md:p-6 bg-white w-full">
-      <Image
+<header className="flex justify-between items-center p-4 md:p-6 bg-white w-full border-b-2 border-gray-200 shadow-md">      <Image
         src={logo}
         alt="Logo Good Kidz"
         className="cursor-pointer w-[30vw] h-auto sm:w-[100px] sm:h-auto md:w-[150px] md:h-auto lg:w-[200px] lg:h-auto"
@@ -29,21 +28,16 @@ export default function Header({ activeSection, setActiveSection }: { activeSect
        <Image
   src={corazon}
   alt="Corazón"
-  className="hidden md:block cursor-pointer w-[8vw] h-auto sm:w-[40px] sm:h-[34px] md:w-[40px] md:h-[34px] lg:w-[60px] lg:h-[50px]" // Ajustes responsivos
+  className="hidden md:block cursor-pointer w-[8vw] h-auto sm:w-[40px] sm:h-[34px] md:w-[40px] md:h-[34px] lg:w-[60px] lg:h-[50px] hover:scale-125 transition duration-300 " // Ajustes responsivos
+  onClick={() => setActiveSection('homeSection')}
 />
         {/* Contenedor de botones con bordes unidos */}
-        <div className="flex border-2 border-verde-goodkidz rounded-full overflow-hidden">
+        <div className="flex border-2 border-verde-goodkidz rounded-full overflow-hidden p-2">
           <button
             onClick={() => handleClick('conoceMas')}
             className={`px-1 py-1 text-xs sm:px-1 sm:py-2 sm:text-sm md:text-base transition ${activeSection === 'conoceMas' ? 'text-verde-goodkidz' : 'text-gray-500 hover:text-verde-goodkidz'}`}
           >
             Conoce Más +
-          </button>
-          <button
-            onClick={() => handleClick('terminosCondiciones')}
-            className={`px-1 py-1 text-xs sm:px-1 sm:py-2 sm:text-sm md:text-base transition ${activeSection === 'terminosCondiciones' ? 'text-verde-goodkidz' : 'text-gray-500 hover:text-verde-goodkidz'}`}
-          >
-            Términos y Condiciones
           </button>
           <button
             onClick={() => handleClick('registrate')}

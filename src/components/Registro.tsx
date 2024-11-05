@@ -1,7 +1,19 @@
 import Image from 'next/image';
-import Categorias from '@/public/estrella_blanca.png';
-import { useState, ChangeEvent, FormEvent } from 'react';
+import Categorias from '@/public/categorias2.png';
+import Select, { SingleValue } from 'react-select';
+import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
+import { FaInstagram, FaTiktok } from 'react-icons/fa';
+import Link from 'next/link';
+import { v4 as uuidv4 } from 'uuid';
+
+
+interface CityOption {
+    value: number;
+    label: string;
+}
+const MAX_FILE_SIZE = 25 * 1024 * 1024; // 25 MB
+const ALLOWED_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg', 'application/pdf'];
 
 export default function Registro() {
     const [formData, setFormData] = useState({
@@ -11,74 +23,112 @@ export default function Registro() {
         age: '',
         ciudad: 'Medellin',
         categoria: 'Pintura',
+        titulo: '',
+        descripcion: '',
+        socialUsername: '',
+        socialNetwork: 'Instagram',
+        tecnica: '',
+        dimensiones: '',
+        representante: '',
+        cedula: '',
     });
     const [message, setMessage] = useState('');
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [fileError, setFileError] = useState<string | null>(null);
     const [acceptsEmails, setAcceptsEmails] = useState(false);
+    const [acceptsTerms, setAcceptsTerms] = useState(false);
     const [availableCategories, setAvailableCategories] = useState<string[]>([]);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [ciudades, setCiudades] = useState<CityOption[]>([]);
+    const [showRepresentative, setShowRepresentative] = useState(false);
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { id, value } = e.target;
-
+        // Si es el campo de cédula, limitamos el valor a solo dígitos y a 10 caracteres
+        if (id === 'cedulaRepresentante') {
+            setFormData({
+                ...formData,
+                cedula: value,  // Cambiado a 'cedula' en lugar de '[id]'
+            });
+            return;
+        }
         setFormData({
             ...formData,
             [id]: value,
         });
-
         if (id === 'age') {
             updateCategories(value);
+            checkAge(value);
         }
+    };
+
+    const checkAge = (age: string) => {
+        const parsedAge = parseInt(age, 10);
+        setShowRepresentative(!isNaN(parsedAge) && parsedAge < 18);
     };
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'application/pdf'];
-            if (!allowedTypes.includes(file.type)) {
+            if (!ALLOWED_FILE_TYPES.includes(file.type)) {
                 setMessage('Solo se permiten archivos PNG, JPG, PDF y JPEG.');
                 return;
             }
-    
-            const maxSize = 5 * 1024 * 1024; // 5 MB
-            if (file.size > maxSize) {
-                setMessage('El archivo debe ser menor de 5 MB.');
+            if (file.size > MAX_FILE_SIZE) {
+                setMessage('El archivo debe ser menor de 25 MB.');
                 return;
             }
-    
+
             const sanitizedFileName = file.name
                 .normalize("NFD")
                 .replace(/[\u0300-\u036f]/g, "")
                 .replace(/[^a-zA-Z0-9.-_]/g, "_");
-    
-            // Generar un nombre único añadiendo un timestamp al nombre original
-            const uniqueFileName = `${Date.now()}_${sanitizedFileName}`;
-    
-            const renamedFile = new File([file], uniqueFileName, { type: file.type });
-            setSelectedFile(renamedFile);
+
+            // Generar un nombre único utilizando uuid y timestamp
+            const uniqueFileName = `${Date.now()}_${uuidv4()}_${sanitizedFileName}`;
+
+            setSelectedFile(new File([file], uniqueFileName, { type: file.type }));
             setMessage('');
         }
     };
-    
+
+
+    const handleSocialNetworkSelect = (network: string) => {
+        setFormData({
+            ...formData,
+            socialNetwork: network,
+        });
+    };
+    const handleCityChange = (selectedOption: SingleValue<CityOption>) => {
+        setFormData({
+            ...formData,
+            ciudad: selectedOption ? selectedOption.label : '', // Maneja `null` asignando una cadena vacía
+        });
+    };
+
+    useEffect(() => {
+        fetch('https://api-colombia.com/api/v1/City')
+            .then((response) => response.json())
+            .then((data) => {
+                const cityOptions = data.map((city: { id: number; name: string }) => ({
+                    value: city.id,
+                    label: city.name
+                }));
+                setCiudades(cityOptions);
+            })
+            .catch((error) => console.error('Error al cargar ciudades:', error));
+    }, []);
 
     const updateCategories = (age: string) => {
         const parsedAge = parseInt(age, 10);
-
         let categories: string[] = [];
-
         if (!isNaN(parsedAge)) {
-            if (parsedAge >= 6 && parsedAge <= 10) {
-                categories = ['Cuento Infantil Ilustrado'];
-            }
-            if (parsedAge >= 8 && parsedAge <= 12) {
-                categories.push('Dibujo', 'Pintura');
-            }
-            if (parsedAge > 12) {
-                categories = ['Obra Gráfica', 'Cartel', 'Dibujo', 'Pintura'];
-            }
+            categories = parsedAge >= 8 && parsedAge <= 17
+                ? ['Dibujo', 'Pintura']
+                : parsedAge >= 18
+                    ? ['Grabado', 'Cartel', 'Dibujo', 'Afiche']
+                    : [];
         }
-
         setAvailableCategories(categories);
         if (!categories.includes(formData.categoria)) {
             setFormData((prev) => ({ ...prev, categoria: categories[0] || '' }));
@@ -88,12 +138,11 @@ export default function Registro() {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (!acceptsEmails) {
-            setMessage('Debes aceptar recibir correos electrónicos para continuar.');
+        if (!acceptsEmails || !acceptsTerms) {
+            setMessage('Debes aceptar recibir correos electrónicos y los términos para continuar.');
             return;
         }
-
-        if (!formData.email || !formData.name.trim() || !formData.apellido.trim() || !formData.age) {
+        if (!formData.email || !formData.name || !formData.apellido || !formData.age || !formData.ciudad || !formData.categoria || !formData.descripcion || !formData.titulo) {
             setMessage('Todos los campos son obligatorios.');
             return;
         }
@@ -103,69 +152,87 @@ export default function Registro() {
             setMessage('Por favor, ingresa una edad válida entre 5 y 120 años.');
             return;
         }
-
+        if (age < 18 && (!formData.representante || !formData.cedula)) {
+            setMessage('Por favor, ingresa los datos del representante legal.');
+            return;
+        }
         if (!selectedFile) {
             setFileError('Por favor, selecciona un archivo PNG o JPEG válido.');
             return;
         }
 
         try {
+            // Subir el archivo a Supabase Storage
             const { data: storageData, error: storageError } = await supabase.storage
                 .from('obras')
                 .upload(`public/${selectedFile.name}`, selectedFile);
 
             if (storageError) throw storageError;
 
-            const imageUrl = storageData?.path;
+            // Insertar el participante en la tabla `users`
+            const { data: participantData, error: dbError } = await supabase.from('users').insert([{
+                email: formData.email,
+                name: formData.name,
+                lastname: formData.apellido,
+                age: formData.age,
+                city: formData.ciudad,
+                obra_url: storageData?.path,
+                categoria: formData.categoria,
+                description: formData.descripcion,
+                social_username: formData.socialUsername,
+                social_network: formData.socialNetwork,
+                title: formData.titulo,
+                technique: formData.tecnica,
+                dimensions: formData.dimensiones,
+            }]).select();  // Usamos `.select()` para obtener el id del participante
 
-            const { error: dbError } = await supabase
-                .from('users')
-                .insert([
-                    {
-                        email: formData.email,
-                        name: formData.name,
-                        lastname: formData.apellido,
-                        age: formData.age,
-                        city: formData.ciudad,
-                        obra_url: imageUrl,
-                        categoria: formData.categoria,
-                    },
-                ]);
-
-           // Verificar si hubo un error de inserción
-        if (dbError) {
-            // Manejar el error si el código es 23505 (conflicto por correo duplicado)
-            if (dbError.code === '23505') {
-                setMessage('Ya has registrado una obra. Solo se permite una obra por persona.');
-            } else {
-                setMessage('Error al registrar y subir la obra.');
+            if (dbError) {
+                setMessage(dbError.code === '23505' ? 'Ya has registrado una obra.' : 'Error al registrar.');
+                return;
             }
-            return;
-        }
 
-            // Mostrar modal de éxito
+            // Si el participante es menor de edad, insertar el representante legal
+            if (age < 18) {
+                const participantId = participantData[0].id; // Obtener el `id` del participante
+
+                const { error: repError } = await supabase.from('represent').insert([{
+                    id: formData.cedula,  // Cedula del representante como `id`
+                    name: formData.representante,
+                    id_user: participantId, // `id_user` relacionado con el participante
+                }]);
+
+                if (repError) {
+                    console.error('Error al registrar el representante:', repError.message);
+                    setMessage('Error al registrar el representante.');
+                    return;
+                }
+            }
+
+            // Mostrar mensaje de éxito y restablecer el formulario
             setShowSuccessModal(true);
-
-            setMessage('Registro exitoso y obra subida correctamente.');
-            setFormData({ email: '', name: '', apellido: '', age: '', ciudad: 'Medellin', categoria: '' });
+            setMessage('Registro exitoso.');
+            setFormData({ email: '', name: '', apellido: '', age: '', ciudad: 'Medellin', categoria: '', descripcion: '', socialUsername: '', socialNetwork: '', titulo: '', tecnica: '', dimensiones: '', representante: '', cedula: '' });
+            setSelectedFile(null);
             setFileError(null);
         } catch (error) {
             console.error(error);
             setMessage('Error al registrar y subir la obra.');
         }
     };
+
     return (
         <section className="p-6 md:p-12 bg-verde-goodkidz text-gray-800 flex flex-col items-center min-h-screen relative">
             <h1 className="text-4xl md:text-5xl font-bold mb-8">¡Regístrate y sube tu obra!</h1>
             <p className="lg:text-center md:text-center sm:text-start text-gray-700 mb-6">
-                Registra tus datos y sube tu obra en formato JPG, JPEG o PDF, el archivo debe ser menor a 5MB.
+                Registra tus datos y sube tu obra en formato JPG, PNG o PDF, el archivo debe ser menor a 25MB.
             </p>
             <div className="bg-transparent p-4 rounded-lg  text-gray-800 w-full md:w-[60%] mb-6">
                 <h2 className="text-xl font-bold mb-2">Categorías:</h2>
                 <ul className="list-disc space-y-2">
-                    <li><strong>6 a 10 años:</strong> Cuento Infantil Ilustrado.</li>
-                    <li><strong>8 a 12 años:</strong>  Dibujo y Pintura.</li>
-                    <li><strong>Adultos:</strong> Obra Gráfica, Cartel, Dibujo y Pintura.</li>
+                    <li><strong>8 a 17 años:</strong> Dibujo, Pintura y
+                        Grabado no tóxico.</li>
+                    <li><strong>Adultos:</strong> de Obra Gráfica (Grabado,
+                        Dibujo y Cartel o Afiche).</li>
                 </ul>
             </div>
             <form className="w-full md:w-[60%] space-y-4" onSubmit={handleSubmit}>
@@ -191,6 +258,7 @@ export default function Registro() {
                         className="w-full bg-transparent border-b-2 border-white p-2  text-gray-700 placeholder-gray-700"
                         placeholder="Nombre"
                         required
+                        maxLength={50}
                     />
                 </div>
                 <div>
@@ -203,6 +271,7 @@ export default function Registro() {
                         className="w-full bg-transparent border-b-2 border-white p-2  text-gray-700 placeholder-gray-700"
                         placeholder="Apellido"
                         required
+                        maxLength={70}
                     />
                 </div>
                 <div>
@@ -211,32 +280,72 @@ export default function Registro() {
                         type="number"
                         id="age"
                         value={formData.age}
+                        maxLength={3}
+                        min={8}
+                        max={100}
                         onChange={handleChange}
-                        className="w-full bg-transparent border-b-2 border-white p-2  text-gray-700 placeholder-gray-700"
+                        className="w-full bg-transparent border-b-2 border-white p-2 text-gray-700 placeholder-gray-700"
                         placeholder="Edad"
                         required
                     />
                 </div>
+
+                {showRepresentative && (
+                    <div className="mt-4 flex flex-col md:flex-row md:space-x-4">
+                        <div className="flex flex-col w-full md:w-1/2">
+                            <label htmlFor="representante" className="text-lg md:text-xl text-gray-700">Nombre del representante legal</label>
+                            <input
+                                type="text"
+                                id="representante"
+                                value={formData.representante}
+                                onChange={handleChange}
+                                className="w-full bg-transparent border-b-2 border-white p-2 text-gray-700 placeholder-gray-700"
+                                placeholder="Nombre Completo del representante legal del menor"
+                                required
+                            />
+                        </div>
+                        <div className="flex flex-col w-full md:w-1/2 mt-4 md:mt-0">
+                            <label htmlFor="cedulaRepresentante" className="text-lg md:text-xl text-gray-700">
+                                Cédula del representante legal
+                            </label>
+                            <input
+                                type="number"  // Cambiado a "text" para mayor control
+                                id="cedulaRepresentante"
+                                value={formData.cedula}  // Asegura que sea una cadena
+                                onChange={handleChange}
+                                maxLength={10}
+                                minLength={10}
+                                pattern="[0-9]*"
+                                className="w-full bg-transparent border-b-2 border-white p-2 text-gray-700 placeholder-gray-700"
+                                placeholder="Cédula del representante legal del menor"
+                                required
+                            />
+                        </div>
+                    </div>
+                )}
                 <div>
-                    <label htmlFor="ciudad" className="block text-lg md:text-xl text-gray-700">Ciudad</label>
-                    <select
+                    <label htmlFor="ciudad" className="block text-lg md:text-xl text-gray-700 ">Ciudad</label>
+                    <Select
                         id="ciudad"
-                        value={formData.ciudad}
-                        onChange={handleChange}
-                        className="w-full bg-transparent border-b-2 border-white p-2  text-gray-700"
-                        required
-                    >
-                        <option value="Medellin">Medellín</option>
-                        <option value="Envigado">Envigado</option>
-                        <option value="Itagui">Itagüí</option>
-                        <option value="Sabaneta">Sabaneta</option>
-                        <option value="Caldas">Caldas</option>
-                        <option value="Bello">Bello</option>
-                        <option value="Copacabana">Copacabana</option>
-                        <option value="Girardota">Girardota</option>
-                        <option value="Barbosa">Barbosa</option>
-                        <option value="Rionegro">Rionegro</option>
-                    </select>
+                        options={ciudades}
+                        className="w-full text-gray-700 placeholder-gray-700"
+                        value={ciudades.find((option) => option.label === formData.ciudad) || null} // Encuentra la opción seleccionada en `ciudades`
+                        onChange={handleCityChange}
+                        placeholder="Selecciona una ciudad..."
+                        isClearable
+                        styles={{
+                            control: (base) => ({
+                                ...base,
+                                backgroundColor: 'transparent',
+                                borderColor: '#E5E7EB',
+                                color: '#000',
+                            }),
+                            singleValue: (base) => ({
+                                ...base,
+                                color: '#000',
+                            }),
+                        }}
+                    />
                 </div>
                 <div>
                     <label htmlFor="categoria" className="block text-lg md:text-xl text-gray-700">Categoria</label>
@@ -253,6 +362,93 @@ export default function Registro() {
                             </option>
                         ))}
                     </select>
+                </div>
+                <div>
+                    <label htmlFor="titulo" className="block text-lg md:text-xl text-gray-700">Titulo de la obra</label>
+                    <input
+                        type="text"
+                        id="titulo"
+                        value={formData.titulo}
+                        onChange={handleChange}
+                        className="w-full bg-transparent border-b-2 border-white p-2  text-gray-700 placeholder-gray-700"
+                        placeholder="Escribe el nombre de tu obra"
+                        required
+                    />
+                </div>
+                <div>
+                    <label htmlFor="descripcion" className="block text-lg md:text-xl text-gray-700">Descripción</label>
+                    <textarea
+                        id="descripcion"
+                        value={formData.descripcion}
+                        onChange={handleChange}
+                        className="w-full bg-transparent border-b-2 border-white p-2 text-gray-700 placeholder-gray-700 resize-none"
+                        placeholder="Escribe una breve descripción de tu obra en 250 caracteres"
+                        maxLength={250}
+                        rows={4} // Define la altura del textarea
+                        required
+                    ></textarea>
+                </div>
+                <div className="mt-4 flex flex-col md:flex-row md:space-x-4">
+                    <div className="flex flex-col w-full md:w-1/2">
+                        <label htmlFor="tecnica" className="text-lg md:text-xl text-gray-700">Técnica utilizada</label>
+                        <input
+                            type="text"
+                            id="tecnica"
+                            value={formData.tecnica}
+                            onChange={handleChange}
+                            className="w-full bg-transparent border-b-2 border-white p-2 text-gray-700 placeholder-gray-700"
+                            placeholder="Técnica utilizada"
+                            required
+                        />
+                    </div>
+                    <div className="flex flex-col w-full md:w-1/2 mt-4 md:mt-0">
+                        <label htmlFor="dimensiones" className="text-lg md:text-xl text-gray-700">Dimensiones</label>
+                        <input
+                            type="text"
+                            id="dimensiones"
+                            value={formData.dimensiones}
+                            onChange={handleChange}
+                            className="w-full bg-transparent border-b-2 border-white p-2 text-gray-700 placeholder-gray-700"
+                            placeholder="50 x 25 cm"
+                            required
+                        />
+                    </div>
+                </div>
+
+                {/* Campo de Red Social y Nombre de Usuario */}
+                <div className="flex items-center space-x-4 mt-4">
+                    <button
+                        type="button"
+                        onClick={() => handleSocialNetworkSelect('Instagram')}
+                        className={`text-3xl ${formData.socialNetwork === 'Instagram' ? 'text-black' : 'text-gray-400'}`}
+
+                        aria-label="Seleccionar Instagram"
+                    >
+                        <FaInstagram />
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => handleSocialNetworkSelect('TikTok')}
+                        className={`text-3xl ${formData.socialNetwork === 'TikTok' ? 'text-black' : 'text-gray-400'}`}
+                        aria-label="Seleccionar TikTok"
+                    >
+                        <FaTiktok />
+                    </button>
+                </div>
+
+                <div className="mt-4">
+                    <label htmlFor="socialUsername" className="text-lg md:text-xl text-gray-700">
+                        Usuario en {formData.socialNetwork || 'red social'}:
+                    </label>
+
+                    <input
+                        type="text"
+                        id="socialUsername"
+                        value={formData.socialUsername}
+                        onChange={handleChange}
+                        className="w-full bg-transparent border-b-2 border-white p-2 text-gray-700 placeholder-gray-700"
+                        placeholder="Ej: @miusuario"
+                    />
                 </div>
                 <div>
                     <label htmlFor="file" className="block text-lg md:text-xl text-gray-700">Sube la imagen tu obra</label>
@@ -301,7 +497,21 @@ export default function Registro() {
                         className="mr-2"
                     />
                     <label htmlFor="aceptar" className="text-sm md:text-base text-gray-700">
-                        Acepto recibir correos electrónicos de la fundación Good Kidz.
+                        Conozco y acepto la politica de <Link href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/sign/web%20files/politica_datos.pdf?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ3ZWIgZmlsZXMvcG9saXRpY2FfZGF0b3MucGRmIiwiaWF0IjoxNzMwNzczNTI5LCJleHAiOjIwNDYxMzM1Mjl9.NQcvjA5Vhim8letrU4rq-ylIjyWLfgEdKMpJ31VV3B4" target="_blank" className="text-blue-500 underline">  tratamiento de datos. </Link>
+                    </label>
+                </div>
+
+                {/* Checkbox para términos y condiciones */}
+                <div className="flex items-center">
+                    <input
+                        type="checkbox"
+                        id="acceptsTerms"
+                        checked={acceptsTerms}
+                        onChange={() => setAcceptsTerms(!acceptsTerms)}
+                        className="mr-2"
+                    />
+                    <label htmlFor="acceptsTerms" className="text-sm md:text-base text-gray-700">
+                        Acepto los <Link href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/web%20files/terminos.pdf?t=2024-11-05T02%3A32%3A15.243Z" target="_blank" className="text-blue-500 underline">términos y condiciones</Link> del evento.
                     </label>
                 </div>
                 <button
