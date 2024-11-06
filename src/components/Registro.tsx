@@ -41,6 +41,8 @@ export default function Registro() {
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [ciudades, setCiudades] = useState<CityOption[]>([]);
     const [showRepresentative, setShowRepresentative] = useState(false);
+    const [showErrorModal, setShowErrorModal] = useState(false);
+    const [showLoadingModal, setShowLoadingModal] = useState(false);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { id, value } = e.target;
@@ -67,30 +69,7 @@ export default function Registro() {
         setShowRepresentative(!isNaN(parsedAge) && parsedAge < 18);
     };
 
-    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            if (!ALLOWED_FILE_TYPES.includes(file.type)) {
-                setMessage('Solo se permiten archivos PNG, JPG, PDF y JPEG.');
-                return;
-            }
-            if (file.size > MAX_FILE_SIZE) {
-                setMessage('El archivo debe ser menor de 25 MB.');
-                return;
-            }
-
-            const sanitizedFileName = file.name
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
-                .replace(/[^a-zA-Z0-9.-_]/g, "_");
-
-            // Generar un nombre único utilizando uuid y timestamp
-            const uniqueFileName = `${Date.now()}_${uuidv4()}_${sanitizedFileName}`;
-
-            setSelectedFile(new File([file], uniqueFileName, { type: file.type }));
-            setMessage('');
-        }
-    };
+    
 
 
     const handleSocialNetworkSelect = (network: string) => {
@@ -135,40 +114,79 @@ export default function Registro() {
         }
     };
 
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+                setMessage('Solo se permiten archivos PNG, JPG, PDF y JPEG.');
+                return;
+            }
+            if (file.size > MAX_FILE_SIZE) {
+                setMessage('El archivo debe ser menor de 25 MB.');
+                return;
+            }
+
+            const sanitizedFileName = file.name
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^a-zA-Z0-9.-_]/g, "_");
+
+            // Generar un nombre único utilizando uuid y timestamp
+            const uniqueFileName = `${Date.now()}_${uuidv4()}_${sanitizedFileName}`;
+
+            setSelectedFile(new File([file], uniqueFileName, { type: file.type }));
+            setMessage('');
+        }
+    };
+
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        //mostrar la pantalla de carga
+        setShowLoadingModal(true);
 
         if (!acceptsEmails || !acceptsTerms) {
             setMessage('Debes aceptar recibir correos electrónicos y los términos para continuar.');
+            setShowLoadingModal(false);
+            setShowErrorModal(true);
             return;
         }
         if (!formData.email || !formData.name || !formData.apellido || !formData.age || !formData.ciudad || !formData.categoria || !formData.descripcion || !formData.titulo) {
             setMessage('Todos los campos son obligatorios.');
+            setShowLoadingModal(false);
             return;
         }
 
         const age = parseInt(formData.age, 10);
         if (isNaN(age) || age < 5 || age > 120) {
             setMessage('Por favor, ingresa una edad válida entre 5 y 120 años.');
+            setShowLoadingModal(false);
             return;
         }
         if (age < 18 && (!formData.representante || !formData.cedula)) {
             setMessage('Por favor, ingresa los datos del representante legal.');
+            setShowLoadingModal(false);
             return;
         }
         if (!selectedFile) {
             setFileError('Por favor, selecciona un archivo PNG o JPEG válido.');
+            setShowLoadingModal(false);
             return;
         }
 
         try {
             // Subir el archivo a Supabase Storage
+            const uniqueFilePath = `public/uploads/${Date.now()}_${uuidv4()}_${selectedFile.name}`;
             const { data: storageData, error: storageError } = await supabase.storage
                 .from('obras')
-                .upload(`public/${selectedFile.name}`, selectedFile);
-
-            if (storageError) throw storageError;
-
+                .upload(uniqueFilePath, selectedFile);
+    
+            if (storageError) {
+                setMessage('Error al subir el archivo.');
+                setShowLoadingModal(false);
+                setShowErrorModal(true);
+                throw storageError;
+            }
+    
             // Insertar el participante en la tabla `users`
             const { data: participantData, error: dbError } = await supabase.from('users').insert([{
                 email: formData.email,
@@ -184,39 +202,49 @@ export default function Registro() {
                 title: formData.titulo,
                 technique: formData.tecnica,
                 dimensions: formData.dimensiones,
-            }]).select();  // Usamos `.select()` para obtener el id del participante
-
+            }]).select();
+    
             if (dbError) {
-                setMessage(dbError.code === '23505' ? 'Ya has registrado una obra.' : 'Error al registrar.');
+                // Eliminar el archivo subido si hay un error en la inserción
+                await supabase.storage.from('obras').remove([`public/${selectedFile.name}`]);
+                setMessage(dbError.code === '23505' ? 'Ya has registrado una obra.' : 'Error al registrar la obra.');
+                setShowLoadingModal(false);
+                setShowErrorModal(true);
                 return;
             }
-
-            // Si el participante es menor de edad, insertar el representante legal
-            if (age < 18) {
-                const participantId = participantData[0].id; // Obtener el `id` del participante
-
+    
+            // Insertar el representante legal si es menor de edad
+            if (parseInt(formData.age, 10) < 18) {
+                const participantId = participantData[0].id;
                 const { error: repError } = await supabase.from('represent').insert([{
-                    id: formData.cedula,  // Cedula del representante como `id`
+                    id: formData.cedula,
                     name: formData.representante,
-                    id_user: participantId, // `id_user` relacionado con el participante
+                    user_id: participantId,
                 }]);
-
+    
                 if (repError) {
-                    console.error('Error al registrar el representante:', repError.message);
+                    // Eliminar el archivo subido y el usuario registrado si falla la inserción del representante
+                    await supabase.storage.from('obras').remove([`public/${selectedFile.name}`]);
+                    await supabase.from('users').delete().eq('id', participantId);
                     setMessage('Error al registrar el representante.');
+                    setShowLoadingModal(false);
+                    setShowErrorModal(true);
                     return;
                 }
             }
-
+    
             // Mostrar mensaje de éxito y restablecer el formulario
+            setShowLoadingModal(false);
             setShowSuccessModal(true);
-            setMessage('Registro exitoso.');
             setFormData({ email: '', name: '', apellido: '', age: '', ciudad: 'Medellin', categoria: '', descripcion: '', socialUsername: '', socialNetwork: '', titulo: '', tecnica: '', dimensiones: '', representante: '', cedula: '' });
             setSelectedFile(null);
             setFileError(null);
+    
         } catch (error) {
-            console.error(error);
+            console.log(error);
             setMessage('Error al registrar y subir la obra.');
+            setShowLoadingModal(false);
+            setShowErrorModal(true);
         }
     };
 
@@ -305,22 +333,26 @@ export default function Registro() {
                             />
                         </div>
                         <div className="flex flex-col w-full md:w-1/2 mt-4 md:mt-0">
-                            <label htmlFor="cedulaRepresentante" className="text-lg md:text-xl text-gray-700">
-                                Cédula del representante legal
-                            </label>
-                            <input
-                                type="number"  // Cambiado a "text" para mayor control
-                                id="cedulaRepresentante"
-                                value={formData.cedula}  // Asegura que sea una cadena
-                                onChange={handleChange}
-                                maxLength={10}
-                                minLength={10}
-                                pattern="[0-9]*"
-                                className="w-full bg-transparent border-b-2 border-white p-2 text-gray-700 placeholder-gray-700"
-                                placeholder="Cédula del representante legal del menor"
-                                required
-                            />
-                        </div>
+    <label htmlFor="cedulaRepresentante" className="text-lg md:text-xl text-gray-700">
+        Cédula del representante legal
+    </label>
+    <input
+        type="text"
+        id="cedulaRepresentante"
+        value={formData.cedula}
+        onChange={(e) => {
+            // Permite solo números y restringe a un máximo de 10 caracteres
+            const value = e.target.value.replace(/\D/g, ""); // Elimina cualquier caracter que no sea número
+            if (value.length <= 10) {
+                handleChange(e); // Llama a tu función de cambio solo si cumple la longitud
+            }
+        }}
+        pattern="\d{10}" // Expresión regular para 10 dígitos exactos
+        className="w-full bg-transparent border-b-2 border-white p-2 text-gray-700 placeholder-gray-700"
+        placeholder="Cédula del representante legal del menor"
+        required
+    />
+</div>
                     </div>
                 )}
                 <div>
@@ -521,7 +553,7 @@ export default function Registro() {
                     ¡Regístrate!
                 </button>
             </form>
-            <div>{message && <p>{message}</p>}</div>
+            <div className=''>{message && <p className='text-red-500 text-center font-bold'>{message}</p>}</div>
             {/* Modal de éxito */}
             {showSuccessModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
@@ -537,6 +569,35 @@ export default function Registro() {
                     </div>
                 </div>
             )}
+            {/* Modal de error */}
+            {showErrorModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                    <div className="bg-white p-8 rounded-lg text-center shadow-lg">
+                        <h2 className="text-2xl font-bold text-verde-goodkidz mb-4">Error</h2>
+                        <p className="text-gray-600">{message}</p>
+                        <button
+                            className="mt-4 bg-verde-goodkidz text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-all"
+                            onClick={() => setShowErrorModal(false)}
+                        >
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            )}
+            {/* Modal de carga */}
+{showLoadingModal && (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <div className="bg-white p-8 rounded-lg text-center shadow-lg">
+            <div className="flex justify-center mb-4">
+                {/* Spinner */}
+                <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
+            </div>
+            <h2 className="text-2xl font-bold text-verde-goodkidz mb-4">Subiendo Obra...</h2>
+            <p className="text-gray-600">Por favor, espere.</p>
+        </div>
+    </div>
+)}
+
             {/* Imagen de categorías en la parte inferior (visible solo en pantallas grandes con posición absoluta) */}
             <div className="mt-10 md:mt-0 md:absolute md:bottom-40 md:left-4">
                 <Image

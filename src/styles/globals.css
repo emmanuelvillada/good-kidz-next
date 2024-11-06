@@ -42,3 +42,14 @@
       text-wrap: balance;
     }
   }
+  /* Estilo del spinner */
+.loader {
+  border-top-color: #00E58D; /* Puedes cambiar el color a tu preferencia */
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
