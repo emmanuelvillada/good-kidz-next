@@ -1,41 +1,24 @@
 'use client';
 import { useState } from 'react';
 import Voting from '@/components/Voting';
-import { supabase } from '@/lib/supabase';
 
 
 export default function Vote() {
-  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
   const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Llamada a la API para verificar si el email está en la tabla `admin`
-    supabase.from('admins').select('*').eq('email', email).then((response) => {
-        if (response.error) {
-            setError('Error al verificar el correo.');
-        } else if (response.data.length === 0) {
-            setError('Correo no autorizado.');
-        } else{
-            checkPassword(password);
-            setIsAdmin(true);
-            setError('');
-        }
-        
-
-        
-    });
-  };
-
-  const checkPassword = async (password: string) => {
-    if (password !== process.env.VOTE_PASSWORD) {
+    if (password !== process.env.NEXT_PUBLIC_VOTE_PASSWORD) {
       setError('Contraseña incorrecta.');
       return;
     }
+    
+    setIsAdmin(true);
   };
+
+
 
 
 
@@ -50,21 +33,13 @@ export default function Vote() {
       <form className='flex flex-col items-center' onSubmit={handleSubmit}>
         <input
         className='mb-4 '
-          type="email"
-          placeholder="Ingresa tu correo"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-        className='mb-4 '
           type="password"
-          placeholder="Ingresa la contraseña para votar"
+          placeholder="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button className='bg-verde-goodkidz text-white py-2 px-4 rounded hover:bg-blanco-goodkidz hover:text-verde-goodkidz hover:transition duration-300' type="submit">Ingresar</button>
+        <button className='bg-verde-goodkidz text-white py-2 px-4 rounded hover:bg-blanco-goodkidz  hover:text-verde-goodkidz hover:transition duration-300 hover: border-verde-goodkidz' type="submit">Ingresar</button>
       </form>
       {error && <p className='text-red-500'>{error}</p>}
     </div>

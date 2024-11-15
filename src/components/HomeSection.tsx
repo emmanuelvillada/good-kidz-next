@@ -100,14 +100,17 @@ export default function HomeSection({ setActiveSection }: { setActiveSection: (s
 
             {/* Video de YouTube centrado, arriba del contador */}
             <div className="w-full flex justify-center mt-12">
-    <iframe
-        className="w-full max-w-4xl h-[500px] rounded-lg shadow-lg"
-        src="https://www.youtube.com/embed/AYZ0FBqN7h4"
-        title="Video de YouTube - Encuentro Arte y Vida"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-    ></iframe>
-</div>
+                <iframe
+                    className="w-full max-w-4xl h-[500px] rounded-lg shadow-lg"
+                    src="https://www.youtube.com/embed/AYZ0FBqN7h4"
+                    title="Video de YouTube - Encuentro Arte y Vida"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    loading='lazy'
+                    referrerPolicy="no-referrer-when-downgrade"
+                    sandbox="allow-scripts allow-same-origin allow-presentation"
+                ></iframe>
+            </div>
 
             {/* Contador en la parte inferior, centrado */}
             {timeLeft && (

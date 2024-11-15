@@ -11,7 +11,11 @@
 //     },
 //   };
   /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  images: {
+    domains: ['vovrbalalpvvwoxfvrfx.supabase.co'], // Agrega el dominio aquí
+  },
+};
 
   
   export default nextConfig;
