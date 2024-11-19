@@ -1,22 +1,14 @@
-// /** @type {import('next').NextConfig} */
-// const nextConfig = {
-//     async redirects() {
-//       return [
-//         {
-//           source: '/:path((?!maintenance).*)',
-//           destination: '/maintenance',
-//           permanent: false,
-//         },
-//       ];
-//     },
-//   };
-  /** @type {import('next').NextConfig} */
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['vovrbalalpvvwoxfvrfx.supabase.co'], // Agrega el dominio aquí
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*.supabase.co',
+        pathname: '/storage/v1/object/public/**',
+      },
+    ],
   },
 };
 
-  
-  export default nextConfig;
-  
+export default nextConfig;
