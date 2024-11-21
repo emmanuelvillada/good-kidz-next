@@ -29,7 +29,7 @@ export default function Vote() {
 
   return (
     <div className='flex flex-col items-center justify-self-auto '>
-      <h2 className='text-2xl font-bold mb-4 mt-8'>Acceso a Votación</h2>
+      <h2 className='text-2xl font-bold mb-4 mt-8'>Acceso a Obras</h2>
       <form className='flex flex-col items-center' onSubmit={handleSubmit}>
         <input
         className='mb-4 '
