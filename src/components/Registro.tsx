@@ -343,11 +343,11 @@ export default function Registro() {
         onChange={(e) => {
             // Permite solo números y restringe a un máximo de 10 caracteres
             const value = e.target.value.replace(/\D/g, ""); // Elimina cualquier caracter que no sea número
-            if (value.length <= 10) {
+            if (value.length < 11) {
                 handleChange(e); // Llama a tu función de cambio solo si cumple la longitud
             }
         }}
-        pattern="\d{10}" // Expresión regular para 10 dígitos exactos
+        pattern="\d{6,15}" // Expresión regular para 6 a 15 dígitos
         className="w-full bg-transparent border-b-2 border-white p-2 text-gray-700 placeholder-gray-700"
         placeholder="Cédula del representante legal del menor"
         required
