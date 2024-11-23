@@ -6,7 +6,7 @@ import Image from 'next/image';
 import eventImage from '@/public/homeImage.jpg';
 import categorias from '@/public/categorias.png';
 
-export default function HomeSection({ setActiveSection }: { setActiveSection: (section: string) => void }) {
+export default function HomeSection({  }: { setActiveSection: (section: string) => void }) {
     const [timeLeft, setTimeLeft] = useState('');
 
     useEffect(() => {
@@ -75,15 +75,7 @@ export default function HomeSection({ setActiveSection }: { setActiveSection: (s
                             className="mr-4 mb-4 md:mb-0"
                         />
                     </div>
-                    <div className="mt-10 p-4 w-full md:w-max text-center">
-                        <button
-                            className="bg-verde-goodkidz font-bold text-white text-2xl border-4 border-white px-10 py-4 rounded-xl 
-                                        hover:bg-white hover:text-verde-goodkidz hover:border-verde-goodkidz hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:scale-110"
-                            onClick={() => setActiveSection('registrate')}
-                        >
-                            ¡Regístrate para participar!
-                        </button>
-                    </div>
+                    
                 </div>
 
                 {/* Imagen del evento en la parte derecha */}

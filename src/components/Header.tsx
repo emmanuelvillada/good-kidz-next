@@ -39,12 +39,7 @@ export default function Header({ activeSection, setActiveSection }: { activeSect
           >
             Conoce Más +
           </button>
-          <button
-            onClick={() => handleClick('registrate')}
-            className={`px-1 py-1 text-xs sm:px-1 sm:py-2 sm:text-sm md:text-base transition ${activeSection === 'registrate' ? 'text-verde-goodkidz' : 'text-gray-500 hover:text-verde-goodkidz'}`}
-          >
-            ¡Regístrate!
-          </button>
+          
         </div>
       </div>
     </header>
