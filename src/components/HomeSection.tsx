@@ -4,9 +4,8 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import eventImage from '@/public/homeImage.jpg';
-import categorias from '@/public/categorias.png';
 
-export default function HomeSection({  }: { setActiveSection: (section: string) => void }) {
+export default function HomeSection({ }: { setActiveSection: (section: string) => void }) {
     const [timeLeft, setTimeLeft] = useState('');
 
     useEffect(() => {
@@ -49,33 +48,30 @@ export default function HomeSection({  }: { setActiveSection: (section: string) 
                     <h2 className="text-3xl md:text-5xl text-green-300 my-6 text-left md:text-left sm:text-left">PLANETA VERDE</h2>
 
                     {/* Imagen de categorías y texto alineado */}
-                    <div className="flex flex-row items-start mt-9">
-                        <div className="hidden md:block">
-                            <Image
-                                src={categorias}
-                                alt="Imagen de categorías"
-                                width={180}
-                                height={180}
-                                className="mr-4 mb-4 md:mb-0"
-                            />
-                        </div>
+                    <div className="flex flex-col items-start mt-9 px-4">
+                        <div className="w-full max-w-2xl">
+                            <p className="text-base md:text-lg text-gray-700 leading-relaxed text-justify">
+                                <span className="font-bold text-xl block mb-4">¡Artistas!</span>
 
-                        <p className="text-md md:text-lg sm:text-sm text-gray-600 max-w-lg md:max-w-md lg:text-justify sm:text-start">
-                            ¿Cómo te imaginas un planeta verde y sostenible, lleno de esperanza y con infinitas posibilidades de vida para todxs?
-                            Comparte tu visión a través de tu obra y participa en la exposición
-                            <span className="font-bold"> Encuentro Arte y Vida | PLANETA VERDE </span> durante el mes de diciembre de 2024.
-                        </p>
+                                Les ofrecemos disculpas por la tardanza en publicar lxs autorxs de las obras seleccionadas para la exposición &quot;Encuentro Arte y Vida&quot; <span className="font-bold">¡pero por suerte la convocatoria fue un éxito y recibimos muchas más obras de las que esperábamos!</span> Así que era importante tomarnos el tiempo para revisarlas a detalle. <br /> <br />
+
+                                Esta respuesta positiva de <b>nuestros Good Kidz</b> nos confirma que debemos seguir trabajando de manera consistente para extender este tipo de eventos y que cada vez más personas alrededor del mundo sueñen con <b> habitar un Planeta Verde.</b> <br /> <br />
+
+                                Nos honra que nuestra primera convocatoria haya tenido tan buena acogida, les agradecemos a todxs la <b>masiva participación,</b> además de haber compartido y apoyado la actividad. <br /> <br />
+
+                                Para la selección contamos con <b> 3 jurados externos</b> a la fundación, expertos en el campo de las artes y la gestión cultural, quienes evaluaron minuciosamente las piezas recibidas verificando que cumplieran con los términos y condiciones de la convocatoria. <br /> <br />
+
+                                La exposición &quot;Encuentro Arte y Vida&quot; estará abierta al público en la ciudad de Medellín (Colombia) del 3 al 13 de diciembre, en el Claustro Comfama y el ITM en su sede Fraternidad. <br /> <br />
+
+                                <span className="font-bold block mt-4">¡Muchas felicidades a lxs seleccionadxs!</span>
+
+                                Les recomendamos estar muy atentxs a sus correos pues les estaremos compartiendo más información.
+                            </p>
+                            <a href="https://drive.google.com/file/d/1uOzpLlDqXRs0JMp0QVNXESUvtsE01Wsx/view" target="_blank" rel="noopener noreferrer" className='text-verde-goodkidz underline text-xl'>Listado de Obras Seleccionadas</a>
+                        </div>
                     </div>
-                    <div className="flex justify-center items-center sm:hidden">
-                        <Image
-                            src={categorias}
-                            alt="Imagen de categorías"
-                            width={180}
-                            height={180}
-                            className="mr-4 mb-4 md:mb-0"
-                        />
-                    </div>
-                    
+
+
                 </div>
 
                 {/* Imagen del evento en la parte derecha */}

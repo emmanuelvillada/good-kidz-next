@@ -15,22 +15,22 @@ export default function Header({ activeSection, setActiveSection }: { activeSect
   };
 
   return (
-<header className="flex justify-between items-center p-4 md:p-6 bg-white w-full border-b-2 border-gray-200 shadow-md">      <Image
-        src={logo}
-        alt="Logo Good Kidz"
-        className="cursor-pointer w-[30vw] h-auto sm:w-[100px] sm:h-auto md:w-[150px] md:h-auto lg:w-[200px] lg:h-auto"
-        onClick={() => setActiveSection('homeSection')}
-      />
+    <header className="flex justify-between items-center p-4 md:p-6 bg-white w-full border-b-2 border-gray-200 shadow-md">      <Image
+      src={logo}
+      alt="Logo Good Kidz"
+      className="cursor-pointer w-[30vw] h-auto sm:w-[100px] sm:h-auto md:w-[150px] md:h-auto lg:w-[200px] lg:h-auto"
+      onClick={() => setActiveSection('homeSection')}
+    />
 
 
       {/* Corazón e icono */}
       <div className="flex items-center space-x-2 md:space-x-4">
-       <Image
-  src={corazon}
-  alt="Corazón"
-  className="hidden md:block cursor-pointer w-[8vw] h-auto sm:w-[40px] sm:h-[34px] md:w-[40px] md:h-[34px] lg:w-[60px] lg:h-[50px] hover:scale-125 transition duration-300 " // Ajustes responsivos
-  onClick={() => setActiveSection('homeSection')}
-/>
+        <Image
+          src={corazon}
+          alt="Corazón"
+          className="hidden md:block cursor-pointer w-[8vw] h-auto sm:w-[40px] sm:h-[34px] md:w-[40px] md:h-[34px] lg:w-[60px] lg:h-[50px] hover:scale-125 transition duration-300 " // Ajustes responsivos
+          onClick={() => setActiveSection('homeSection')}
+        />
         {/* Contenedor de botones con bordes unidos */}
         <div className="flex border-2 border-verde-goodkidz rounded-full overflow-hidden p-2">
           <button
@@ -39,7 +39,7 @@ export default function Header({ activeSection, setActiveSection }: { activeSect
           >
             Conoce Más +
           </button>
-          
+
         </div>
       </div>
     </header>
