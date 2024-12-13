@@ -16,7 +16,7 @@ export default function Home() {
       <Header activeSection={activeSection} setActiveSection={setActiveSection} />
 
       <main >
-        
+
         {activeSection === 'homeSection' && <HomeSection setActiveSection={setActiveSection} />}
         {activeSection === 'conoceMas' && <ConoceMas />}
       </main>
