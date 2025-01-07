@@ -1,19 +1,20 @@
 import Link from 'next/link';
-import {  FaTiktok, FaYoutube } from 'react-icons/fa';
+import { FaTiktok, FaYoutube } from 'react-icons/fa';
 
 
 export default function Footer() {
+    const age = new Date().getFullYear();
     return (
         <footer className="bg-black text-white p-4">
             <div className="container mx-auto flex flex-col items-center space-y-4">
                 {/* Texto de derechos reservados */}
                 <p className="text-sm   text-center">
-                    © 2024 Fundación Good Kidz. Todos los derechos reservados.
+                    © {age} Fundación Good Kidz. Todos los derechos reservados.
                 </p>
 
                 {/* Enlaces a términos y condiciones y política de privacidad */}
                 <div className="flex space-x-4 text-sm">
-                <Link href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/sign/web%20files/politica_datos.pdf?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ3ZWIgZmlsZXMvcG9saXRpY2FfZGF0b3MucGRmIiwiaWF0IjoxNzMwNzczNTI5LCJleHAiOjIwNDYxMzM1Mjl9.NQcvjA5Vhim8letrU4rq-ylIjyWLfgEdKMpJ31VV3B4"  target="_blank" rel="noopener noreferrer" className="hover:text-green-500"  >Terminos y condiciones</Link>
+                    <Link href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/sign/web%20files/politica_datos.pdf?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ3ZWIgZmlsZXMvcG9saXRpY2FfZGF0b3MucGRmIiwiaWF0IjoxNzMwNzczNTI5LCJleHAiOjIwNDYxMzM1Mjl9.NQcvjA5Vhim8letrU4rq-ylIjyWLfgEdKMpJ31VV3B4" target="_blank" rel="noopener noreferrer" className="hover:text-green-500"  >Terminos y condiciones</Link>
                 </div>
 
                 {/* Ícono de Instagram */}
@@ -39,12 +40,12 @@ export default function Footer() {
 
                     {/* Ícono de TikTok */}
                     <Link href="https://www.tiktok.com/@fundaciongoodkidz" target="_blank" rel="noopener noreferrer">
-                    <FaTiktok className="text-white hover:text-green-500 w-6 h-6" />
+                        <FaTiktok className="text-white hover:text-green-500 w-6 h-6" />
                     </Link>
 
                     {/* Ícono de YouTube */}
                     <Link href="https://www.youtube.com/@fundaciongoodkidz" target="_blank" rel="noopener noreferrer">
-                    <FaYoutube className="text-white hover:text-green-500 w-6 h-6" />
+                        <FaYoutube className="text-white hover:text-green-500 w-6 h-6" />
                     </Link>
                 </div>
             </div>
