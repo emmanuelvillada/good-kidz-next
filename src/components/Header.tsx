@@ -3,9 +3,23 @@
 import Image from 'next/image';
 import logo from '@/public/logo.png';
 import corazon from '@/public/corazon.png';
+import { useEffect, useState } from 'react';
 
 export default function Header({ activeSection, setActiveSection }: { activeSection: string, setActiveSection: (section: string) => void }) {
 
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
   const handleClick = (section: string) => {
     if (activeSection === section) {
       setActiveSection('homeSection');
@@ -14,13 +28,17 @@ export default function Header({ activeSection, setActiveSection }: { activeSect
     }
   };
 
+
   return (
-    <header className="flex justify-between items-center p-4 md:p-6 bg-white w-full border-b-2 border-gray-200 shadow-md">      <Image
-      src={logo}
-      alt="Logo Good Kidz"
-      className="cursor-pointer w-[30vw] h-auto sm:w-[100px] sm:h-auto md:w-[150px] md:h-auto lg:w-[200px] lg:h-auto"
-      onClick={() => setActiveSection('homeSection')}
-    />
+    <header className={`flex justify-between items-center p-4 md:p-6 bg-white/75 w-full border-b-2 border-gray-200 shadow-md 
+      z-50 fixed top-0 transition-all duration-300 ${isScrolled ? 'backdrop-blur-md' : ''
+      }`}>
+      <Image
+        src={logo}
+        alt="Logo Good Kidz"
+        className="cursor-pointer w-[30vw] h-auto sm:w-[100px] sm:h-auto md:w-[150px] md:h-auto lg:w-[200px] lg:h-auto"
+        onClick={() => setActiveSection('homeSection')}
+      />
 
 
       {/* Corazón e icono */}

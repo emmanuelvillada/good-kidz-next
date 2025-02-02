@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import eventImage from '@/public/homeImage.jpg';
-
+import { motion } from 'framer-motion';
 export default function HomeSection({ }: { setActiveSection: (section: string) => void }) {
     const [timeLeft, setTimeLeft] = useState('');
 
@@ -69,46 +69,65 @@ export default function HomeSection({ }: { setActiveSection: (section: string) =
                             </p>
                             <a href="https://drive.google.com/file/d/19nIf3FfhM3zK8PmUel_9WsLqrZSA8Qwz/view?usp=drivesdk" target="_blank" rel="noopener noreferrer" className='text-verde-goodkidz underline text-xl'>Listado de Obras Seleccionadas</a>
                         </div>
+
+
                     </div>
 
-
                 </div>
-
-                {/* Imagen del evento en la parte derecha */}
-                <div className="w-full md:w-[40%] lg:w-[50%]">
+                {/* Imagen del evento con animación */}
+                <motion.div
+                    className="w-full md:w-[40%] lg:w-[50%] hover:scale-105 transition-transform duration-300"
+                    initial={{ opacity: 0, x: 100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5 }}
+                >
                     <Image
                         src={eventImage}
                         alt="Encuentro Arte y Vida"
                         width={920}
                         height={759}
-                        className="rounded-lg object-cover w-full"
+                        className="rounded-2xl object-cover w-full shadow-xl hover:shadow-2xl transition-shadow duration-300"
                     />
-                </div>
+                </motion.div>
             </div>
 
-            {/* Video de YouTube centrado, arriba del contador */}
-            <div className="w-full flex justify-center mt-12">
-                <iframe
-                    className="w-full max-w-4xl h-[500px] rounded-lg shadow-lg"
-                    src="https://www.youtube.com/embed/AYZ0FBqN7h4"
-                    title="Video de YouTube - Encuentro Arte y Vida"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    loading='lazy'
-                    referrerPolicy="no-referrer-when-downgrade"
-                    sandbox="allow-scripts allow-same-origin allow-presentation"
-                ></iframe>
-            </div>
-
-            {/* Contador en la parte inferior, centrado */}
-            {timeLeft && (
-                <div className="w-full flex justify-center mt-8">
-                    <div className="text-verde-goodkidz text-2xl font-semibold py-2 px-6 rounded-lg shadow-lg text-center">
-                        <p className="text-lg mb-1">Tiempo límite para subir tu obra:</p>
-                        <div>{timeLeft}</div>
-                    </div>
+            {/* Video de YouTube mejorado */}
+            <motion.div
+                className="w-full flex justify-center mt-16 px-4"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+            >
+                <div className="relative w-full max-w-4xl aspect-video rounded-2xl overflow-hidden shadow-2xl hover:shadow-3xl transition-shadow duration-300">
+                    <iframe
+                        className="absolute top-0 left-0 w-full h-full"
+                        src="https://www.youtube.com/embed/AYZ0FBqN7h4"
+                        title="Video de YouTube - Encuentro Arte y Vida"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        loading='lazy'
+                        referrerPolicy="no-referrer-when-downgrade"
+                        sandbox="allow-scripts allow-same-origin allow-presentation"
+                    ></iframe>
                 </div>
-            )}
-        </section>
+            </motion.div>
+
+
+            {
+                timeLeft && (
+                    <motion.div
+                        className="w-full flex justify-center mt-12"
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <div className="bg-gradient-to-r from-verde-goodkidz/90 to-verde-goodkidz text-white p-8 rounded-2xl shadow-2xl backdrop-blur-sm">
+                            <p className="text-xl font-medium mb-4">Tiempo límite para subir tu obra</p>
+                            <div className="text-3xl font-bold tracking-wider">{timeLeft}</div>
+                        </div>
+                    </motion.div>
+                )
+            }
+        </section >
     );
 }
