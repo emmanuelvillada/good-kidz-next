@@ -1,54 +1,42 @@
 import Link from 'next/link';
-import { FaTiktok, FaYoutube } from 'react-icons/fa';
+import { FaTiktok, FaInstagram, FaYoutube } from 'react-icons/fa';
+
 
 
 export default function Footer() {
-    const age = new Date().getFullYear();
     return (
-        <footer className="bg-black text-white p-4">
-            <div className="container mx-auto flex flex-col items-center space-y-4">
-                {/* Texto de derechos reservados */}
-                <p className="text-sm   text-center">
-                    © {age} Fundación Good Kidz. Todos los derechos reservados.
-                </p>
+        <footer className="bg-gray-800 text-white py-8">
+            <div className="container mx-auto px-6">
+                <div className="flex flex-wrap justify-between items-center">
+                    <div className="w-full md:w-1/3 text-center md:text-left">
+                        <h3 className="text-2xl font-bold">Good Kidz</h3>
+                        <p className="mt-2">Construyendo un futuro brillante en Medellín</p>
+                    </div>
+                    <div className="w-full md:w-1/3 text-center mt-4 md:mt-0">
+                        <h4 className="text-lg font-semibold mb-2">Contáctanos</h4>
+                        <p>info@goodkidz.org</p>
+                    </div>
+                    <div className="w-full md:w-1/3 text-center mt-4 md:mt-0">
+                        <h4 className="text-lg font-semibold mb-2">Síguenos</h4>
+                        <div className="flex justify-center md:justify-end space-x-4">
 
-                {/* Enlaces a términos y condiciones y política de privacidad */}
-                <div className="flex space-x-4 text-sm">
-                    <Link href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/sign/web%20files/politica_datos.pdf?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ3ZWIgZmlsZXMvcG9saXRpY2FfZGF0b3MucGRmIiwiaWF0IjoxNzMwNzczNTI5LCJleHAiOjIwNDYxMzM1Mjl9.NQcvjA5Vhim8letrU4rq-ylIjyWLfgEdKMpJ31VV3B4" target="_blank" rel="noopener noreferrer" className="hover:text-green-500"  >Terminos y condiciones</Link>
+
+                            <Link href="https://www.tiktok.com/@fundaciongoodkidz" target='_blank' rel="noopener noreferrer" className="hover:text-verde-goodkidz">
+                                <FaTiktok size={24} />
+                            </Link>
+                            <Link href="https://www.instagram.com/fundaciongoodkidz" target='_blank' rel="noopener noreferrer" className="hover:text-verde-goodkidz">
+                                <FaInstagram size={24} />
+                            </Link>
+                            <Link href="https://www.youtube.com/@fundaciongoodkidz" target='_blank' rel="noopener noreferrer" className="hover:text-verde-goodkidz">
+                                <FaYoutube size={24} />
+                            </Link>
+                        </div>
+                    </div>
                 </div>
-
-                {/* Ícono de Instagram */}
-                <div className="flex justify-between space-x-4 ">
-                    <Link href="https://www.instagram.com/fundaciongoodkidz" target="_blank" rel="noopener noreferrer">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="feather feather-instagram text-white hover:text-green-500"
-                        >
-                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                            <line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line>
-                        </svg>
-                    </Link>
-
-                    {/* Ícono de TikTok */}
-                    <Link href="https://www.tiktok.com/@fundaciongoodkidz" target="_blank" rel="noopener noreferrer">
-                        <FaTiktok className="text-white hover:text-green-500 w-6 h-6" />
-                    </Link>
-
-                    {/* Ícono de YouTube */}
-                    <Link href="https://www.youtube.com/@fundaciongoodkidz" target="_blank" rel="noopener noreferrer">
-                        <FaYoutube className="text-white hover:text-green-500 w-6 h-6" />
-                    </Link>
+                <div className="mt-8 text-center">
+                    <p>&copy; {new Date().getFullYear()} Good Kidz. Todos los derechos reservados.</p>
                 </div>
             </div>
-        </footer>
-    );
+        </footer >
+    )
 }
