@@ -1,64 +1,50 @@
 'use client';
 
-import Image from 'next/image';
-import logo from '@/public/logo.png';
-import corazon from '@/public/corazon.png';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import logo from '@/public/logo.png';
 
-export default function Header({ activeSection, setActiveSection }: { activeSection: string, setActiveSection: (section: string) => void }) {
-
+export default function Header() {
+  // Estado para manejar el efecto de desplazamiento
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 0);
     window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    }
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  const handleClick = (section: string) => {
-    if (activeSection === section) {
-      setActiveSection('homeSection');
-    } else {
-      setActiveSection(section);
-    }
-  };
-
 
   return (
-    <header className={`flex justify-between items-center p-4 md:p-6 bg-white/75 w-full border-b-2 border-gray-200 shadow-md 
-      z-50 fixed top-0 transition-all duration-300 ${isScrolled ? 'backdrop-blur-md' : ''
-      }`}>
-      <Image
-        src={logo}
-        alt="Logo Good Kidz"
-        className="cursor-pointer w-[30vw] h-auto sm:w-[100px] sm:h-auto md:w-[150px] md:h-auto lg:w-[200px] lg:h-auto"
-        onClick={() => setActiveSection('homeSection')}
-      />
-
-
-      {/* Corazón e icono */}
-      <div className="flex items-center space-x-2 md:space-x-4">
+    <header
+      className={`fixed top-0 z-50 w-full p-4 md:p-6 border-b-2 border-gray-200 shadow-md bg-white/75 transition-all duration-300 ${isScrolled ? 'backdrop-blur-md' : ''
+        }`}
+    >
+      <div className="flex flex-row items-center justify-between text-center max-w-6xl mx-auto">
+        {/* Logo */}
         <Image
-          src={corazon}
-          alt="Corazón"
-          className="hidden md:block cursor-pointer w-[8vw] h-auto sm:w-[40px] sm:h-[34px] md:w-[40px] md:h-[34px] lg:w-[60px] lg:h-[50px] hover:scale-125 transition duration-300 " // Ajustes responsivos
-          onClick={() => setActiveSection('homeSection')}
+          src={logo}
+          alt="Logo Good Kidz"
+          className="cursor-pointer w-[30vw] sm:w-[100px] md:w-[150px] lg:w-[200px]"
         />
-        {/* Contenedor de botones con bordes unidos */}
-        <div className="flex border-2 border-verde-goodkidz rounded-full overflow-hidden p-2">
-          <button
-            onClick={() => handleClick('conoceMas')}
-            className={`px-1 py-1 text-xs sm:px-1 sm:py-2 sm:text-sm md:text-base transition ${activeSection === 'conoceMas' ? 'text-verde-goodkidz' : 'text-gray-500 hover:text-verde-goodkidz'}`}
-          >
-            Conoce Más +
-          </button>
 
-        </div>
+        {/* Título */}
+        <h1 className="text-xl md:text-2xl font-bold text-verde-goodkidz text-center flex-1">Good Kidz</h1>
+
+        {/* Menú de navegación */}
+        <nav className="hidden md:flex items-center gap-x-6">
+          <Link href="#about" className="text-gray-800 hover:text-verde-goodkidz">
+            Sobre Nosotros
+          </Link>
+          <Link href="#events" className="text-gray-800 hover:text-verde-goodkidz">
+            Eventos
+          </Link>
+          <Link href="#help" className="text-gray-800 hover:text-verde-goodkidz">
+            Cómo Ayudar
+          </Link>
+          <Button className="bg-yellow-400 text-black hover:bg-yellow-500">Donar</Button>
+        </nav>
       </div>
     </header>
   );

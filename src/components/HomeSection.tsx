@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import eventImage from '@/public/homeImage.jpg';
 import { motion } from 'framer-motion';
-export default function HomeSection({ }: { setActiveSection: (section: string) => void }) {
+export default function HomeSection() {
     const [timeLeft, setTimeLeft] = useState('');
 
     useEffect(() => {
@@ -36,7 +36,7 @@ export default function HomeSection({ }: { setActiveSection: (section: string) =
     }, []);
 
     return (
-        <section className="relative flex flex-col items-center justify-between px-4 md:px-10 bg-white pb-24">
+        <section className="relative flex flex-col items-center justify-between px-4 md:px-10 bg-white pb-24 mt-3 pt-32">
             {/* Contenido principal en el centro */}
             <div className="flex flex-col md:flex-row w-full items-start justify-between">
                 {/* Contenido textual en la parte izquierda */}
