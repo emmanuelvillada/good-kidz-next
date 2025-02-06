@@ -1,5 +1,6 @@
 import React from 'react';
 import { Heart, Calendar, MapPin, Users, Camera } from 'lucide-react';
+import Image from 'next/image';
 
 function App() {
     const events = [
@@ -58,7 +59,7 @@ function App() {
                     {events.map((event) => (
                         <div key={event.id} className="bg-white rounded-xl shadow-lg overflow-hidden transition-transform hover:scale-105">
                             <div className="h-48 overflow-hidden">
-                                <img
+                                <Image
                                     src={event.image}
                                     alt={event.title}
                                     className="w-full h-full object-cover"

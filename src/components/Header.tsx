@@ -34,13 +34,13 @@ export default function Header() {
 
         {/* Menú de navegación */}
         <nav className="hidden md:flex items-center gap-x-6">
-          <Link href="#about" className="text-gray-800 hover:text-verde-goodkidz">
+          <Link href="#about" className="text-gray-800 hover:text-verde-goodkidz hover:m-1 hover:scale-50 hover:margin-color-verde-goodkidz">
             Sobre Nosotros
           </Link>
           <Link href="#events" className="text-gray-800 hover:text-verde-goodkidz">
             Eventos
           </Link>
-          <Link href="#help" className="text-gray-800 hover:text-verde-goodkidz">
+          <Link href="#help" className="text-gray-800 hover:text-verde-goodkidz hover:scale">
             Cómo Ayudar
           </Link>
           <Button className="bg-yellow-400 text-black hover:bg-yellow-500">Donar</Button>

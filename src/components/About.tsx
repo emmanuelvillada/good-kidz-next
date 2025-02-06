@@ -33,7 +33,7 @@ export default function About() {
     }, []);
 
     return (
-        <section id="about" className="py-20 bg-white">
+        <section id="about" className="py-20 bg-white ">
             <div className="container mx-auto items-center px-6">
                 <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">Sobre Good Kidz</h2>
                 <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
@@ -56,7 +56,7 @@ export default function About() {
                                 <motion.span className="text-3xl font-bold text-black">{numbers.volunteers}+</motion.span> voluntarios activos
                             </li>
                             <li>
-                                <motion.span className="text-3xl font-bold text-black">{numbers.schools}+</motion.span> colaboraciones con escuelas locales
+                                <motion.span className="text-3xl font-bold text-black">{numbers.schools}+</motion.span> colaboraciones
                             </li>
                         </ul>
                     </div>

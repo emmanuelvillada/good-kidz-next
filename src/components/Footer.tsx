@@ -1,8 +1,6 @@
 import Link from 'next/link';
 import { FaTiktok, FaInstagram, FaYoutube } from 'react-icons/fa';
 
-
-
 export default function Footer() {
     return (
         <footer className="bg-gray-800 text-white py-8">
@@ -19,8 +17,6 @@ export default function Footer() {
                     <div className="w-full md:w-1/3 text-center mt-4 md:mt-0">
                         <h4 className="text-lg font-semibold mb-2">Síguenos</h4>
                         <div className="flex justify-center md:justify-end space-x-4">
-
-
                             <Link href="https://www.tiktok.com/@fundaciongoodkidz" target='_blank' rel="noopener noreferrer" className="hover:text-verde-goodkidz">
                                 <FaTiktok size={24} />
                             </Link>
