@@ -9,6 +9,7 @@ export default function Footer() {
                     <div className="w-full md:w-1/3 text-center md:text-left">
                         <h3 className="text-2xl font-bold">Good Kidz</h3>
                         <p className="mt-2">Construyendo un futuro brillante en Medellín</p>
+                        <p className="mt-2">Calle 12, Medellín</p>
                     </div>
                     <div className="w-full md:w-1/3 text-center mt-4 md:mt-0">
                         <h4 className="text-lg font-semibold mb-2">Contáctanos</h4>

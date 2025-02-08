@@ -1,13 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import logo from '@/public/logo.png';
 
+const navLinks = [
+  { href: "#about", label: "Sobre Nosotros" },
+  { href: "#events", label: "Eventos" },
+  { href: "#help", label: "Cómo Ayudar" },
+];
+
 export default function Header() {
-  // Estado para manejar el efecto de desplazamiento
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -18,33 +22,67 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 z-50 w-full p-4 md:p-6 border-b-2 border-gray-200 shadow-md bg-white/75 transition-all duration-300 ${isScrolled ? 'backdrop-blur-md' : ''
-        }`}
+      className={`
+        fixed top-0 z-50 w-full 
+        py-3 px-4 md:px-6 
+        border-b border-gray-200/80 
+        bg-white/80 backdrop-blur-sm
+        transition-all duration-300 ease-in-out
+        ${isScrolled ? 'shadow-lg py-2' : 'py-4'}
+      `}
     >
-      <div className="flex flex-row items-center justify-between text-center max-w-6xl mx-auto">
-        {/* Logo */}
-        <Image
-          src={logo}
-          alt="Logo Good Kidz"
-          className="cursor-pointer w-[30vw] sm:w-[100px] md:w-[150px] lg:w-[200px]"
-        />
+      <div className="container mx-auto max-w-7xl">
+        <div className="flex items-center justify-between">
+          {/* Logo y nombre */}
+          <div className="flex items-center gap-4">
+            <Image
+              src={logo}
+              alt="Logo Good Kidz"
+              className="w-[80px] md:w-[120px] lg:w-[140px] transition-transform hover:scale-105"
+              priority
+            />
+            <h1 className="text-lg md:text-xl font-bold text-verde-goodkidz hidden sm:block">
+              Good Kidz
+            </h1>
+          </div>
 
-        {/* Título */}
-        <h1 className="text-xl md:text-2xl font-bold text-verde-goodkidz text-center flex-1">Good Kidz</h1>
+          {/* Navegación */}
+          <nav className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="text-gray-700 hover:text-verde-goodkidz transition-colors duration-200 text-sm font-medium"
+              >
+                {link.label}
+              </a>
+            ))}
+            <Button
+              className="bg-verde-goodkidz text-white hover:bg-verde-goodkidz/90 
+                        shadow-md hover:shadow-lg transition-all duration-200"
+            >
+              Donar
+            </Button>
+          </nav>
 
-        {/* Menú de navegación */}
-        <nav className="hidden md:flex items-center gap-x-6">
-          <Link href="#about" className="text-gray-800 hover:text-verde-goodkidz hover:m-1 hover:scale-50 hover:margin-color-verde-goodkidz">
-            Sobre Nosotros
-          </Link>
-          <Link href="#events" className="text-gray-800 hover:text-verde-goodkidz">
-            Eventos
-          </Link>
-          <Link href="#help" className="text-gray-800 hover:text-verde-goodkidz hover:scale">
-            Cómo Ayudar
-          </Link>
-          <Button className="bg-yellow-400 text-black hover:bg-yellow-500">Donar</Button>
-        </nav>
+          {/* Botón móvil */}
+          <Button className="md:hidden p-2 hover:bg-gray-100 rounded-lg">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </Button>
+        </div>
       </div>
     </header>
   );
