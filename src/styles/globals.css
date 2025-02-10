@@ -118,3 +118,30 @@ body {
       var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   }
 }
+
+/* Estilos personalizados para el carrusel */
+.custom-dots {
+  bottom: -40px;
+}
+
+.custom-dots li button:before {
+  display: none;
+}
+
+.slick-track {
+  display: flex !important;
+  gap: 1rem;
+}
+
+.slick-slide {
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+.slick-slide.slick-active {
+  opacity: 1;
+}
+
+.slick-slide:not(.slick-active) {
+  opacity: 0.5;
+}

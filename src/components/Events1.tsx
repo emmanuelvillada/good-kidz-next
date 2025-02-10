@@ -91,11 +91,7 @@ export default function EventCarousel() {
                     arrows: false, // Ocultar flechas en móvil
                 },
             },
-        ],
-        customPaging: () => (
-            <div className="w-3 h-3 mx-1 rounded-full bg-verde-goodkidz/30 hover:bg-verde-goodkidz transition-colors mt-4" />
-        ),
-        dotsClass: "slick-dots custom-dots",
+        ]
     };
 
     return (
