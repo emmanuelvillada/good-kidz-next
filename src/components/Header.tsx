@@ -40,6 +40,7 @@ export default function Header() {
               alt="Logo Good Kidz"
               className="w-[80px] md:w-[120px] lg:w-[140px] transition-transform hover:scale-105"
               priority
+
             />
             <h1 className="text-lg md:text-xl font-bold text-verde-goodkidz hidden sm:block">
               Good Kidz

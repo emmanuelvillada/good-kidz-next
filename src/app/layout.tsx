@@ -12,7 +12,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es" >
-      <link rel="icon" href="" sizes="any" />
+      <head>
+
+        <link rel="icon" href="" sizes="any" />
+      </head>
+
       <body className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-grow h-full">

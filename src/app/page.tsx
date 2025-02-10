@@ -7,12 +7,12 @@ export default function Home() {
 
   return (
     <>
-      <main className='flex-grow'>
-        <Hero />
-        <About />
-        <Events />
-        <Contributors />
-      </main>
+
+      <Hero />
+      <About />
+      <Events />
+      <Contributors />
+
     </>
   );
 }
