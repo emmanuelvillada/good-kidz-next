@@ -1,6 +1,5 @@
 import Hero from '@/components/Hero';
 import About from '@/components/About';
-import Events from '@/components/Events';
 import Contributors from '@/components/Contributors';
 
 export default function Home() {
@@ -10,9 +9,7 @@ export default function Home() {
 
       <Hero />
       <About />
-      <Events />
       <Contributors />
-
     </>
   );
 }

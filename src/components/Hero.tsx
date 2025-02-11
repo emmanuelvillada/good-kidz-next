@@ -1,7 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import Events from './Events1';
+import Events from './Events';
 
 export default function Hero() {
     return (

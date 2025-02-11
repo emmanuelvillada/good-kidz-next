@@ -1,6 +1,8 @@
 'use client'
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import SuscribeForm from './form/SuscribeForm';
+
 
 export default function About() {
     const [numbers, setNumbers] = useState({
@@ -9,11 +11,12 @@ export default function About() {
         projects: 0,
         schools: 0
     });
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         // Generar números aleatorios para las estadísticas
         const targetNumbers = { kids: 1300, programs: 50, projects: 100, schools: 20 };
-        const duration = 2000; // 2 segundos
+        const duration = 2500; // 2.5 segundos
         const steps = 50; // Cantidad de actualizaciones
         const intervalTime = duration / steps;
 
@@ -110,11 +113,13 @@ export default function About() {
                     className="text-center"
                 >
                     <h3 className="text-2xl font-bold text-gray-800 mb-6">¿Quieres ser parte del cambio?</h3>
-                    <button className="bg-green-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-green-600 transition-colors duration-300">
+                    <button className="bg-green-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-green-600 transition-colors duration-300"
+                        onClick={() => setIsModalOpen(true)}>
                         Únete como voluntario
                     </button>
                 </motion.div>
             </div>
+            <SuscribeForm isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
         </section>
     );
 }
