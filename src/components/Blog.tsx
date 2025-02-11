@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { supabase } from "@/lib/supabase";
@@ -30,7 +31,7 @@ export default function Blog() {
         <section className="container mx-auto py-12">
             <h2 className="text-3xl font-bold text-center">Últimas Noticias</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-                {posts.map((post) => (
+                {posts?.map((post) => (
                     <div key={post.id} className="border p-4 rounded-lg shadow-lg">
                         <Image src={post.image} alt={post.title} width={300} height={200} className="rounded-md" />
                         <h3 className="text-xl font-semibold mt-2">{post.title}</h3>
