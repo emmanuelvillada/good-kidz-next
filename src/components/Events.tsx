@@ -4,7 +4,8 @@ import Slider from "react-slick";
 import { Card, CardContent } from "@/components/ui/card"
 import { motion } from "framer-motion"
 import Image from "next/image"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import PrevArrow from "./ui/PrevArrow";
+import NextArrow from "./ui/NextArrow";
 
 interface Event {
     title: string;
@@ -30,39 +31,14 @@ const events: Event[] = [
         location: "Medellín, Colombia"
     },
     {
-        title: "1er Evento de Micro Cuento Infantil",
-        description: "Explorando la creatividad a través de diferentes técnicas artísticas",
+        title: "Siembra Colectiva",
+        description: "2da siembra en colaboración con Casa Madre Raíz",
         image: "",
-        date: "",
+        date: "Febrero 2025",
         location: "Medellín, Colombia"
     },
 ]
 
-const NextArrow = (props: { onClick: () => void }) => {
-    const { onClick } = props;
-    return (
-        <button
-            onClick={onClick}
-            className="absolute right-[-50px] top-1/2 transform -translate-y-1/2 z-10 bg-verde-goodkidz text-white p-2 rounded-full hover:scale-110 transition-transform"
-            aria-label="Siguiente"
-        >
-            <ChevronRight className="w-6 h-6" />
-        </button>
-    );
-};
-
-const PrevArrow = (props: { onClick: () => void }) => {
-    const { onClick } = props;
-    return (
-        <button
-            onClick={onClick}
-            className="absolute left-[-50px] top-1/2 transform -translate-y-1/2 z-10 bg-verde-goodkidz text-white p-2 rounded-full hover:scale-110 transition-transform"
-            aria-label="Anterior"
-        >
-            <ChevronLeft className="w-6 h-6" />
-        </button>
-    );
-};
 
 export default function EventCarousel() {
     const settings = {
