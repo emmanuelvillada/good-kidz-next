@@ -1,9 +1,12 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
+import { useState } from 'react';
+import SuscribeForm from './form/SuscribeForm';
 import Events from './Events';
 
 export default function Hero() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     return (
         <motion.div
             initial={{ opacity: 0, y: -50 }}
@@ -19,11 +22,13 @@ export default function Hero() {
                 <p className="text-lg sm:text-xl md:text-2xl mb-8 max-w-3xl mx-auto opacity-90">
                     Descubre nuestras actividades y únete a nuestra misión de transformar vidas
                 </p>
-                <Button className="bg-yellow-400 text-black text-lg md:text-xl px-8 py-6 hover:bg-yellow-500 transform hover:scale-105 transition-all duration-300">
+                <Button className="bg-yellow-400 text-black text-lg md:text-xl px-8 py-6 hover:bg-yellow-500 transform hover:scale-105 transition-all duration-300"
+                    onClick={() => setIsModalOpen(true)}>
                     ¡Únete a Nosotros!
                 </Button>
             </div>
             <Events />
+            <SuscribeForm isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
         </motion.div>
     );
 }
