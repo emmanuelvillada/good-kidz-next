@@ -1,11 +1,15 @@
-"use client"
+'use client'
 
-import Slider from "react-slick";
-import { Card, CardContent } from "@/components/ui/card"
-import { motion } from "framer-motion"
-import Image from "next/image"
-import PrevArrow from "./ui/PrevArrow";
-import NextArrow from "./ui/NextArrow";
+import { motion } from 'framer-motion'
+import Image from 'next/image'
+import { Card, CardContent } from '@/components/ui/card'
+import { Slider } from '@/components/ui/Slider'
+
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 interface Event {
     title: string;
@@ -41,38 +45,9 @@ const events: Event[] = [
 
 
 export default function EventCarousel() {
-    const settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: true,
-        autoplaySpeed: 5000,
-        nextArrow: <NextArrow onClick={() => { }} />,
-        prevArrow: <PrevArrow onClick={() => { }} />,
-        responsive: [
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 1,
-                },
-            },
-            {
-                breakpoint: 768,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
-                    arrows: false, // Ocultar flechas en móvil
-                },
-            },
-        ]
-    };
-
     return (
-        <section id="events" className="py-16 bg-transparent relative">
-            <div className="container mx-auto px-6">
+        <section className="py-16 bg-transparent relative">
+            <div className="container mx-auto px-4 md:px-6">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -85,25 +60,23 @@ export default function EventCarousel() {
                     <div className="w-24 h-1 bg-verde-goodkidz mx-auto mb-6"></div>
                 </motion.div>
 
-                <div className="relative px-4">
-                    <Slider {...settings}>
-                        {events.map((event, index) => (
+                <Slider>
+                    {events.map((event, index) => (
+                        <div key={index} className="px-4 md:px-6 lg:px-8">
                             <motion.div
-                                key={index}
-                                className="px-4" // Añadir padding horizontal para separación
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 whileInView={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.5 }}
+                                className="h-full max-w-4xl mx-auto"
                             >
-                                <Card className="border-none shadow-xl hover:shadow-2xl transition-all duration-300 w-5/6 mx-auto pb-1">
+                                <Card className="border-none shadow-xl hover:shadow-2xl transition-all duration-300">
                                     <CardContent className="p-0">
-                                        <div className="relative">
+                                        <div className="relative aspect-[16/9]">
                                             <Image
                                                 src={event.image || "/placeholder.svg"}
                                                 alt={event.title}
-                                                width={800}
-                                                height={400}
-                                                className="w-full h-[300px] object-cover rounded-t-xl"
+                                                fill
+                                                className="object-cover rounded-t-xl"
                                                 priority={index === 0}
                                             />
                                             {event.date && (
@@ -117,8 +90,10 @@ export default function EventCarousel() {
                                             <p className="text-gray-600 mb-4">{event.description}</p>
                                             <div className="flex items-center gap-2 text-gray-500">
                                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                                 </svg>
                                                 <span className="text-sm">{event.location}</span>
                                             </div>
@@ -126,11 +101,11 @@ export default function EventCarousel() {
                                     </CardContent>
                                 </Card>
                             </motion.div>
-                        ))}
-                    </Slider>
-                </div>
+                        </div>
+                    ))}
+                </Slider>
             </div>
         </section>
-    );
+    )
 }
 
