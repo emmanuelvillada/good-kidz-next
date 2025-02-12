@@ -1,7 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import SuscribeForm from './form/SuscribeForm';
 
 
 export default function About() {
@@ -11,7 +10,6 @@ export default function About() {
         projects: 0,
         schools: 0
     });
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         // Generar números aleatorios para las estadísticas
@@ -50,7 +48,9 @@ export default function About() {
                     </h2>
                     <div className="w-24 h-1 bg-green-500 mx-auto mb-8"></div>
                     <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                        Transformando vidas a través del arte, la educación y la cultura desde 2020
+                        Es la idea original de FEID y su familia
+                        con la intención de transformar
+                        positivamente la sociedad.
                     </p>
                 </motion.div>
 
@@ -63,7 +63,17 @@ export default function About() {
                     >
                         <h3 className="text-3xl font-bold text-blue-600">Nuestra Misión</h3>
                         <p className="text-lg text-gray-700 leading-relaxed">
-                            En Good Kidz, nos dedicamos a empoderar a la próxima generación a través de programas innovadores que combinan arte, educación y desarrollo personal.
+                            Fomentar la adquisición de habilidades
+                            para la vida de niños, jóvenes y adultos
+                            a través del aprendizaje y práctica de
+                            actividades creativas, para el cultivo de
+                            la sensibilidad, la adquisición de buenos
+                            hábitos y sentido de pertenencia, mediante
+                            la conformación de grupos de diferentes
+                            edades, géneros y condición en los campos
+                            de las artes, las artesanías y , con miras a
+                            la formación, la integración y el empleo
+                            productivo del tiempo libre.
                         </p>
                         <div className="space-y-4">
                             {['Educación Artística', 'Desarrollo Personal', 'Inclusión Social', 'Innovación Educativa'].map((value, index) => (
@@ -105,7 +115,7 @@ export default function About() {
                         </div>
                     </motion.div>
                 </div>
-
+                {/* 
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -114,12 +124,12 @@ export default function About() {
                 >
                     <h3 className="text-2xl font-bold text-gray-800 mb-6">¿Quieres ser parte del cambio?</h3>
                     <button className="bg-green-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-green-600 transition-colors duration-300"
-                        onClick={() => setIsModalOpen(true)}>
+                    >
                         Únete como voluntario
                     </button>
-                </motion.div>
+                </motion.div> */}
             </div>
-            <SuscribeForm isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+
         </section>
     );
 }
