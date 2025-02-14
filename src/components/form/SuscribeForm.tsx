@@ -20,6 +20,11 @@ export default function SubscribeModal({ isOpen, onClose }: { isOpen: boolean; o
         e.preventDefault();
         setMessage("");
 
+        if (!formData.name || !formData.email) {
+            setMessage("❌ Error: Por favor, completa todos los campos.");
+            return;
+        }
+
         const { error } = await supabaseClient.from("subscribers").insert([formData]);
 
         if (error) {
@@ -46,7 +51,8 @@ export default function SubscribeModal({ isOpen, onClose }: { isOpen: boolean; o
                         placeholder="Tu nombre"
                         value={formData.name}
                         onChange={handleChange}
-                        className="border p-2 rounded"
+                        className="border p-2 rounded text-black"
+                        pattern="[A-Za-z ]{3,}"
                         required
                     />
                     <input
@@ -55,7 +61,8 @@ export default function SubscribeModal({ isOpen, onClose }: { isOpen: boolean; o
                         placeholder="Tu correo electrónico"
                         value={formData.email}
                         onChange={handleChange}
-                        className="border p-2 rounded"
+                        className="border p-2 rounded text-black"
+                        pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
                         required
                     />
                     <Button type="submit" className="bg-verde-goodkidz text-white p-2 rounded">
