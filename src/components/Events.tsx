@@ -1,43 +1,57 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import Image from 'next/image'
+
 import { Card, CardContent } from '@/components/ui/card'
 import { Slider } from '@/components/ui/Slider'
-
-
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
+import FotoSiembra from '@/public/events/Siembra1.jpg'
+import FotoTaller from '@/public/events/Talleres.jpg'
+import ImageWithLoader from './ui/ImageWithLoader'
+import Arteyvida from '@/public/events/Arte.jpeg'
+import siembra2 from '@/public/events/siembra2.jpg'
+import { StaticImageData } from 'next/image'
 
 interface Event {
     title: string;
     description: string;
-    image: string;
+    image: StaticImageData;
     date: string;
     location: string;
 }
 
 const events: Event[] = [
     {
+        title: "1ra Siembra Fundación Casa Raíz",
+        description: "Siembra de árboles en colaboración con Casa Madre Raíz",
+        image: FotoSiembra,
+        date: "junio 2024",
+        location: "Medellín, Colombia"
+    },
+    {
+        title: "Talleres de Sensibilización",
+        description: "Evento ejecutado en el Instituto Tecnológico Metropolitano",
+        image: FotoTaller,
+        date: "julio 2024",
+        location: "Medellín, Colombia"
+    },
+    {
         title: "1er Evento Arte y Vida",
         description: "Más de 100 personas presentaron sus obras de arte",
-        image: "",
+        image: Arteyvida,
         date: "septiembre 2024",
         location: "Medellín, Colombia"
     },
     {
         title: "Entrega de Utiles Escolares",
         description: "Donación de útiles escolares a niños de bajos recursos",
-        image: "",
+        image: FotoSiembra,
         date: "Enero 2025",
         location: "Medellín, Colombia"
     },
     {
-        title: "Siembra Colectiva",
+        title: "2da Siembra Fundación Casa Raíz",
         description: "2da siembra en colaboración con Casa Madre Raíz",
-        image: "",
+        image: siembra2,
         date: "Febrero 2025",
         location: "Medellín, Colombia"
     },
@@ -72,13 +86,7 @@ export default function EventCarousel() {
                                 <Card className="border-none shadow-xl hover:shadow-2xl transition-all duration-300">
                                     <CardContent className="p-0">
                                         <div className="relative aspect-[16/9]">
-                                            <Image
-                                                src={event.image || "/placeholder.svg"}
-                                                alt={event.title}
-                                                fill
-                                                className="object-cover rounded-t-xl"
-                                                priority={index === 0}
-                                            />
+                                            <ImageWithLoader src={event.image || "/placeholder.svg"} alt={event.title} />
                                             {event.date && (
                                                 <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full">
                                                     <p className="text-sm font-medium text-gray-800">{event.date}</p>
