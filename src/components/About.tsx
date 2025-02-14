@@ -48,7 +48,7 @@ export default function About() {
                     </h2>
                     <div className="w-24 h-1 bg-green-500 mx-auto mb-8"></div>
                     <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                        Es la idea original de FEID y su familia
+                        Es la idea original de <strong>FEID y su familia </strong>
                         con la intención de transformar
                         positivamente la sociedad.
                     </p>
@@ -62,7 +62,7 @@ export default function About() {
                         className="space-y-6"
                     >
                         <h3 className="text-3xl font-bold text-blue-600">Nuestra Misión</h3>
-                        <p className="text-lg text-gray-700 leading-relaxed">
+                        <p className="text-lg text-gray-700 leading-relaxed ">
                             Fomentar la adquisición de habilidades
                             para la vida de niños, jóvenes y adultos
                             a través del aprendizaje y práctica de
