@@ -15,18 +15,13 @@ export default function Hero() {
             transition={{ duration: 0.5 }}
             className="relative min-h-screen flex flex-col items-center justify-center text-white "
         >
-            {/* Video de fondo desde YouTube */}
-            <div className="absolute top-2 left-0 w-full h-full overflow-hidden">
-
-                {/* Dependiendo del tipo de dispositivo se muestra el video en desktop o en mobile */}
-
+            <div className="absolute top-0 left-0 w-full h-screen md:aspect-[16/9] overflow-hidden">
                 <iframe
-                    className="w-full h-full absolute top-0 left-0 hidden md:block"
+                    className="w-full h-full absolute top-0 left-0 object-cover"
                     src="https://player.vimeo.com/video/1057358811?h=773a7f19b4&amp;badge=0&amp;autopause=0&amp;autoplay=1&muted=1&loop=1&background=1&controls=0;player_id=0&amp;app_id=58479"
-                    allow="autoplay; 
-            fullscreen; picture-in-picture; clipboard-write; encrypted-media"  title="Fundacion-GoodKidz"
-                >
-                </iframe>
+                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+                    title="Fundacion-GoodKidz"
+                />
             </div>
 
             {/* Contenido */}
