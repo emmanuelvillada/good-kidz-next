@@ -17,11 +17,10 @@ function ImageWithLoader({ src, alt }: { src: string | StaticImageData; alt: str
                 alt={alt}
                 className={`object-cover rounded-t-xl transition-opacity duration-500 ${loading ? 'opacity-0' : 'opacity-100'}`}
                 priority
-                width={391}
-                height={220}
+                fill
                 objectFit="cover"
                 objectPosition="center"
-                onLoadingComplete={() => setLoading(false)}
+                onLoad={() => setLoading(false)}
             />
         </div>
     )

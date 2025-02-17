@@ -34,14 +34,15 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#34D399" />
       </head>
-      <body className="min-h-screen flex flex-col bg-gray-50">
+      <body className="min-h-screen flex flex-col bg-gray-50 p-0 m-0">
         <Header />
-        <main className="flex-grow w-full pt-20">
+        <main className="flex-grow w-full pt-20 px-0 m-0">
           {children}
         </main>
         <Footer />
       </body>
     </html>
   )
+
 }
 

@@ -27,7 +27,7 @@ const helpOptions = [
     },
     {
         title: "Voluntariado",
-        description: "Únete a nuestras actividades y eventos como voluntario.",
+        description: "Únete a nuestras actividades, talleres, charlas y eventos como voluntario.",
         icon: HandHeart,
         color: "text-verde-goodkidz",
         action: "Inscribirme"
@@ -54,7 +54,7 @@ export default function Help() {
                     </p>
                 </motion.div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 ">
                     {helpOptions.map((option, index) => (
                         <motion.div
                             key={option.title}
@@ -63,14 +63,14 @@ export default function Help() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
                         >
-                            <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+                            <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 h-full">
                                 <div className={`${option.color} mb-6`}>
                                     <option.icon className="w-12 h-12" />
                                 </div>
                                 <h3 className="text-xl font-bold text-gray-800 mb-3">
                                     {option.title}
                                 </h3>
-                                <p className="text-gray-600 mb-6">
+                                <p className="text-gray-600 mb-6 ">
                                     {option.description}
                                 </p>
                                 <Button

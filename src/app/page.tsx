@@ -4,6 +4,7 @@ import Contributors from '@/components/Contributors';
 import Blog from '@/components/Blog';
 import UpcomingEvents from '@/components/UpcomingEvents';
 import Help from '@/components/Help';
+import Events from '@/components/Events';
 
 export default function Home() {
 
@@ -11,6 +12,7 @@ export default function Home() {
     <>
 
       <Hero />
+      <Events />
       <About />
       <UpcomingEvents />
       <Blog />
