@@ -79,7 +79,7 @@ export default function EventCarousel() {
 
                 <Slider>
                     {events.map((event) => (
-                        <div key={event.id} className="px-4 md:px-6 lg:px-8">
+                        <div key={event.id} className="px-4 md:px-6 lg:px-8 h-full w">
                             <motion.div
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 whileInView={{ opacity: 1, scale: 1 }}
@@ -88,7 +88,7 @@ export default function EventCarousel() {
                             >
                                 <Card className="border-none shadow-xl hover:shadow-2xl transition-all duration-300 h-full">
                                     <CardContent className="p-0 flex flex-col h-full">
-                                        <div className="relative h-[200px] md:h-[400px]">
+                                        <div className="relative w-full h-[200px] md:h-[350px] lg:h-[450px] xl:h-[500px]">
                                             <ImageWithLoader src={event.image || '/default-image.jpg'} alt={event.title} />                                            {event.date && (
                                                 <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full">
                                                     <p className="text-sm font-medium text-gray-800">{event.date}</p>

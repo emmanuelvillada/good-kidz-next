@@ -14,7 +14,7 @@ function ImageWithLoader({ src, alt }: { src: string; alt: string }) {
             <Image
                 src={src}
                 alt={alt}
-                className={`object-cover rounded-t-xl transition-opacity duration-500 ${loading ? 'opacity-0' : 'opacity-100'}`}
+                className={`object-cover w-full h-full rounded-t-xl transition-opacity duration-500 ${loading ? 'opacity-0' : 'opacity-100'}`}
                 priority
                 fill
                 objectFit="cover"
