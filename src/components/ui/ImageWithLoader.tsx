@@ -1,8 +1,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { Loader } from "lucide-react";
-import { StaticImageData } from "next/image";
-function ImageWithLoader({ src, alt }: { src: string | StaticImageData; alt: string }) {
+function ImageWithLoader({ src, alt }: { src: string; alt: string }) {
     const [loading, setLoading] = useState(true);
 
     return (

@@ -1,64 +1,67 @@
 'use client'
 
 import { motion } from 'framer-motion'
-
 import { Card, CardContent } from '@/components/ui/card'
 import { Slider } from '@/components/ui/Slider'
-import FotoSiembra from '@/public/events/Siembra1.jpg'
-import FotoTaller from '@/public/events/Talleres.jpg'
-import ImageWithLoader from './ui/ImageWithLoader'
-import Arteyvida from '@/public/events/Arte.jpeg'
-import siembra2 from '@/public/events/siembra2.jpg'
-import { StaticImageData } from 'next/image'
+import ImageWithLoader from '@/components/ui/ImageWithLoader'
+import { supabase } from '@/lib/supabase'
+import { useEffect, useState } from 'react'
 
 interface Event {
+    id: string;
     title: string;
     description: string;
-    image: StaticImageData;
+    image?: string;
     date: string;
-    location: string;
+    location?: string;
+    created_at: string;
 }
 
-const events: Event[] = [
-    {
-        title: "1ra Siembra Fundación Casa Raíz",
-        description: "Siembra de árboles en colaboración con Casa Madre Raíz",
-        image: FotoSiembra,
-        date: "junio 2024",
-        location: "Medellín, Colombia"
-    },
-    {
-        title: "Talleres de Sensibilización",
-        description: "Evento ejecutado en el Instituto Tecnológico Metropolitano",
-        image: FotoTaller,
-        date: "julio 2024",
-        location: "Medellín, Colombia"
-    },
-    {
-        title: "1er Evento Arte y Vida",
-        description: "Más de 100 personas presentaron sus obras de arte",
-        image: Arteyvida,
-        date: "septiembre 2024",
-        location: "Medellín, Colombia"
-    },
-    {
-        title: "Entrega de Utiles Escolares",
-        description: "Donación de útiles escolares a niños de bajos recursos",
-        image: FotoSiembra,
-        date: "Enero 2025",
-        location: "Medellín, Colombia"
-    },
-    {
-        title: "2da Siembra Fundación Casa Raíz",
-        description: "2da siembra en colaboración con Casa Madre Raíz",
-        image: siembra2,
-        date: "Febrero 2025",
-        location: "Medellín, Colombia"
-    },
-]
-
-
 export default function EventCarousel() {
+    const [events, setEvents] = useState<Event[]>([])
+    const [isLoading, setIsLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
+
+    useEffect(() => {
+        const fetchEvents = async () => {
+            setIsLoading(true) // Asegurar que esto se ejecuta antes de la llamada async
+            try {
+                const { data, error } = await supabase
+                    .from('past_events')
+                    .select('*')
+                    .order('date', { ascending: false })
+                    .limit(5);
+
+                if (error) throw error;
+
+                // Aseguramos que solo actualizamos el estado si el componente está montado
+                setEvents(data || []);
+            } catch (error) {
+                setError((error as Error).message);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchEvents();
+    }, []);
+
+
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center min-h-[400px]">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-verde-goodkidz"></div>
+            </div>
+        )
+    }
+
+    if (error) {
+        return (
+            <div className="text-center py-12 text-red-600">
+                <p>{error}</p>
+            </div>
+        );
+    }
+
     return (
         <section className="py-24 bg-transparent relative">
             <div className="container mx-auto px-4 md:px-6">
@@ -75,8 +78,8 @@ export default function EventCarousel() {
                 </motion.div>
 
                 <Slider>
-                    {events.map((event, index) => (
-                        <div key={index} className="px-4 md:px-6 lg:px-8">
+                    {events.map((event) => (
+                        <div key={event.id} className="px-4 md:px-6 lg:px-8">
                             <motion.div
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 whileInView={{ opacity: 1, scale: 1 }}
@@ -86,12 +89,7 @@ export default function EventCarousel() {
                                 <Card className="border-none shadow-xl hover:shadow-2xl transition-all duration-300 h-full">
                                     <CardContent className="p-0 flex flex-col h-full">
                                         <div className="relative h-[200px] md:h-[400px]">
-                                            <ImageWithLoader
-                                                src={event.image || "/placeholder.svg"}
-                                                alt={event.title}
-
-                                            />
-                                            {event.date && (
+                                            <ImageWithLoader src={event.image || '/default-image.jpg'} alt={event.title} />                                            {event.date && (
                                                 <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full">
                                                     <p className="text-sm font-medium text-gray-800">{event.date}</p>
                                                 </div>
@@ -122,4 +120,3 @@ export default function EventCarousel() {
         </section>
     )
 }
-
