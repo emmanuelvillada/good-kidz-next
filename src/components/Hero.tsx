@@ -16,12 +16,16 @@ export default function Hero() {
             className="relative min-h-screen flex flex-col items-center justify-center text-white "
         >
             <div className="absolute top-0 left-0 w-full h-screen md:aspect-[16/9] overflow-hidden">
-                <iframe
+                <video
                     className="w-full h-full absolute top-0 left-0 object-cover"
-                    src="https://player.vimeo.com/video/1057358811?h=773a7f19b4&amp;badge=0&amp;autopause=0&amp;autoplay=1&muted=1&loop=1&background=1&controls=0;player_id=0&amp;app_id=58479"
-                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
-                    title="Fundacion-GoodKidz"
-                />
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                >
+                    <source src="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/events//Fondo-goodkidz%20(1).mp4" type="video/mp4" />
+                    Tu navegador no soporta videos.
+                </video>
             </div>
 
             {/* Contenido */}
