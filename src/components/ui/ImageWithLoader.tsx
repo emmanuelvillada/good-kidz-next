@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { useState } from "react";
 import { Loader } from "lucide-react";
 function ImageWithLoader({ src, alt }: { src: string; alt: string }) {
@@ -16,7 +16,8 @@ function ImageWithLoader({ src, alt }: { src: string; alt: string }) {
                 alt={alt}
                 className={`object-cover w-full h-full rounded-t-xl transition-opacity duration-500 ${loading ? 'opacity-0' : 'opacity-100'}`}
                 priority
-                fill
+                layout="fill"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 objectFit="cover"
                 objectPosition="center"
                 onLoad={() => setLoading(false)}
