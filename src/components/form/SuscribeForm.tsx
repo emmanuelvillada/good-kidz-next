@@ -3,10 +3,19 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
+import { createPortal } from "react-dom";
 
+//cliente de supabase para guardar los datos
 const supabaseClient = supabase;
 
-export default function SubscribeModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+//interface para los props
+interface SuscribeModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+}
+
+
+const SuscribeModal: React.FC<SuscribeModalProps> = ({ isOpen, onClose }) => {
     const [formData, setFormData] = useState({ name: "", email: "" });
     const [message, setMessage] = useState("");
 
@@ -36,11 +45,11 @@ export default function SubscribeModal({ isOpen, onClose }: { isOpen: boolean; o
         }
     };
 
-    return (
+    return createPortal(
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative">
                 <button onClick={onClose} className="absolute top-3 right-3 text-gray-600 hover:text-black">
-                    ✖
+                    x
                 </button>
                 <h2 className="text-xl font-bold mb-4 text-center">Únete a Good Kidz</h2>
                 <p className="text-gray-600 text-center mb-4">Recibe información exclusiva sobre eventos.</p>
@@ -71,6 +80,9 @@ export default function SubscribeModal({ isOpen, onClose }: { isOpen: boolean; o
                     {message && <p className="text-center mt-2">{message}</p>}
                 </form>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }
+
+export default SuscribeModal;

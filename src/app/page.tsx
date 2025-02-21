@@ -12,9 +12,9 @@ export default function Home() {
     <>
 
       <Hero />
-      <Events />
-      <About />
       <UpcomingEvents />
+      <About />
+      <Events />
       <Blog />
       <Help />
       <Contributors />

@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     locale: 'es_CO',
     type: 'website',
   },
-
+  robots: 'index, follow',
 }
 
 export default function RootLayout({

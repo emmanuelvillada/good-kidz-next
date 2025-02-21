@@ -62,16 +62,21 @@ export default function UpcomingEvents() {
     }
 
     return (
-        <section className="container mx-auto pb-12 px-4" id="events">
+        <section className="container mx-auto pb-12 pt-24 px-4" id="events">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
             >
-                <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-4">
+                <motion.h2 className="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-4"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                >
                     Próximos Eventos
-                </h2>
+                </motion.h2>
                 <div className="w-24 h-1 bg-verde-goodkidz mx-auto mb-12"></div>
 
                 {events.length === 0 ? (

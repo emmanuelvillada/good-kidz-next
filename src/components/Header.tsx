@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Menu } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from '@/public/logo.png';
+import SuscribeModal from './form/SuscribeForm';
 
 const navLinks = [
   { href: "#about", label: "Sobre Nosotros" },
@@ -16,6 +17,7 @@ const navLinks = [
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 0);
@@ -69,8 +71,9 @@ export default function Header() {
             <Button
               className="bg-verde-goodkidz text-white hover:bg-verde-goodkidz/90 
                         shadow-md hover:shadow-lg transition-all duration-200"
+              onClick={() => setIsModalOpen(true)}
             >
-              Donar
+              Unete a nosotros
             </Button>
           </nav>
 
@@ -109,14 +112,17 @@ export default function Header() {
                 <Button
                   className="bg-verde-goodkidz text-white hover:bg-verde-goodkidz/90 
                             shadow-md hover:shadow-lg transition-all duration-200 w-full"
+                  onClick={() => setIsModalOpen(true)}
                 >
-                  Donar
+                  Unete a nosotros
                 </Button>
               </nav>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
+      <SuscribeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </header>
+
   );
 }

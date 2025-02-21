@@ -1,11 +1,10 @@
 'use client';
-import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
-import SuscribeForm from './form/SuscribeForm';
+// import { useState } from 'react';
+// import SuscribeForm from './form/SuscribeForm';
 
 export default function Hero() {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    // const [isModalOpen, setIsModalOpen] = useState(false);
 
 
     return (
@@ -29,7 +28,7 @@ export default function Hero() {
             </div>
 
             {/* Contenido */}
-            <div className="relative z-10 container mx-auto px-4 md:px-6 lg:px-8 text-center py-20 md:py-32 lg:py-20 lg:pt-32">
+            {/* <div className="relative z-10 container mx-auto px-4 md:px-6 lg:px-8 text-center py-20 md:py-32 lg:py-20 lg:pt-32">
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
                     Construyendo un <br className="hidden sm:block" />
                     Futuro Brillante
@@ -43,10 +42,10 @@ export default function Hero() {
                 >
                     ¡Únete a Nosotros!
                 </Button>
-            </div>
+            </div> */}
 
 
-            <SuscribeForm isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+            {/* <SuscribeForm isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} /> */}
         </motion.div>
     );
 }
