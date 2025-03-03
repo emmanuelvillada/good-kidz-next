@@ -35,7 +35,7 @@ export default function About() {
     }, []);
 
     return (
-        <section id="about" className="py-24 bg-gradient-to-b from-white to-gray-50">
+        <section id="about" className="py-24 bg-gradient-to-b from-white to-gray-50 ">
             <div className="container mx-auto px-6 max-w-7xl">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -59,7 +59,7 @@ export default function About() {
                         initial={{ opacity: 0, x: -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.5 }}
-                        className="space-y-6"
+                        className="space-y-6 p-8 bg-white rounded-2xl shadow-xl"
                     >
                         <h3 className="text-3xl font-bold text-blue-600">Nuestra Misión</h3>
                         <p className="text-lg text-gray-700 leading-relaxed ">
@@ -93,7 +93,7 @@ export default function About() {
                         transition={{ duration: 0.5 }}
                         className="bg-white p-8 rounded-2xl shadow-xl"
                     >
-                        <h3 className="text-3xl font-bold text-green-600 mb-8">Nuestro Impacto</h3>
+                        <h3 className="text-3xl font-bold text-verde-goodkidz mb-8">Nuestro Impacto</h3>
                         <div className="grid grid-cols-2 gap-8">
                             {[
                                 { label: 'Niños Beneficiados', value: numbers.kids },

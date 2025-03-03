@@ -7,6 +7,9 @@ import { Calendar, MapPin } from 'lucide-react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import Image from "next/image";
+import { StaticImageData } from "next/image";
+import { Slider } from "./ui/Slider";
+
 
 interface Event {
     id: number;
@@ -14,7 +17,7 @@ interface Event {
     date: string;
     location: string;
     description?: string;
-    image_url?: string;
+    file?: StaticImageData | string;
 }
 
 export default function UpcomingEvents() {
@@ -23,7 +26,7 @@ export default function UpcomingEvents() {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        async function fetchEvents() {
+        const fetchEvents = async () => {
             try {
                 setIsLoading(true);
                 const { data, error } = await supabase
@@ -33,17 +36,19 @@ export default function UpcomingEvents() {
                     .gte("date", new Date().toISOString());
 
                 if (error) throw error;
-                setEvents(data || []);
+                setEvents(data as Event[]);
             } catch (err) {
                 setError("Error al cargar los eventos");
                 console.error("Error fetching events:", err);
             } finally {
                 setIsLoading(false);
             }
-        }
+        };
 
         fetchEvents();
     }, []);
+
+
 
     if (isLoading) {
         return (
@@ -55,84 +60,99 @@ export default function UpcomingEvents() {
 
     if (error) {
         return (
-            <div className="text-center py-12 text-red-600">
-                <p>{error}</p>
+            <div className="text-center py-12">
+                <div className="bg-red-50 p-4 rounded-lg inline-block">
+                    <p className="text-red-600">{error}</p>
+                </div>
             </div>
         );
     }
 
     return (
-        <section className="container mx-auto pb-12 pt-24 px-4" id="events">
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-            >
-                <motion.h2 className="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-4"
+        <section className="py-16 bg-transparent" id="upcoming-events">
+            <div className="container mx-auto px-4 md:px-6">
+                <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
+                    transition={{ duration: 0.5 }}
+                    className="text-center mb-16"
                 >
-                    Próximos Eventos
-                </motion.h2>
-                <div className="w-24 h-1 bg-verde-goodkidz mx-auto mb-12"></div>
+                    <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                        Próximos Eventos
+                    </h2>
+                    <div className="w-24 h-1 bg-verde-goodkidz mx-auto mb-6"></div>
+                </motion.div>
 
                 {events.length === 0 ? (
-                    <p className="text-center text-gray-600">No hay eventos próximos programados.</p>
-
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-center py-12 bg-gray-50 rounded-xl"
+                    >
+                        <p className="text-gray-600">No hay eventos próximos programados.</p>
+                    </motion.div>
                 ) : (
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {events.map((event) => (
-                            <motion.div
-                                key={event.id}
-                                whileHover={{ y: -5 }}
-                                className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300"
-                            >
-                                {event.image_url && (
-                                    <div className="relative h-48 w-full">
-                                        <Image
-                                            src={event.image_url}
-                                            alt={event.title}
-                                            className="object-cover w-full h-full"
-                                        />
-                                    </div>
-                                )}
-                                <div className="p-6">
-                                    <h3 className="text-xl font-bold text-gray-800 mb-3">
-                                        {event.title}
-                                    </h3>
-                                    {event.description && (
-                                        <p className="text-gray-600 mb-4 line-clamp-2">
-                                            {event.description}
-                                        </p>
-                                    )}
-                                    <div className="space-y-2 mb-4">
-                                        <div className="flex items-center text-gray-500">
-                                            <Calendar className="w-4 h-4 mr-2" />
-                                            <span className="text-sm">
-                                                {format(new Date(event.date), 'PPP', { locale: es })}
-                                            </span>
-                                        </div>
-                                        <div className="flex items-center text-gray-500">
-                                            <MapPin className="w-4 h-4 mr-2" />
-                                            <span className="text-sm">{event.location}</span>
-                                        </div>
-                                    </div>
-                                    <Button
-                                        className="w-full bg-verde-goodkidz hover:bg-verde-goodkidz/90 
-                                                 text-white font-medium py-2 px-4 rounded-lg 
-                                                 transition-all duration-300 shadow-md hover:shadow-lg"
+                    <div className="relative " id="upcoming-events">
+                        <Slider >
+                            {events.map((event, index) => (
+                                <div key={event.id} className="px-4">
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: index * 0.1, duration: 0.3 }}
+                                        className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 h-full"
                                     >
-                                        Más Información
-                                    </Button>
+                                        {event.file && (
+                                            <div className="relative aspect-video w-full md:h-[400px] ">
+                                                <Image
+                                                    src={event.file}
+                                                    alt={event.title}
+                                                    layout="fill"
+                                                    className="object-cover"
+                                                    priority={index === 0}
+                                                />
+                                            </div>
+                                        )}
+                                        <div className="p-6 flex flex-col h-[calc(100%-aspect-video)]">
+                                            <h3 className="text-xl font-bold text-gray-800 mb-3 line-clamp-2">
+                                                {event.title}
+                                            </h3>
+                                            {event.description && (
+                                                <p className="text-gray-600 mb-4 line-clamp-2">
+                                                    {event.description}
+                                                </p>
+                                            )}
+                                            <div className="space-y-2 mb-4">
+                                                <div className="flex items-center text-gray-500">
+                                                    <Calendar className="w-4 h-4 mr-2" />
+                                                    <span className="text-sm">
+                                                        {format(new Date(event.date), 'PPP', { locale: es })}
+                                                    </span>
+                                                </div>
+                                                <div className="flex items-center text-gray-500">
+                                                    <MapPin className="w-4 h-4 mr-2" />
+                                                    <span className="text-sm">{event.location}</span>
+                                                </div>
+                                            </div>
+                                            <div className="mt-auto">
+                                                <Button
+                                                    className="w-80 hover:scale-110  bg-verde-goodkidz hover:bg-verde-goodkidz/90 
+                                                            text-white shadow-md hover:shadow-lg 
+                                                            transition-all duration-300"
+                                                >
+                                                    Más Información
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </motion.div>
                                 </div>
-                            </motion.div>
-                        ))}
+                            ))}
+                        </Slider>
                     </div>
                 )}
-            </motion.div>
+            </div>
         </section>
     );
 }

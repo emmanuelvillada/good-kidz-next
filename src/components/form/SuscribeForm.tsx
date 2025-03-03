@@ -34,15 +34,27 @@ const SuscribeModal: React.FC<SuscribeModalProps> = ({ isOpen, onClose }) => {
             return;
         }
 
-        const { error } = await supabaseClient.from("subscribers").insert([formData]);
-
-        if (error) {
-            setMessage("❌ Error: Este correo ya está registrado.");
-        } else {
+        try {
+            await supabaseClient
+                .from("suscribers")
+                .insert([{ name: formData.name, email: formData.email }]);
             setMessage("✅ ¡Gracias por suscribirte!");
             setFormData({ name: "", email: "" }); // Reset form
             setTimeout(onClose, 2000); // Cierra el modal tras 2 segundos
+
+        } catch (error) {
+            if (error instanceof Error) {
+                console.error("Error al guardar los datos:", error.message);
+            } else {
+                console.error("Error al guardar los datos:", error);
+            }
+            setMessage("❌ Error: Este correo ya está registrado.");
+
         }
+
+
+
+
     };
 
     return createPortal(
