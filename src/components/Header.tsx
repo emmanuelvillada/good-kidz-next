@@ -12,6 +12,7 @@ const navLinks = [
   { href: "#about", label: "Sobre Nosotros" },
   { href: "#events", label: "Eventos" },
   { href: "#help", label: "Cómo Ayudar" },
+  { href: "microstory", label: "Formulario Microcuento" },
 ];
 
 export default function Header() {
@@ -49,7 +50,8 @@ export default function Header() {
               src={logo}
               alt="Logo Good Kidz"
               className="w-[80px] md:w-[120px] lg:w-[140px] transition-transform hover:scale-105 hover:cursor-pointer"
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              //navigate to home page if isn't already there else scroll to top
+              onClick={() => window.location.pathname === '/' ? window.scrollTo({ top: 0, behavior: 'smooth' }) : window.location.href = '/'}
               priority
             />
             <h1 className="text-lg md:text-xl font-bold text-verde-goodkidz hidden sm:block">
