@@ -1,12 +1,12 @@
 'use client';
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { supabase } from "@/lib/supabase";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { zodResolver } from '@hookform/resolvers/zod';
 import MicroStorySchema, { MicroStory } from "@/components/form/schemas/MicroStory";
 //ui
-import { Upload, Calendar, MapPin } from 'lucide-react';
+import { Upload, Phone, MapPin, User } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -23,12 +23,11 @@ import {
     Card,
     CardContent,
     CardHeader,
-    CardTitle
+    CardTitle,
+    CardDescription
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import Image from "next/image";
-
-
 
 // Form status interface
 interface FormStatus {
@@ -40,7 +39,10 @@ export default function MicroStoryForm() {
     // State management
     const [isLoading, setIsLoading] = useState(false);
     const [status, setStatus] = useState<FormStatus>({ type: null, message: null });
-    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const [previewUrls, setPreviewUrls] = useState<{
+        file1?: string | null,
+        file2?: string | null
+    }>({});
 
     // React Hook Form setup with Zod validation
     const form = useForm<MicroStory>({
@@ -48,20 +50,30 @@ export default function MicroStoryForm() {
         defaultValues: {
             title: '',
             description: '',
-            date: '',
-            location: '',
+            name: '',
+            email: '',
+            phone: '',
+            address: '',
+            city: '',
+            attendant_name: '',
+            file1: null,
+            file2: null
         }
     });
 
     // Image preview handling
-    const fileWatch = form.watch("file");
-    if (fileWatch?.[0] && !previewUrl) {
+    const handleFilePreview = (file: File, fileType: 'file1' | 'file2') => {
+        if (!file) return;
+
         const reader = new FileReader();
         reader.onloadend = () => {
-            setPreviewUrl(reader.result as string);
+            setPreviewUrls(prev => ({
+                ...prev,
+                [fileType]: reader.result as string
+            }));
         };
-        reader.readAsDataURL(fileWatch[0]);
-    }
+        reader.readAsDataURL(file);
+    };
 
     // Form submission handler
     const onSubmit: SubmitHandler<MicroStory> = async (data) => {
@@ -69,16 +81,31 @@ export default function MicroStoryForm() {
         setStatus({ type: null, message: null });
 
         try {
+            // Verify files are present
+            if (!data.file1 || !data.file1[0] || !data.file2 || !data.file2[0]) {
+                throw new Error("Por favor, sube ambos archivos");
+            }
+
             // Upload image
-            const file = data.file[0];
-            const fileExt = file.name.split('.').pop();
-            const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
+            const file1 = data.file1[0];
+            const fileExt = file1.name.split('.').pop();
+            const fileName = `${Math.random().toString(36).substring(2) + data.name}.${fileExt}`;
+            const file2 = data.file2[0];
+            const fileExt2 = file2.name.split('.').pop();
+            const fileName2 = `${Math.random().toString(36).substring(2) + data.name}.${fileExt2}`;
 
             const { error: uploadError, data: uploadData } = await supabase.storage
                 .from('micro-stories')
-                .upload(fileName, file);
+                .upload(fileName, file1);
 
-            if (uploadError) throw uploadError;
+            const { error: uploadError2, data: uploadData2 } = await supabase.storage
+                .from('micro-stories')
+                .upload(fileName2, file2);
+
+            if (uploadError || uploadError2) {
+                console.error('Upload Error:', uploadError, uploadError2);
+                throw new Error("Error al subir los archivos");
+            }
 
             // Save story data
             const { error: storyError } = await supabase
@@ -86,12 +113,20 @@ export default function MicroStoryForm() {
                 .insert([{
                     title: data.title,
                     description: data.description,
-                    date: data.date,
-                    location: data.location,
-                    file_url: uploadData.path
+                    file_image: uploadData.path,
+                    file_pdf: uploadData2.path,
+                    name: data.name,
+                    email: data.email,
+                    phone: data.phone,
+                    address: data.address,
+                    city: data.city,
+                    attendant_name: data.attendant_name
                 }]);
 
-            if (storyError) throw storyError;
+            if (storyError) {
+                console.error('Story Error:', storyError);
+                throw storyError;
+            }
 
             // Success handling
             setStatus({
@@ -101,10 +136,11 @@ export default function MicroStoryForm() {
 
             // Reset form
             form.reset();
-            setPreviewUrl(null);
+            setPreviewUrls({});
 
         } catch (error) {
             // Error handling
+            console.error('Submission Error:', error);
             setStatus({
                 type: 'error',
                 message: error instanceof Error ? error.message : 'Error al guardar los datos'
@@ -113,6 +149,7 @@ export default function MicroStoryForm() {
             setIsLoading(false);
         }
     };
+
 
     return (
         <motion.div
@@ -123,6 +160,7 @@ export default function MicroStoryForm() {
             <Card>
                 <CardHeader>
                     <CardTitle className="text-4xl">Formulario Microcuento</CardTitle>
+                    <CardDescription>Formulario para inscribirse en nuestro primer evento de microcuento</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <Form {...form}>
@@ -163,19 +201,54 @@ export default function MicroStoryForm() {
                                 )}
                             />
 
+                            <FormField
+                                control={form.control}
+                                name="name"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Nombre</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder="Escribe tu nombre"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Correo</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder="Escribe tu correo"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <FormField
                                     control={form.control}
-                                    name="date"
+                                    name="address"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel className="flex items-center gap-2">
-                                                <Calendar className="w-4 h-4" />
-                                                Fecha
+                                                <MapPin className="w-4 h-4" />
+                                                Dirección
                                             </FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    type="date"
+                                                    placeholder="Escribe tu dirección"
                                                     {...field}
                                                 />
                                             </FormControl>
@@ -186,16 +259,16 @@ export default function MicroStoryForm() {
 
                                 <FormField
                                     control={form.control}
-                                    name="location"
+                                    name="city"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel className="flex items-center gap-2">
                                                 <MapPin className="w-4 h-4" />
-                                                Ubicación
+                                                Ciudad
                                             </FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    placeholder="¿Dónde sucedió?"
+                                                    placeholder="Escribe tu ciudad"
                                                     {...field}
                                                 />
                                             </FormControl>
@@ -205,23 +278,69 @@ export default function MicroStoryForm() {
                                 />
                             </div>
 
-                            <FormField
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <FormField
+                                    control={form.control}
+                                    name="attendant_name"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="flex items-center gap-2">
+                                                <User className="w-4 h-4" />
+                                                Nombre del representante
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name="phone"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="flex items-center gap-2">
+                                                <Phone className="w-4 h-4" />
+                                                Telefono del representante
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+
+                            <Controller
                                 control={form.control}
-                                name="file"
-                                render={({ field: { onChange, ...field } }) => (
+                                name="file1"
+                                render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="flex items-center gap-2">
                                             <Upload className="w-4 h-4" />
-                                            Imagen
+                                            Imagen del Microcuento
                                         </FormLabel>
                                         <FormControl>
                                             <Input
                                                 type="file"
                                                 accept="image/jpeg,image/png,image/webp"
                                                 onChange={(e) => {
-                                                    onChange(e.target.files);
+                                                    const files = e.target.files;
+                                                    if (files && files.length > 0) {
+                                                        // Directly set the files
+                                                        field.onChange(files);
+                                                        handleFilePreview(files[0], 'file1');
+                                                    }
                                                 }}
-                                                {...field}
                                             />
                                         </FormControl>
                                         <FormDescription>
@@ -229,10 +348,52 @@ export default function MicroStoryForm() {
                                         </FormDescription>
                                         <FormMessage />
 
-                                        {previewUrl && (
+                                        {previewUrls.file1 && (
                                             <div className="mt-2 relative aspect-video rounded-lg overflow-hidden">
                                                 <Image
-                                                    src={previewUrl}
+                                                    src={previewUrls.file1}
+                                                    alt="Vista previa"
+                                                    fill
+                                                    className="object-cover"
+                                                />
+                                            </div>
+                                        )}
+                                    </FormItem>
+                                )}
+                            />
+
+                            <Controller
+                                control={form.control}
+                                name="file2"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="flex items-center gap-2">
+                                            <Upload className="w-4 h-4" />
+                                            Microcuento
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="file"
+                                                accept="application/pdf"
+                                                onChange={(e) => {
+                                                    const files = e.target.files;
+                                                    if (files && files.length > 0) {
+                                                        // Directly set the files
+                                                        field.onChange(files);
+                                                        handleFilePreview(files[0], 'file2');
+                                                    }
+                                                }}
+                                            />
+                                        </FormControl>
+                                        <FormDescription>
+                                            Solo se permiten archivos .pdf
+                                        </FormDescription>
+                                        <FormMessage />
+
+                                        {previewUrls.file2 && (
+                                            <div className="mt-2 relative aspect-video rounded-lg overflow-hidden">
+                                                <Image
+                                                    src={previewUrls.file2}
                                                     alt="Vista previa"
                                                     fill
                                                     className="object-cover"
