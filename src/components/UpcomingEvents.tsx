@@ -69,7 +69,7 @@ export default function UpcomingEvents() {
     }
 
     return (
-        <section className="py-16 bg-transparent" id="upcoming-events">
+        <section className="pt-10 bg-transparent" id="upcoming-events">
             <div className="container mx-auto px-4 md:px-6">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}

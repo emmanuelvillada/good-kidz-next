@@ -5,9 +5,6 @@ const MicroStorySchema = z.object({
     title: z.string()
         .min(3, 'El título debe tener al menos 3 caracteres')
         .max(100, 'El título no puede exceder los 100 caracteres'),
-    description: z.string()
-        .min(10, 'La descripción debe tener al menos 10 caracteres')
-        .max(500, 'La descripción no puede exceder los 500 caracteres'),
     attendant_name: z.string()
         .min(3, 'El nombre debe tener al menos 3 caracteres')
         .max(100, 'El nombre no puede exceder los 100 caracteres'),
@@ -17,6 +14,7 @@ const MicroStorySchema = z.object({
     email: z.string()
         .email('Correo electrónico inválido')
         .max(100, 'El correo electrónico no puede exceder los 100 caracteres'),
+    age: z.number().min(6, 'La edad debe ser mayor a 6').max(10, 'La edad no puede ser mayor a 10'),
     phone: z.string()
         .min(10, 'El teléfono debe tener al menos 10 caracteres')
         .max(15, 'El teléfono no puede exceder los 15 caracteres'),
@@ -34,6 +32,13 @@ const MicroStorySchema = z.object({
             "Solo se permiten archivos .jpg, .png y .webp"
         ),
     file2: z.any()
+        .refine((file) => file?.length === 1, "El PDF es requerido")
+        .refine((file) => file?.[0]?.size <= 5000000, "El PDF no puede exceder 5MB")
+        .refine(
+            (file) => file?.[0]?.type === 'application/pdf',
+            "Solo se permiten archivos .pdf"
+        ),
+    file3: z.any()
         .refine((file) => file?.length === 1, "El PDF es requerido")
         .refine((file) => file?.[0]?.size <= 5000000, "El PDF no puede exceder 5MB")
         .refine(

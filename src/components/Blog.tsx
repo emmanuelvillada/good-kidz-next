@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabase";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import { Calendar, ArrowRight } from "lucide-react";
+import { Calendar } from "lucide-react";
 
 interface Post {
     id: number;
@@ -136,7 +136,7 @@ export default function Blog() {
                 ))}
             </motion.div>
 
-            <motion.div
+            {/* <motion.div
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
@@ -150,7 +150,7 @@ export default function Blog() {
                     Ver todas las noticias
                     <ArrowRight className="w-5 h-5" />
                 </a>
-            </motion.div>
+            </motion.div> */}
         </section>
     );
 }

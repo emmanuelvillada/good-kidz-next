@@ -18,7 +18,6 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
     Card,
     CardContent,
@@ -41,7 +40,8 @@ export default function MicroStoryForm() {
     const [status, setStatus] = useState<FormStatus>({ type: null, message: null });
     const [previewUrls, setPreviewUrls] = useState<{
         file1?: string | null,
-        file2?: string | null
+        file2?: string | null,
+        file3?: string | null
     }>({});
 
     // React Hook Form setup with Zod validation
@@ -49,20 +49,21 @@ export default function MicroStoryForm() {
         resolver: zodResolver(MicroStorySchema),
         defaultValues: {
             title: '',
-            description: '',
             name: '',
             email: '',
+            age: 0,
             phone: '',
             address: '',
             city: '',
             attendant_name: '',
             file1: null,
-            file2: null
+            file2: null,
+            file3: null
         }
     });
 
     // Image preview handling
-    const handleFilePreview = (file: File, fileType: 'file1' | 'file2') => {
+    const handleFilePreview = (file: File, fileType: 'file1' | 'file2' | 'file3') => {
         if (!file) return;
 
         const reader = new FileReader();
@@ -82,7 +83,7 @@ export default function MicroStoryForm() {
 
         try {
             // Verify files are present
-            if (!data.file1 || !data.file1[0] || !data.file2 || !data.file2[0]) {
+            if (!data.file1 || !data.file1[0] || !data.file2 || !data.file2[0] || !data.file3 || !data.file3[0]) {
                 throw new Error("Por favor, sube ambos archivos");
             }
 
@@ -93,6 +94,9 @@ export default function MicroStoryForm() {
             const file2 = data.file2[0];
             const fileExt2 = file2.name.split('.').pop();
             const fileName2 = `${Math.random().toString(36).substring(2) + data.name}.${fileExt2}`;
+            const file3 = data.file2[0];
+            const fileExt3 = file2.name.split('.').pop();
+            const fileName3 = `${Math.random().toString(36).substring(2) + data.name}.${fileExt3}`;
 
             const { error: uploadError, data: uploadData } = await supabase.storage
                 .from('micro-stories')
@@ -102,8 +106,12 @@ export default function MicroStoryForm() {
                 .from('micro-stories')
                 .upload(fileName2, file2);
 
+            const { error: uploadError3, data: uploadData3 } = await supabase.storage
+                .from('micro-stories')
+                .upload(fileName3, file3);
+
             if (uploadError || uploadError2) {
-                console.error('Upload Error:', uploadError, uploadError2);
+                console.error('Upload Error:', uploadError, uploadError2, uploadError3);
                 throw new Error("Error al subir los archivos");
             }
 
@@ -112,11 +120,12 @@ export default function MicroStoryForm() {
                 .from("micro_stories")
                 .insert([{
                     title: data.title,
-                    description: data.description,
                     file_image: uploadData.path,
                     file_pdf: uploadData2.path,
+                    file_authorization: uploadData3?.path,
                     name: data.name,
                     email: data.email,
+                    age: data.age,
                     phone: data.phone,
                     address: data.address,
                     city: data.city,
@@ -184,25 +193,6 @@ export default function MicroStoryForm() {
 
                             <FormField
                                 control={form.control}
-                                name="description"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Descripción</FormLabel>
-                                        <FormControl>
-                                            <Textarea
-                                                placeholder="Cuéntanos tu historia"
-                                                className="resize-y"
-                                                {...field}
-                                            />
-                                        </FormControl>
-
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
                                 name="name"
                                 render={({ field }) => (
                                     <FormItem>
@@ -227,6 +217,23 @@ export default function MicroStoryForm() {
                                         <FormControl>
                                             <Input
                                                 placeholder="Escribe tu correo"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                control={form.control}
+                                name="age"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Edad</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder="Escribe tu edad"
                                                 {...field}
                                             />
                                         </FormControl>
@@ -389,6 +396,25 @@ export default function MicroStoryForm() {
                                             Solo se permiten archivos .pdf
                                         </FormDescription>
                                         <FormMessage />
+                                        <FormControl>
+                                            <Input
+                                                type="file"
+                                                accept="application/pdf"
+                                                onChange={(e) => {
+                                                    const files = e.target.files;
+                                                    if (files && files.length > 0) {
+                                                        // Directly set the files
+                                                        field.onChange(files);
+                                                        handleFilePreview(files[0], 'file3');
+                                                    }
+                                                }}
+                                            />
+                                        </FormControl>
+                                        <FormDescription>
+                                            Solo se permiten archivos .pdf
+                                        </FormDescription>
+                                        <FormMessage />
+
 
                                         {previewUrls.file2 && (
                                             <div className="mt-2 relative aspect-video rounded-lg overflow-hidden">

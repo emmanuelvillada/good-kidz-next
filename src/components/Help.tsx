@@ -1,34 +1,38 @@
 'use client';
 import { motion } from 'framer-motion';
-import { Heart, Gift, Users, HandHeart } from 'lucide-react';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import APORTES from '@/public/APORTES.png';
+import DONACIONES from '@/public/DONACIONES.png';
+import COLABORACIONES from '@/public/COLABORACIONES.png';
+import VOLUNTARIADO from '@/public/VOLUNTARIADO.png';
 
 const helpOptions = [
     {
         title: "Donaciones",
         description: "Con aportes monetarios que apoyarán nuestros proyectos y ayudarán a más niños.",
-        icon: Heart,
+        icon: DONACIONES,
         color: "text-pink-500",
         action: "Donar ahora"
     },
     {
         title: "Aportes en especie",
         description: "Equipos, materiales y elementos que nos ayuden a impulsar la comunidad.",
-        icon: Gift,
+        icon: APORTES,
         color: "text-purple-500",
         action: "Ver necesidades"
     },
     {
         title: "Colaboraciones",
         description: "Comparte tu conocimiento en charlas y networking con nuestra comunidad.",
-        icon: Users,
+        icon: COLABORACIONES,
         color: "text-blue-500",
         action: "Ser mentor"
     },
     {
         title: "Voluntariado",
         description: "Únete a nuestras actividades, talleres, charlas y eventos como voluntario.",
-        icon: HandHeart,
+        icon: VOLUNTARIADO,
         color: "text-verde-goodkidz",
         action: "Inscribirme"
     }
@@ -65,7 +69,7 @@ export default function Help() {
                         >
                             <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 h-full">
                                 <div className={`${option.color} mb-6`}>
-                                    <option.icon className="w-12 h-12" />
+                                    <Image src={option.icon.src} alt={option.title + " icon"} width={48} height={48} />
                                 </div>
                                 <h3 className="text-xl font-bold text-gray-800 mb-3">
                                     {option.title}
