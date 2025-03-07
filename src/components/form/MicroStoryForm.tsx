@@ -1,6 +1,7 @@
 'use client';
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { supabase } from "@/lib/supabase";
+import { PostgrestError } from '@supabase/supabase-js';
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -150,14 +151,32 @@ export default function MicroStoryForm() {
             form.reset();
             setPreviewUrls({});
 
-        } catch (error) {
-            // Error handling
+        } catch (error: unknown) {
             console.error('Submission Error:', error);
-            setStatus({
-                type: 'error',
-                message: error instanceof Error ? error.message : 'Error al guardar los datos'
-            });
-        } finally {
+
+            // Verificamos si el error es de tipo PostgrestError
+            if (typeof error === 'object' && error !== null && 'code' in error) {
+                const supabaseError = error as PostgrestError;
+
+                if (supabaseError.code === '23505') {  // Código de error de clave duplicada en PostgreSQL
+                    setStatus({
+                        type: 'error',
+                        message: 'Ya guardaste un microcuento. Solo puedes guardar uno.'
+                    });
+                } else {
+                    setStatus({
+                        type: 'error',
+                        message: supabaseError.message || 'Ocurrió un error inesperado.'
+                    });
+                }
+            } else {
+                setStatus({
+                    type: 'error',
+                    message: 'Ocurrió un error inesperado. Inténtalo de nuevo más tarde.'
+                });
+            }
+        }
+        finally {
             setIsLoading(false);
         }
     };
@@ -348,7 +367,7 @@ export default function MicroStoryForm() {
                                         <FormControl>
                                             <Input
                                                 type="file"
-                                                accept="image/jpeg,image/png,image/webp"
+                                                accept="image/jpeg, image/jpg"
                                                 onChange={(e) => {
                                                     const files = e.target.files;
                                                     if (files && files.length > 0) {
