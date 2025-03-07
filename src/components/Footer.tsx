@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { FaTiktok, FaInstagram, FaYoutube, FaMapMarkerAlt, FaEnvelope } from 'react-icons/fa';
+import { FaTiktok, FaInstagram, FaYoutube, FaEnvelope } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
 const socialLinks = [
@@ -33,13 +33,10 @@ export default function Footer() {
                         className="text-center md:text-left"
                     >
                         <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-verde-goodkidz to-verde-goodkidz/70">
-                            Good Kidz
+                            GOOD KIDZ
                         </h3>
                         <p className="mt-4 text-gray-300">Construyendo un futuro brillante</p>
-                        <div className="flex items-center justify-center md:justify-start mt-4 text-gray-300">
-                            <FaMapMarkerAlt className="mr-2" />
-                            <p>Calle 12, Medellín</p>
-                        </div>
+
                     </motion.div>
 
                     <motion.div
@@ -95,7 +92,18 @@ export default function Footer() {
                     transition={{ delay: 0.6 }}
                     className="mt-12 pt-8 border-t border-gray-700 text-center text-gray-400"
                 >
-                    <p>&copy; {new Date().getFullYear()} Good Kidz. Todos los derechos reservados.</p>
+                    <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4">
+                        <p>&copy; {new Date().getFullYear()} Good Kidz. Todos los derechos reservados.</p>
+                        <span className="hidden md:inline-block">•</span>
+                        <Link
+                            href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/web%20files//politica_datos.pdf"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-verde-goodkidz transition-colors hover:underline"
+                        >
+                            Política de Tratamiento de Datos
+                        </Link>
+                    </div>
                 </motion.div>
             </div>
         </footer>

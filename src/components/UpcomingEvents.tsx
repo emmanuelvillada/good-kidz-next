@@ -4,8 +4,6 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
 import { motion } from "framer-motion";
 import { Calendar, MapPin } from 'lucide-react';
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
 import Image from "next/image";
 import { StaticImageData } from "next/image";
 import { Slider } from "./ui/Slider";
@@ -18,6 +16,7 @@ interface Event {
     location: string;
     description?: string;
     file?: StaticImageData | string;
+    link: string;
 }
 
 export default function UpcomingEvents() {
@@ -77,7 +76,7 @@ export default function UpcomingEvents() {
                     className="text-center mb-16"
                 >
                     <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-                        Próximos Eventos
+                        VEN Y DESCUBRE...
                     </h2>
                     <div className="w-24 h-1 bg-verde-goodkidz mx-auto mb-6"></div>
                 </motion.div>
@@ -130,7 +129,7 @@ export default function UpcomingEvents() {
                                                         <div className="flex items-center text-gray-500">
                                                             <Calendar className="w-4 h-4 mr-2" />
                                                             <span className="text-sm">
-                                                                {format(new Date(event.date), 'PPP', { locale: es })}
+                                                                {event.date}
                                                             </span>
                                                         </div>
                                                         <div className="flex items-center text-gray-500">
@@ -146,8 +145,11 @@ export default function UpcomingEvents() {
                                                         className="w-full h-10 rounded-full bg-verde-goodkidz hover:bg-verde-goodkidz/90 
                                                         text-white shadow-md hover:shadow-lg 
                                                         transition-all duration-300 hover:scale-[1.02]"
+                                                        onClick={() => {
+                                                            window.location.href = event.link;
+                                                        }}
                                                     >
-                                                        Más Información
+                                                        Conoce más
                                                     </Button>
                                                 </div>
                                             </div>

@@ -19,7 +19,7 @@ const MicroStorySchema = z.object({
         .min(1, 'La edad debe tener al menos 1 caracter')
         .refine((value) => /^[0-9]+$/.test(value), 'La edad debe ser un número')
         //edad minima 6 y maxima 10
-        .refine((value) => parseInt(value) >= 6 && parseInt(value) <= 10, 'La edad debe estar entre 6 y 10'),
+        .refine((value) => parseInt(value) >= 6 && parseInt(value) <= 11, 'La edad debe estar entre 6 y 11 años'),
     phone: z.string()
         .min(10, 'El teléfono debe tener al menos 10 caracteres')
         .max(15, 'El teléfono no puede exceder los 15 caracteres'),
@@ -33,8 +33,8 @@ const MicroStorySchema = z.object({
         .refine((file) => file?.length === 1, "La imagen es requerida")
         .refine((file) => file?.[0]?.size <= 5000000, "La imagen no puede exceder 5MB")
         .refine(
-            (file) => ['image/jpeg', 'image/png', 'image/webp'].includes(file?.[0]?.type),
-            "Solo se permiten archivos .jpg, .png y .webp"
+            (file) => ['image/jpeg', 'image/jpg'].includes(file?.[0]?.type),
+            "Solo se permiten archivos .jpg, .jpeg"
         ),
     file2: z.any()
         .refine((file) => file?.length === 1, "El PDF es requerido")
@@ -44,6 +44,7 @@ const MicroStorySchema = z.object({
             "Solo se permiten archivos .pdf"
         ),
     terms: z.boolean().refine((value) => value, 'Debes aceptar los términos y condiciones'),
+    policy: z.boolean().refine((value) => value, 'Debes aceptar la política de tratamiento de datos'),
 
 });
 

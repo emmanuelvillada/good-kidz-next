@@ -58,7 +58,8 @@ export default function MicroStoryForm() {
             attendant_name: '',
             file1: null,
             file2: null,
-            terms: false
+            terms: false,
+            policy: false
         }
     });
 
@@ -87,26 +88,35 @@ export default function MicroStoryForm() {
                 throw new Error("Por favor, sube ambos archivos");
             }
 
+            //clean the name and the title for files names
+            const sanitizedName = data.name.replace(/[^a-zA-Z0-9]/g, '');
+            const sanitizedTitle = data.title.replace(/[^a-zA-Z0-9]/g, '');
+
             // Upload image
             const file1 = data.file1[0];
             const fileExt = file1.name.split('.').pop();
-            const fileName = `${Math.random().toString(36).substring(2) + data.name + data.title + 'imagen'}.${fileExt}`;
+            const fileName = `${Math.random().toString(36).substring(2) + '-' + sanitizedName + '-' + sanitizedTitle + '-imagen'}.${fileExt}`;
             const file2 = data.file2[0];
             const fileExt2 = file2.name.split('.').pop();
-            const fileName2 = `${Math.random().toString(36).substring(2) + data.name + data.title + 'pdf'}.${fileExt2}`;
+            const fileName2 = `${Math.random().toString(36).substring(2) + '-' + sanitizedName + '-' + sanitizedTitle + '-pdf'}.${fileExt2}`;
 
             const { error: uploadError, data: uploadData } = await supabase.storage
                 .from('micro-stories')
-                .upload(fileName, file1);
+                .upload(fileName, file1, {
+                    cacheControl: '3600',
+                    upsert: false
+                });
 
             const { error: uploadError2, data: uploadData2 } = await supabase.storage
                 .from('micro-stories')
-                .upload(fileName2, file2);
-
+                .upload(fileName2, file2, {
+                    cacheControl: '3600',
+                    upsert: false
+                });
 
             if (uploadError || uploadError2) {
                 console.error('Upload Error:', uploadError, uploadError2);
-                throw new Error("Error al subir los archivos");
+                throw new Error(`Error al subir los archivos: ${uploadError?.message || uploadError2?.message}`);
             }
 
             // Save story data
@@ -114,8 +124,8 @@ export default function MicroStoryForm() {
                 .from("micro_stories")
                 .insert([{
                     title: data.title,
-                    file_image: uploadData.path,
-                    file_pdf: uploadData2.path,
+                    file_image: uploadData.fullPath,
+                    file_pdf: uploadData2.fullPath,
                     name: data.name,
                     email: data.email,
                     age: data.age,
@@ -164,9 +174,9 @@ export default function MicroStoryForm() {
             <Card>
                 <CardHeader>
                     <CardTitle className="text-4xl text-gray-800 py-4">Formulario Microcuento</CardTitle>
-                    <CardDescription className="text-gray-600 ">Rellena la informacion del menor de edad, su representante legal y los archivos requeridos,
-                        para participar del Festival de Microcuento Ilustrado. <br />
-                        <b>Recuerda este formulario debe ser diligenciado por el representante legal del menor.</b></CardDescription>
+                    <CardDescription className="text-gray-600 ">Completa el formulario con la información del participante, la de su representante legal y
+                        los archivos requeridos para participar en el 1er Festival de Microcuento Infantil Ilustrado -Guardianes del Planeta Verde- <br />
+                        <b>Recuerda este formulario debe ser diligenciado por el representante legal del participante.</b></CardDescription>
                 </CardHeader>
                 <CardContent>
                     <Form {...form}>
@@ -193,7 +203,7 @@ export default function MicroStoryForm() {
                                 name="name"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Nombre del menor</FormLabel>
+                                        <FormLabel>Participante</FormLabel>
                                         <FormControl>
                                             <Input
                                                 placeholder="Escribe tu nombre"
@@ -204,6 +214,23 @@ export default function MicroStoryForm() {
                                     </FormItem>
                                 )}
                             />
+                            <FormField
+                                control={form.control}
+                                name="age"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Edad del participante</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder="Escribe tu edad"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
 
                             <FormField
                                 control={form.control}
@@ -222,22 +249,6 @@ export default function MicroStoryForm() {
                                 )}
                             />
 
-                            <FormField
-                                control={form.control}
-                                name="age"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Edad del menor</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                placeholder="Escribe tu edad"
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
 
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -311,7 +322,7 @@ export default function MicroStoryForm() {
                                         <FormItem>
                                             <FormLabel className="flex items-center gap-2">
                                                 <Phone className="w-4 h-4" />
-                                                Telefono del representante
+                                                Teléfono del representante
                                             </FormLabel>
                                             <FormControl>
                                                 <Input
@@ -332,7 +343,7 @@ export default function MicroStoryForm() {
                                     <FormItem>
                                         <FormLabel className="flex items-center gap-2">
                                             <Upload className="w-4 h-4" />
-                                            Imagen del Microcuento
+                                            Ilustración del Microcuento
                                         </FormLabel>
                                         <FormControl>
                                             <Input
@@ -349,7 +360,7 @@ export default function MicroStoryForm() {
                                             />
                                         </FormControl>
                                         <FormDescription>
-                                            Solo se permiten archivos .jpg, .png y .webp
+                                            Solo se permiten archivos .jpg
                                         </FormDescription>
                                         <FormMessage />
 
@@ -429,12 +440,31 @@ export default function MicroStoryForm() {
                                     </FormDescription>
                                 </div>
                             </FormItem>
+                            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                                <FormControl>
+                                    <input
+                                        type="checkbox"
+                                        required
+                                        id="policy"
+                                        {...form.register('policy', { required: true })}
+                                    />
+                                </FormControl>
+                                <div className="space-y-1 leading-none">
+                                    <FormLabel htmlFor="policy">
+                                        Tratamiento de datos personales
+                                    </FormLabel>
+                                    <FormDescription>
+                                        Lei y acepto la <a href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/web%20files//politica_datos.pdf" target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline">politica de tratamiento de datos personales.</a>
+                                    </FormDescription>
+                                </div>
+                            </FormItem>
 
                             <FormItem className="mt-6">
                                 <div className="text-center">
 
                                     <FormDescription className="mt-2">
-                                        Al hacer clic en &quot;Guardar Historia&quot;, aceptas los <a href="/terminos-y-condiciones" className="text-verde-goodkidz underline">Términos y Condiciones</a> del Festival de Microcuento Ilustrado.
+                                        Al hacer clic en &quot;Guardar Historia&quot;, aceptas los
+                                        <a href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/web%20files//terminos-condiciones-microcuento.pdf" target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline">Términos y Condiciones</a> del Festival de Microcuento Ilustrado.
                                     </FormDescription>
                                 </div>
                                 <FormMessage />

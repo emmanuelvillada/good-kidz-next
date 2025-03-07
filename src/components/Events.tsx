@@ -72,7 +72,7 @@ export default function EventCarousel() {
                     className="text-center mb-16 h-full"
                 >
                     <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-                        Nuestros Eventos
+                        AL COMPÁS DE LAS ACCIONES
                     </h2>
                     <div className="w-24 h-1 bg-verde-goodkidz mx-auto mb-6"></div>
                 </motion.div>

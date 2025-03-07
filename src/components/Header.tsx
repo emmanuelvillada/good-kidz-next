@@ -7,18 +7,23 @@ import { Menu } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from '@/public/logo.png';
 import SuscribeModal from './form/SuscribeForm';
+import { useRouter, usePathname } from 'next/navigation';
 
 const navLinks = [
   { href: "#about", label: "Sobre Nosotros" },
   { href: "#events", label: "Eventos" },
-  { href: "#help", label: "Cómo Ayudar" },
+  // { href: "/#help", label: "Cómo Ayudar" },
   { href: "microstory", label: "Formulario Microcuento" },
 ];
+
+
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 0);
@@ -31,8 +36,35 @@ export default function Header() {
     setIsMenuOpen(false);
   };
 
+
+  const router = useRouter();
+  const pathname = usePathname();
+  const [pendingHash, setPendingHash] = useState("");
+
+  useEffect(() => {
+    if (pendingHash) {
+      setTimeout(() => {
+        window.location.hash = pendingHash; // Forzar la actualización del hash
+        setPendingHash(""); // Limpiar el estado
+      }, 300); // Espera a que cargue la página antes de hacer scroll
+    }
+  }, [pathname, pendingHash]);
+
+  const handleNavigation = (href: string) => {
+    if (href.startsWith("#")) {
+      if (pathname !== "/") {
+        setPendingHash(href); // Guarda el hash para hacer scroll después
+        router.push("/"); // Primero navega a la home
+      } else {
+        window.location.hash = href; // Si ya estamos en home, actualiza el hash directamente
+      }
+    } else {
+      router.push(href);
+    }
+  };
+
   return (
-    <header
+    <nav
       className={`
       fixed top-0 z-50 lg:w-full
       py-3 px-4 md:px-6 
@@ -55,7 +87,7 @@ export default function Header() {
               priority
             />
             <h1 className="text-lg md:text-xl font-bold text-verde-goodkidz hidden sm:block">
-              Good Kidz
+              GOOD KIDZ
             </h1>
           </div>
 
@@ -65,7 +97,12 @@ export default function Header() {
               <a
                 key={link.href}
                 href={link.href}
-                className="text-gray-700 hover:text-verde-goodkidz transition-colors duration-200 text-sm font-medium"
+                //navigate to the home if the link has a # else navigate to the other page
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavigation(link.href);
+                }}
+                className="text-gray-700 hover:text-verde-goodkidz transition-colors duration-200 text-sm font-medium cursor-pointer"
               >
                 {link.label}
               </a>
@@ -75,7 +112,7 @@ export default function Header() {
                         shadow-md hover:shadow-lg transition-all duration-200"
               onClick={() => setIsModalOpen(true)}
             >
-              Unete a nosotros
+              Únete a nosotros
             </Button>
           </nav>
 
@@ -124,7 +161,7 @@ export default function Header() {
         </AnimatePresence>
       </div>
       <SuscribeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-    </header>
+    </nav>
 
   );
 }
