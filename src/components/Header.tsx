@@ -10,8 +10,8 @@ import SuscribeModal from './form/SuscribeForm';
 import { useRouter, usePathname } from 'next/navigation';
 
 const navLinks = [
-  { href: "#about", label: "Sobre Nosotros" },
-  { href: "#events", label: "Eventos" },
+  // { href: "#about", label: "Sobre Nosotros" },
+  { href: "#upcoming-events", label: "VEN Y DESCUBRE..." },
   // { href: "/#help", label: "Cómo Ayudar" },
   { href: "microstory", label: "Formulario Microcuento" },
 ];
