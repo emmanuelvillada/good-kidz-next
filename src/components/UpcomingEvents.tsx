@@ -48,8 +48,6 @@ export default function UpcomingEvents() {
         fetchEvents();
     }, []);
 
-
-
     if (isLoading) {
         return (
             <div className="flex justify-center items-center min-h-[400px]">
@@ -93,63 +91,71 @@ export default function UpcomingEvents() {
                         <p className="text-gray-600">No hay eventos próximos programados.</p>
                     </motion.div>
                 ) : (
-                    <div className="relative " id="upcoming-events">
-                        <Slider >
-                            {events.map((event, index) => (
-                                <div key={event.id} className="px-4">
-                                    <motion.div
-                                        initial={{ opacity: 0, y: 20 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: index * 0.1, duration: 0.3 }}
-                                        className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 h-full"
-                                    >
-                                        {event.file && (
-                                            <div className="relative aspect-video w-full md:h-[400px] ">
-                                                <Image
-                                                    src={event.file}
-                                                    alt={event.title}
-                                                    layout="fill"
-                                                    className="object-cover"
-                                                    priority={index === 0}
-                                                />
-                                            </div>
-                                        )}
-                                        <div className="p-6 flex flex-col h-[calc(100%-aspect-video)]">
-                                            <h3 className="text-xl font-bold text-gray-800 mb-3 line-clamp-2">
-                                                {event.title}
-                                            </h3>
-                                            {event.description && (
-                                                <p className="text-gray-600 mb-4 line-clamp-2">
-                                                    {event.description}
-                                                </p>
+                    <div className="relative" id="upcoming-events">
+                        {/* Aumenté la altura del contenedor del Slider */}
+                        <div className="pb-16">
+                            <Slider>
+                                {events.map((event, index) => (
+                                    <div key={event.id} className="px-4 pb-12"> {/* Aumentado a pb-12 */}
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 20 }}
+                                            whileInView={{ opacity: 1, y: 0 }}
+                                            viewport={{ once: true }}
+                                            transition={{ delay: index * 0.1, duration: 0.3 }}
+                                            className=" bg-white rounded-xl shadow-lg overflow-visible hover:shadow-xl transition-all duration-300"
+
+                                        >
+                                            {event.file && (
+                                                <div className="relative aspect-video w-full md:h-[300px]"> {/* Reducida altura */}
+                                                    <Image
+                                                        src={event.file}
+                                                        alt={event.title}
+                                                        layout="fill"
+                                                        className="object-cover"
+                                                        priority={index === 0}
+                                                    />
+                                                </div>
                                             )}
-                                            <div className="space-y-2 mb-4">
-                                                <div className="flex items-center text-gray-500">
-                                                    <Calendar className="w-4 h-4 mr-2" />
-                                                    <span className="text-sm">
-                                                        {format(new Date(event.date), 'PPP', { locale: es })}
-                                                    </span>
+                                            <div className="p-6">
+                                                <div className="space-y-4 mb-8"> {/* Aumentado a mb-8 */}
+                                                    <h3 className="text-xl font-bold text-gray-800 line-clamp-2">
+                                                        {event.title}
+                                                    </h3>
+                                                    {event.description && (
+                                                        <p className="text-gray-600 line-clamp-2">
+                                                            {event.description}
+                                                        </p>
+                                                    )}
+                                                    <div className="space-y-2">
+                                                        <div className="flex items-center text-gray-500">
+                                                            <Calendar className="w-4 h-4 mr-2" />
+                                                            <span className="text-sm">
+                                                                {format(new Date(event.date), 'PPP', { locale: es })}
+                                                            </span>
+                                                        </div>
+                                                        <div className="flex items-center text-gray-500">
+                                                            <MapPin className="w-4 h-4 mr-2" />
+                                                            <span className="text-sm">{event.location}</span>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div className="flex items-center text-gray-500">
-                                                    <MapPin className="w-4 h-4 mr-2" />
-                                                    <span className="text-sm">{event.location}</span>
+
+                                                {/* Contenedor separado para el botón */}
+                                                <div className="relative mb-4">
+                                                    <Button
+                                                        className="w-full h-10 rounded-full bg-verde-goodkidz hover:bg-verde-goodkidz/90 
+                                                        text-white shadow-md hover:shadow-lg 
+                                                        transition-all duration-300 hover:scale-[1.02]"
+                                                    >
+                                                        Más Información
+                                                    </Button>
                                                 </div>
                                             </div>
-                                            <div className="mt-auto">
-                                                <Button
-                                                    className="w-80 hover:scale-110  bg-verde-goodkidz hover:bg-verde-goodkidz/90 
-                                                            text-white shadow-md hover:shadow-lg 
-                                                            transition-all duration-300"
-                                                >
-                                                    Más Información
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    </motion.div>
-                                </div>
-                            ))}
-                        </Slider>
+                                        </motion.div>
+                                    </div>
+                                ))}
+                            </Slider>
+                        </div>
                     </div>
                 )}
             </div>

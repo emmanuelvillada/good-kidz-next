@@ -35,7 +35,7 @@ export default function About() {
     }, []);
 
     return (
-        <section id="about" className="pt-24 bg-gradient-to-b from-white to-gray-50 ">
+        <section id="about" className="mt-40 bg-gradient-to-b from-white to-gray-50 ">
             <div className="container mx-auto px-6 max-w-7xl">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}

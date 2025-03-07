@@ -41,7 +41,7 @@ export default function MicroStoryForm() {
     const [previewUrls, setPreviewUrls] = useState<{
         file1?: string | null,
         file2?: string | null,
-        file3?: string | null
+
     }>({});
 
     // React Hook Form setup with Zod validation
@@ -51,14 +51,14 @@ export default function MicroStoryForm() {
             title: '',
             name: '',
             email: '',
-            age: 0,
+            age: '',
             phone: '',
             address: '',
             city: '',
             attendant_name: '',
             file1: null,
             file2: null,
-            file3: null
+            terms: false
         }
     });
 
@@ -83,20 +83,17 @@ export default function MicroStoryForm() {
 
         try {
             // Verify files are present
-            if (!data.file1 || !data.file1[0] || !data.file2 || !data.file2[0] || !data.file3 || !data.file3[0]) {
+            if (!data.file1 || !data.file1[0] || !data.file2 || !data.file2[0]) {
                 throw new Error("Por favor, sube ambos archivos");
             }
 
             // Upload image
             const file1 = data.file1[0];
             const fileExt = file1.name.split('.').pop();
-            const fileName = `${Math.random().toString(36).substring(2) + data.name}.${fileExt}`;
+            const fileName = `${Math.random().toString(36).substring(2) + data.name + data.title + 'imagen'}.${fileExt}`;
             const file2 = data.file2[0];
             const fileExt2 = file2.name.split('.').pop();
-            const fileName2 = `${Math.random().toString(36).substring(2) + data.name}.${fileExt2}`;
-            const file3 = data.file2[0];
-            const fileExt3 = file2.name.split('.').pop();
-            const fileName3 = `${Math.random().toString(36).substring(2) + data.name}.${fileExt3}`;
+            const fileName2 = `${Math.random().toString(36).substring(2) + data.name + data.title + 'pdf'}.${fileExt2}`;
 
             const { error: uploadError, data: uploadData } = await supabase.storage
                 .from('micro-stories')
@@ -106,12 +103,9 @@ export default function MicroStoryForm() {
                 .from('micro-stories')
                 .upload(fileName2, file2);
 
-            const { error: uploadError3, data: uploadData3 } = await supabase.storage
-                .from('micro-stories')
-                .upload(fileName3, file3);
 
             if (uploadError || uploadError2) {
-                console.error('Upload Error:', uploadError, uploadError2, uploadError3);
+                console.error('Upload Error:', uploadError, uploadError2);
                 throw new Error("Error al subir los archivos");
             }
 
@@ -122,7 +116,6 @@ export default function MicroStoryForm() {
                     title: data.title,
                     file_image: uploadData.path,
                     file_pdf: uploadData2.path,
-                    file_authorization: uploadData3?.path,
                     name: data.name,
                     email: data.email,
                     age: data.age,
@@ -140,7 +133,7 @@ export default function MicroStoryForm() {
             // Success handling
             setStatus({
                 type: 'success',
-                message: '¡Historia creada con éxito!'
+                message: 'Microcuento ' + data.title + ' guardado con éxito!'
             });
 
             // Reset form
@@ -160,6 +153,8 @@ export default function MicroStoryForm() {
     };
 
 
+
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -168,8 +163,10 @@ export default function MicroStoryForm() {
         >
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-4xl">Formulario Microcuento</CardTitle>
-                    <CardDescription>Formulario para inscribirse en nuestro primer evento de microcuento</CardDescription>
+                    <CardTitle className="text-4xl text-gray-800 py-4">Formulario Microcuento</CardTitle>
+                    <CardDescription className="text-gray-600 ">Rellena la informacion del menor de edad, su representante legal y los archivos requeridos,
+                        para participar del Festival de Microcuento Ilustrado. <br />
+                        <b>Recuerda este formulario debe ser diligenciado por el representante legal del menor.</b></CardDescription>
                 </CardHeader>
                 <CardContent>
                     <Form {...form}>
@@ -196,7 +193,7 @@ export default function MicroStoryForm() {
                                 name="name"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Nombre</FormLabel>
+                                        <FormLabel>Nombre del menor</FormLabel>
                                         <FormControl>
                                             <Input
                                                 placeholder="Escribe tu nombre"
@@ -230,7 +227,7 @@ export default function MicroStoryForm() {
                                 name="age"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Edad</FormLabel>
+                                        <FormLabel>Edad del menor</FormLabel>
                                         <FormControl>
                                             <Input
                                                 placeholder="Escribe tu edad"
@@ -297,6 +294,7 @@ export default function MicroStoryForm() {
                                             </FormLabel>
                                             <FormControl>
                                                 <Input
+                                                    placeholder="Escribe tu nombre"
 
                                                     {...field}
                                                 />
@@ -317,7 +315,7 @@ export default function MicroStoryForm() {
                                             </FormLabel>
                                             <FormControl>
                                                 <Input
-
+                                                    placeholder="Escribe tu telefono"
                                                     {...field}
                                                 />
                                             </FormControl>
@@ -395,26 +393,7 @@ export default function MicroStoryForm() {
                                         <FormDescription>
                                             Solo se permiten archivos .pdf
                                         </FormDescription>
-                                        <FormMessage />
-                                        <FormControl>
-                                            <Input
-                                                type="file"
-                                                accept="application/pdf"
-                                                onChange={(e) => {
-                                                    const files = e.target.files;
-                                                    if (files && files.length > 0) {
-                                                        // Directly set the files
-                                                        field.onChange(files);
-                                                        handleFilePreview(files[0], 'file3');
-                                                    }
-                                                }}
-                                            />
-                                        </FormControl>
-                                        <FormDescription>
-                                            Solo se permiten archivos .pdf
-                                        </FormDescription>
-                                        <FormMessage />
-
+                                        <FormMessage></FormMessage>
 
                                         {previewUrls.file2 && (
                                             <div className="mt-2 relative aspect-video rounded-lg overflow-hidden">
@@ -429,6 +408,37 @@ export default function MicroStoryForm() {
                                     </FormItem>
                                 )}
                             />
+
+                            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                                <FormControl>
+                                    <input
+                                        type="checkbox"
+                                        required
+                                        id="terms"
+                                        {...form.register('terms', { required: true })}
+                                    />
+                                </FormControl>
+                                <div className="space-y-1 leading-none">
+                                    <FormLabel htmlFor="terms">
+                                        Términos y condiciones
+                                    </FormLabel>
+                                    <FormDescription>
+                                        En mi condición de representante legal del niño o niña identificada previamente, manifiesto que mediante
+                                        el diligenciamiento y envío del presente formulario autorizo expresamente su participación en el &quot;1er
+                                        Primer Festival de Microcuento Infantil Ilustrado mi planeta Good Kidz 2025: PLANETA VERDE&quot;.
+                                    </FormDescription>
+                                </div>
+                            </FormItem>
+
+                            <FormItem className="mt-6">
+                                <div className="text-center">
+
+                                    <FormDescription className="mt-2">
+                                        Al hacer clic en &quot;Guardar Historia&quot;, aceptas los <a href="/terminos-y-condiciones" className="text-verde-goodkidz underline">Términos y Condiciones</a> del Festival de Microcuento Ilustrado.
+                                    </FormDescription>
+                                </div>
+                                <FormMessage />
+                            </FormItem>
 
                             <AnimatePresence>
                                 {status.message && (
@@ -446,7 +456,7 @@ export default function MicroStoryForm() {
 
                             <Button
                                 type="submit"
-                                className="w-full"
+                                className="w-full bg-verde-goodkidz hover:bg-verde-goodkidz/90"
                                 disabled={isLoading}
                             >
                                 {isLoading ? (
