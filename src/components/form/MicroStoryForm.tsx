@@ -194,14 +194,14 @@ export default function MicroStoryForm() {
                 <CardHeader>
                     <CardTitle className="text-4xl text-gray-800 py-4">Formulario Microcuento</CardTitle>
                     <CardDescription className="text-gray-600 ">Completa el formulario con la información del participante, la de su representante legal y
-                        los archivos requeridos para participar en el 1er Festival de Microcuento Infantil Ilustrado -Guardianes del Planeta Verde- <br /> <br />
+                        los archivos requeridos para unirse al <br /> 1er Festival de Microcuento Infantil Ilustrado -Guardianes del Planeta Verde-. <br /> <br />
                         <b>Ten en cuenta antes de subir tu información:</b>
                         <ul className="list-disc list-inside">
                             <li>La ilustración del microcuento debe estar en formato .jpg.</li>
-                            <li>La ilustración debe serr tamaño carta y contar con 150dpi.</li>
+                            <li>La ilustración debe ser tamaño carta y contar con 150dpi.</li>
                             <li>El microcuento debe estar en formato .pdf.</li>
-                            <li>La longitud maxima del microcuento es de 250 palabras.</li>
-                            <li>Categorias permitidas: 6 a 7 años, 8 a 9 años, 10 a 11 años.</li>
+                            <li>La longitud máxima del microcuento es de 250 palabras.</li>
+                            <li>Categorías permitidas: 6 a 7 años, 8 a 9 años, 10 a 11 años.</li>
                         </ul>
                         <br />
                         <b>Recuerda, este formulario debe ser diligenciado por el o la representante legal del participante.</b></CardDescription>
@@ -371,7 +371,7 @@ export default function MicroStoryForm() {
                                     <FormItem>
                                         <FormLabel className="flex items-center gap-2">
                                             <Upload className="w-4 h-4" />
-                                            Ilustración del Microcuento
+                                            Ilustración del microcuento
                                         </FormLabel>
                                         <FormControl>
                                             <Input
@@ -482,7 +482,7 @@ export default function MicroStoryForm() {
                                         Tratamiento de datos personales
                                     </FormLabel>
                                     <FormDescription>
-                                        Leí y acepto la <a href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/web%20files//politica_datos.pdf" target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline">política de tratamiento de datos personales.</a>
+                                        Acepto la <a href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/web%20files//politica_datos.pdf" target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline">política de tratamiento de datos personales.</a>
                                     </FormDescription>
                                 </div>
                             </FormItem>
