@@ -1,25 +1,23 @@
-'use client';
-
-import { useState } from 'react';
-import Header from '@/components/Header';
-import HomeSection from '@/components/HomeSection';
-import ConoceMas from '@/components/ConoceMas';
-
-
-
+import Hero from '@/components/Hero';
+// import About from '@/components/About';
+// import Contributors from '@/components/Contributors';
+// import Blog from '@/components/Blog';
+import UpcomingEvents from '@/components/UpcomingEvents';
+// import Help from '@/components/Help';
+import Events from '@/components/Events';
 
 export default function Home() {
-  const [activeSection, setActiveSection] = useState('homeSection');  // Estado inicial para Home Section
 
   return (
     <>
-      <Header activeSection={activeSection} setActiveSection={setActiveSection} />
 
-      <main >
-
-        {activeSection === 'homeSection' && <HomeSection setActiveSection={setActiveSection} />}
-        {activeSection === 'conoceMas' && <ConoceMas />}
-      </main>
+      <Hero />
+      <UpcomingEvents />
+      {/* <About /> */}
+      <Events />
+      {/* <Blog /> */}
+      {/* <Help /> */}
+      {/* <Contributors /> */}
     </>
   );
 }

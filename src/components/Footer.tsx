@@ -1,52 +1,110 @@
+'use client';
 import Link from 'next/link';
-import {  FaTiktok, FaYoutube } from 'react-icons/fa';
+import { FaTiktok, FaInstagram, FaYoutube, FaEnvelope } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 
+const socialLinks = [
+    {
+        href: "https://www.tiktok.com/@fundaciongoodkidz",
+        icon: FaTiktok,
+        label: "TikTok"
+    },
+    {
+        href: "https://www.instagram.com/fundaciongoodkidz",
+        icon: FaInstagram,
+        label: "Instagram"
+    },
+    {
+        href: "https://www.youtube.com/@fundaciongoodkidz",
+        icon: FaYoutube,
+        label: "YouTube"
+    }
+];
 
 export default function Footer() {
     return (
-        <footer className="bg-black text-white p-4">
-            <div className="container mx-auto flex flex-col items-center space-y-4">
-                {/* Texto de derechos reservados */}
-                <p className="text-sm   text-center">
-                    © 2024 Fundación Good Kidz. Todos los derechos reservados.
-                </p>
+        <footer className="bg-[#2E2D33] text-white py-12 mt-auto">
+            <div className="container mx-auto px-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-center md:text-left"
+                    >
+                        <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-verde-goodkidz to-verde-goodkidz/70">
+                            GOOD KIDZ
+                        </h3>
+                        {/* <p className="mt-4 text-gray-300">Construyendo un futuro brillante</p> */}
 
-                {/* Enlaces a términos y condiciones y política de privacidad */}
-                <div className="flex space-x-4 text-sm">
-                <Link href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/sign/web%20files/politica_datos.pdf?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ3ZWIgZmlsZXMvcG9saXRpY2FfZGF0b3MucGRmIiwiaWF0IjoxNzMwNzczNTI5LCJleHAiOjIwNDYxMzM1Mjl9.NQcvjA5Vhim8letrU4rq-ylIjyWLfgEdKMpJ31VV3B4"  target="_blank" rel="noopener noreferrer" className="hover:text-green-500"  >Terminos y condiciones</Link>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 }}
+                        className="text-center"
+                    >
+                        <h4 className="text-lg font-semibold mb-4">Contáctanos</h4>
+                        <div className="flex items-center justify-center text-gray-300 hover:text-verde-goodkidz transition-colors">
+                            <FaEnvelope className="mr-2" />
+                            <a href="mailto:info@goodkidz.org" className="hover:underline">
+                                info@goodkidz.org
+                            </a>
+                        </div>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.4 }}
+                        className="text-center md:text-right"
+                    >
+                        <h4 className="text-lg font-semibold mb-4">Síguenos</h4>
+                        <div className="flex justify-center md:justify-end space-x-6">
+                            {socialLinks.map((social) => (
+                                <motion.div
+                                    key={social.label}
+                                    whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    <Link
+                                        href={social.href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-gray-300 hover:text-verde-goodkidz transition-colors"
+                                        aria-label={`Síguenos en ${social.label}`}
+                                    >
+                                        <social.icon size={24} />
+                                    </Link>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </motion.div>
                 </div>
 
-                {/* Ícono de Instagram */}
-                <div className="flex justify-between space-x-4 ">
-                    <Link href="https://www.instagram.com/fundaciongoodkidz" target="_blank" rel="noopener noreferrer">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="feather feather-instagram text-white hover:text-green-500"
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.6 }}
+                    className="mt-12 pt-8 border-t border-gray-700 text-center text-gray-400"
+                >
+                    <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4">
+                        <p>&copy; {new Date().getFullYear()} Good Kidz. Todos los derechos reservados.</p>
+                        <span className="hidden md:inline-block">•</span>
+                        <Link
+                            href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/web%20files//politica_datos.pdf"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-verde-goodkidz transition-colors hover:underline"
                         >
-                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                            <line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line>
-                        </svg>
-                    </Link>
-
-                    {/* Ícono de TikTok */}
-                    <Link href="https://www.tiktok.com/@fundaciongoodkidz" target="_blank" rel="noopener noreferrer">
-                    <FaTiktok className="text-white hover:text-green-500 w-6 h-6" />
-                    </Link>
-
-                    {/* Ícono de YouTube */}
-                    <Link href="https://www.youtube.com/@fundaciongoodkidz" target="_blank" rel="noopener noreferrer">
-                    <FaYoutube className="text-white hover:text-green-500 w-6 h-6" />
-                    </Link>
-                </div>
+                            Política de Tratamiento de Datos.
+                        </Link>
+                    </div>
+                </motion.div>
             </div>
         </footer>
     );

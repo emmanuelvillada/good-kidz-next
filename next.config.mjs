@@ -1,3 +1,4 @@
+import { withNextVideo } from "next-video/process";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -7,8 +8,18 @@ const nextConfig = {
         hostname: '*.supabase.co',
         pathname: '/storage/v1/object/public/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.youtube.com',
+        pathname: '/**',
+      }
     ],
   },
 };
 
-export default nextConfig;
+export default withNextVideo(nextConfig);
