@@ -194,8 +194,17 @@ export default function MicroStoryForm() {
                 <CardHeader>
                     <CardTitle className="text-4xl text-gray-800 py-4">Formulario Microcuento</CardTitle>
                     <CardDescription className="text-gray-600 ">Completa el formulario con la información del participante, la de su representante legal y
-                        los archivos requeridos para participar en el 1er Festival de Microcuento Infantil Ilustrado -Guardianes del Planeta Verde- <br />
-                        <b>Recuerda este formulario debe ser diligenciado por el representante legal del participante.</b></CardDescription>
+                        los archivos requeridos para participar en el 1er Festival de Microcuento Infantil Ilustrado -Guardianes del Planeta Verde- <br /> <br />
+                        <b>Ten en cuenta antes de subir tu información:</b>
+                        <ul className="list-disc list-inside">
+                            <li>La ilustración del microcuento debe estar en formato .jpg.</li>
+                            <li>La ilustración debe serr tamaño carta y contar con 150dpi.</li>
+                            <li>El microcuento debe estar en formato .pdf.</li>
+                            <li>La longitud maxima del microcuento es de 250 palabras.</li>
+                            <li>Categorias permitidas: 6 a 7 años, 8 a 9 años, 10 a 11 años.</li>
+                        </ul>
+                        <br />
+                        <b>Recuerda, este formulario debe ser diligenciado por el o la representante legal del participante.</b></CardDescription>
                 </CardHeader>
                 <CardContent>
                     <Form {...form}>
@@ -345,7 +354,7 @@ export default function MicroStoryForm() {
                                             </FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    placeholder="Escribe tu telefono"
+                                                    placeholder="Escribe tu teléfono"
                                                     {...field}
                                                 />
                                             </FormControl>
@@ -454,8 +463,8 @@ export default function MicroStoryForm() {
                                     </FormLabel>
                                     <FormDescription>
                                         En mi condición de representante legal del niño o niña identificada previamente, manifiesto que mediante
-                                        el diligenciamiento y envío del presente formulario autorizo expresamente su participación en el &quot;1er
-                                        Primer Festival de Microcuento Infantil Ilustrado mi planeta Good Kidz 2025: PLANETA VERDE&quot;.
+                                        el diligenciamiento y envío del presente formulario autorizo expresamente su participación en el
+                                        &quot;1er Festival de Microcuento Infantil Ilustrado -Guardianes del Planeta Verde-&quot;.
                                     </FormDescription>
                                 </div>
                             </FormItem>
@@ -473,7 +482,7 @@ export default function MicroStoryForm() {
                                         Tratamiento de datos personales
                                     </FormLabel>
                                     <FormDescription>
-                                        Lei y acepto la <a href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/web%20files//politica_datos.pdf" target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline">politica de tratamiento de datos personales.</a>
+                                        Leí y acepto la <a href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/web%20files//politica_datos.pdf" target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline">política de tratamiento de datos personales.</a>
                                     </FormDescription>
                                 </div>
                             </FormItem>
@@ -483,7 +492,7 @@ export default function MicroStoryForm() {
 
                                     <FormDescription className="mt-2">
                                         Al hacer clic en &quot;Guardar Historia&quot;, aceptas los
-                                        <a href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/web%20files//terminos-condiciones-microcuento.pdf" target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline">Términos y Condiciones</a> del Festival de Microcuento Ilustrado.
+                                        <a href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/web%20files//terminos-condiciones-microcuento.pdf" target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline"> Términos y Condiciones</a> del 1er Festival de Microcuento Infantil Ilustrado -Guardianes del Planeta Verde-.
                                     </FormDescription>
                                 </div>
                                 <FormMessage />

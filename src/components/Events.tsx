@@ -98,7 +98,8 @@ export default function EventCarousel() {
                                         <div className="p-8 flex-1 flex flex-col justify-between">
                                             <div>
                                                 <h3 className="text-2xl font-bold text-gray-800 mb-3">{event.title}</h3>
-                                                <p className="text-gray-600 mb-4">{event.description}</p>
+
+                                                <p className="line-clamp-3 text-gray-600 mb-4 ">{event.description}</p>
                                             </div>
                                             <div className="flex items-center gap-2 text-gray-500 mt-auto">
                                                 <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

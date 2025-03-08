@@ -35,7 +35,7 @@ export default function Footer() {
                         <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-verde-goodkidz to-verde-goodkidz/70">
                             GOOD KIDZ
                         </h3>
-                        <p className="mt-4 text-gray-300">Construyendo un futuro brillante</p>
+                        {/* <p className="mt-4 text-gray-300">Construyendo un futuro brillante</p> */}
 
                     </motion.div>
 

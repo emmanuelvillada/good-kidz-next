@@ -153,7 +153,7 @@ export default function Header() {
                             shadow-md hover:shadow-lg transition-all duration-200 w-full"
                   onClick={() => setIsModalOpen(true)}
                 >
-                  Unete a nosotros
+                  Únete a nosotros
                 </Button>
               </nav>
             </motion.div>
