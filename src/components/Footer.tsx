@@ -101,7 +101,7 @@ export default function Footer() {
                             rel="noopener noreferrer"
                             className="hover:text-verde-goodkidz transition-colors hover:underline"
                         >
-                            Política de Tratamiento de Datos
+                            Política de Tratamiento de Datos.
                         </Link>
                     </div>
                 </motion.div>

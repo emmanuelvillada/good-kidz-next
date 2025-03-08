@@ -13,7 +13,7 @@ const navLinks = [
   // { href: "#about", label: "Sobre Nosotros" },
   { href: "#upcoming-events", label: "VEN Y DESCUBRE..." },
   // { href: "/#help", label: "Cómo Ayudar" },
-  { href: "microstory", label: "Formulario Microcuento" },
+  { href: "microstory", label: "FORMULARIO MICROCUENTO" },
 ];
 
 
@@ -112,7 +112,7 @@ export default function Header() {
                         shadow-md hover:shadow-lg transition-all duration-200"
               onClick={() => setIsModalOpen(true)}
             >
-              Únete a nosotros
+              ¿CÓMO TE PUEDES UNIR?
             </Button>
           </nav>
 
@@ -153,7 +153,7 @@ export default function Header() {
                             shadow-md hover:shadow-lg transition-all duration-200 w-full"
                   onClick={() => setIsModalOpen(true)}
                 >
-                  Únete a nosotros
+                  ¿CÓMO TE PUEDES UNIR?
                 </Button>
               </nav>
             </motion.div>

@@ -139,8 +139,9 @@ export default function UpcomingEvents() {
                                                             {event.title}
                                                         </h3>
                                                         {event.description && (
-                                                            <p className="text-gray-600 line-clamp-2">
+                                                            <p className="text-gray-600 line-clamp-2 w-[90%]  ">
                                                                 {event.description}
+
                                                             </p>
                                                         )}
                                                         <div className="space-y-2">
