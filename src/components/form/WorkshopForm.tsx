@@ -177,10 +177,10 @@ export default function WorkshopForm() {
                                                 </FormControl>
                                                 <div className="space-y-1 leading-none">
                                                     <FormLabel>
-                                                        ¿El niño tiene alguna discapacidad?
+                                                        ¿El niñ@ tiene alguna discapacidad?
                                                     </FormLabel>
                                                     <FormDescription className="text-xs text-gray-500">
-                                                        Marque esta casilla si el niño tiene alguna discapacidad o necesidad especial que debamos conocer.
+                                                        Marque esta casilla si el niñ@ tiene alguna discapacidad o necesidad especial que debamos conocer.
                                                     </FormDescription>
                                                     <FormMessage />
                                                 </div>
