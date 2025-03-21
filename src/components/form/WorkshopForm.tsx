@@ -13,7 +13,9 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
+    FormDescription,
 } from "@/components/ui/form";
+import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import {
     Card,
@@ -42,6 +44,8 @@ export default function WorkshopForm() {
             responsable_document: "",
             cellphone: "",
             email: "",
+            has_disability: false,
+            disability_details: "",
             authorization: false,
         },
         mode: "onBlur",
@@ -56,7 +60,7 @@ export default function WorkshopForm() {
 
             // Extrae todas las propiedades excepto 'authorization'
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { authorization, ...dataToSubmit } = data;
+            const { authorization, has_disability, ...dataToSubmit } = data;
 
             // Envío solo los datos relevantes
             const { error } = await supabase.from("workshop").insert(dataToSubmit);
@@ -159,7 +163,61 @@ export default function WorkshopForm() {
                                             )}
                                         />
                                     </div>
+
+                                    <FormField
+                                        control={form.control}
+                                        name="has_disability"
+                                        render={({ field }) => (
+                                            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border border-gray-200 p-4">
+                                                <FormControl>
+                                                    <Checkbox
+                                                        checked={field.value}
+                                                        onCheckedChange={field.onChange}
+                                                    />
+                                                </FormControl>
+                                                <div className="space-y-1 leading-none">
+                                                    <FormLabel>
+                                                        ¿El niño tiene alguna discapacidad?
+                                                    </FormLabel>
+                                                    <FormDescription className="text-xs text-gray-500">
+                                                        Marque esta casilla si el niño tiene alguna discapacidad o necesidad especial que debamos conocer.
+                                                    </FormDescription>
+                                                    <FormMessage />
+                                                </div>
+                                            </FormItem>
+                                        )}
+                                    />
+
+                                    {form.watch("has_disability") && (
+                                        <motion.div
+                                            initial={{ opacity: 0, height: 0 }}
+                                            animate={{ opacity: 1, height: "auto" }}
+                                            exit={{ opacity: 0, height: 0 }}
+                                        >
+                                            <FormField
+                                                control={form.control}
+                                                name="disability_details"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel>Detalles de la discapacidad <span className="text-red-500">*</span></FormLabel>
+                                                        <FormControl>
+                                                            <Textarea
+                                                                placeholder="Por favor, describa la discapacidad o necesidad especial para poder prepararnos adecuadamente"
+                                                                className="min-h-[100px]"
+                                                                {...field}
+                                                            />
+                                                        </FormControl>
+                                                        <FormDescription className="text-xs text-gray-500">
+                                                            Esta información nos ayudará a preparar el taller para atender correctamente las necesidades del niño.
+                                                        </FormDescription>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        </motion.div>
+                                    )}
                                 </div>
+
 
                                 <div className="p-4 bg-gray-50 rounded-lg space-y-4">
                                     <h3 className="text-sm font-medium text-gray-700">Información del Responsable</h3>
@@ -279,6 +337,6 @@ export default function WorkshopForm() {
                     )}
                 </CardContent>
             </Card>
-        </motion.div>
+        </motion.div >
     );
 }

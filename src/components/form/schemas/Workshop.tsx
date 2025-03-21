@@ -14,6 +14,8 @@ export const WorkshopSchema = z.object({
         message: 'el número de celular debe tener 10 caracteres',
     }),
     email: z.string().email(),
+    has_disability: z.boolean(),
+    disability_details: z.string().optional(),
     authorization: z.boolean().refine((value) => value === true, 'debes aceptar los terminos y condiciones para participar del taller'),
 });
 
