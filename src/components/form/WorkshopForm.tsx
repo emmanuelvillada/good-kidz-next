@@ -53,16 +53,21 @@ export default function WorkshopForm() {
         setSuccess(false);
 
         try {
-            const { error } = await supabase.from("workshop").insert(data);
 
+            // Extrae todas las propiedades excepto 'authorization'
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { authorization, ...dataToSubmit } = data;
+
+            // Envío solo los datos relevantes
+            const { error } = await supabase.from("workshop").insert(dataToSubmit);
             if (error) throw error;
 
             setSuccess(true);
             form.reset();
         } catch (err: unknown) {
-            if (err instanceof Error) {
-                setError(err.message);
-                console.error("Error submitting form:", err.message);
+            //verificar si el error es de tipo postgres
+            if ((err as { code: string }).code === "23505") {
+                setError("Ya has registrado tu participación en este taller");
             }
             else {
                 setError("Error al enviar el formulario");
@@ -80,12 +85,12 @@ export default function WorkshopForm() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="w-full max-w-md p-4 mx-auto bg-white rounded-md shadow-md"
+            className="w-full max-w-4xl p-4 mx-auto bg-white rounded-md shadow-md"
         >
-            <Card>
+            <Card className="space-y-4 ">
                 <CardHeader>
-                    <CardTitle>Formulario de Workshop</CardTitle>
-                    <CardDescription>Con este formulario te inscribes para asistir al taller aves, que se llevará a cabo el día xxxxxxxx.</CardDescription>
+                    <CardTitle className="text-4xl text-gray-800 py-4">Inscripción Taller</CardTitle>
+                    <CardDescription>Con este formulario te inscribes para asistir al taller.......</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <AnimatePresence>
@@ -116,7 +121,7 @@ export default function WorkshopForm() {
                                         name="name"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Nombre <span className="text-red-500">*</span></FormLabel>
+                                                <FormLabel>Nombre Completo <span className="text-red-500">*</span></FormLabel>
                                                 <FormControl>
                                                     <Input placeholder="Nombre completo" {...field} />
                                                 </FormControl>
@@ -133,7 +138,7 @@ export default function WorkshopForm() {
                                                 <FormItem>
                                                     <FormLabel>Edad <span className="text-red-500">*</span></FormLabel>
                                                     <FormControl>
-                                                        <Input type="number" min="1" max="120" placeholder="Edad" {...field} />
+                                                        <Input type="number" min="1" max="100" placeholder="Edad" {...field} />
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
