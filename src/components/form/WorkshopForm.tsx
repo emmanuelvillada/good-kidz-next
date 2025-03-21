@@ -201,7 +201,7 @@ export default function WorkshopForm() {
                                         name="cellphone"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Celular <span className="text-red-500">*</span></FormLabel>
+                                                <FormLabel>Celular del Responsable <span className="text-red-500">*</span></FormLabel>
                                                 <FormControl>
                                                     <Input placeholder="Número de celular" {...field} />
                                                 </FormControl>
@@ -215,7 +215,7 @@ export default function WorkshopForm() {
                                         name="email"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Correo <span className="text-red-500">*</span></FormLabel>
+                                                <FormLabel>Correo del Responsable <span className="text-red-500">*</span></FormLabel>
                                                 <FormControl>
                                                     <Input type="email" placeholder="ejemplo@correo.com" {...field} />
                                                 </FormControl>
@@ -243,7 +243,7 @@ export default function WorkshopForm() {
                                                 <p className="text-xs text-gray-500">
                                                     Al marcar esta casilla, confirmo que he leído y acepto los
                                                     <button type="button"
-                                                        className="text-blue-600 hover:underline ml-1"
+                                                        className="text-verde-goodkidz hover:underline ml-1"
                                                         onClick={() => alert("Aquí se mostrarían los términos y condiciones")}>
                                                         términos y condiciones
                                                     </button>.
