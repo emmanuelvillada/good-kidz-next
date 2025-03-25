@@ -225,7 +225,7 @@ export default function MicroStoryForm() {
                         </ul>
                         <br />
 
-                        <b>Importante: Este formulario debe ser completado por el/la representante legal del participante.</b>
+                        <b>Importante:</b> <p>Este formulario debe ser completado por el/la representante legal del participante.</p>
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
