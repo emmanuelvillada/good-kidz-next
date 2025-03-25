@@ -193,18 +193,40 @@ export default function MicroStoryForm() {
             <Card>
                 <CardHeader>
                     <CardTitle className="text-4xl text-gray-800 py-4">Formulario Microcuento</CardTitle>
-                    <CardDescription className="text-gray-600 ">Completa el formulario con la información del participante, la de su representante legal y
-                        los archivos requeridos para unirse al <br /> 1er Festival de Microcuento Infantil Ilustrado -Guardianes del Planeta Verde-. <br /> <br />
-                        <b>Ten en cuenta antes de subir tu información:</b>
+                    <CardDescription className="text-gray-600 ">¡Participa en el 1er Festival de Microcuento Infantil Ilustrado -Guardianes del Planeta Verde-! <br />
+                        Completa el formulario con la información del participante, su representante legal y los archivos requeridos.
+                        <br />
+                        <br />
+                        <b>Antes de subir tu información, ten en cuenta:</b>
+
+                        <br />
+                        <br />
+                        <b>Microcuento:</b>
+
                         <ul className="list-disc list-inside">
-                            <li>La ilustración del microcuento debe estar en formato .jpg.</li>
-                            <li>La ilustración debe ser tamaño carta y contar con 150dpi.</li>
-                            <li>El microcuento debe estar en formato .pdf.</li>
-                            <li>La longitud máxima del microcuento es de 250 palabras.</li>
-                            <li>Categorías permitidas: 6 a 7 años, 8 a 9 años, 10 a 11 años.</li>
+                            <li> Debe escribirse inicialmente en Microsoft Word y luego exportarse a formato .pdf.</li>
+                            <li>Fuente: Arial, tamaño: 12 pts, interlineado: 1.5.</li>
+                            <li> Extensión máxima: 250 palabras.</li>
+                            <li>Temática: Escoge un Guardián del Planeta Verde (puede ser un animal, planta, ecosistema u otro ser de la naturaleza) y crea una historia sobre cómo contribuye al equilibrio y conservación del medio ambiente.</li>
                         </ul>
                         <br />
-                        <b>Recuerda, este formulario debe ser diligenciado por el o la representante legal del participante.</b></CardDescription>
+                        <b>Ilustración:</b>
+                        <ul className="list-disc list-inside">
+                            <li> Debe estar en formato .jpg.</li>
+                            <li> Tamaño carta (21.6 x 27.9 cm) y resolución de 150 dpi.</li>
+                            <li> La ilustración debe representar al Guardián del Planeta Verde protagonista del microcuento.</li>
+                        </ul>
+                        <br />
+                        <b>Categorias por edad:</b>
+                        <ul className="list-disc list-inside">
+                            <li> 6 a 7 años</li>
+                            <li> 8 a 9 años</li>
+                            <li> 10 a 11 años</li>
+                        </ul>
+                        <br />
+
+                        <b>Importante:</b> <p>Este formulario debe ser completado por el/la representante legal del participante.</p>
+                    </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <Form {...form}>
