@@ -93,8 +93,33 @@ export default function WorkshopForm() {
         >
             <Card className="space-y-4 ">
                 <CardHeader>
-                    <CardTitle className="text-4xl text-gray-800 py-4">Inscripción Taller</CardTitle>
-                    <CardDescription>Con este formulario te inscribes para asistir al taller.......</CardDescription>
+                    <CardTitle className="text-4xl text-gray-800 py-4">Taller Infantil de Expresión Creativa - Aves Poderosas</CardTitle>
+                    <CardDescription>En el marco del <b> 1er Festival de Microcuento Infantil Ilustrado -Guardianes del Planeta Verde- </b>, te invitamos a participar en un taller lleno de imaginación y aprendizaje, donde exploraremos el fascinante mundo de las aves.
+                        A través de juegos, cartas y un recorrido por el Parque de la Conservación, refugio para los animales silvestres nativos rescatados del tráfico ilegal de fauna, descubriremos su importancia dentro de los ecosistemas, los desafíos que enfrentan
+                        y cómo podemos protegerlas. Conocerás a Chimuelo, un divertido loro que nos llevará a vivir una experiencia única en un entorno natural.
+
+                        <br />
+                        <br />
+                        <b>Fecha: </b> Sábado 5 de abril
+                        <br />
+                        <b>Horario: </b> 9:00 a.m. a 12:00 m
+                        <br />
+                        <b>Lugar: </b> Parque de la Conservación – Calle 20 #28-40, Medellín
+                        <br />
+                        <br />
+                        <b>Información importante:</b>
+                        <br />
+                        <ul className="list-disc list-inside">
+                            <li> ¡El taller es completamente gratuito!</li>
+                            <li> Ingreso gratuito para acompañantes: Lxs niñxs participantes pueden ingresar al parque junto con sus acompañantes, quienes podrán disfrutar de las instalaciones mientras lxs peques están en el taller.</li>
+                            <li> Refrigerio: Habrá un refrigerio especial para lxs niñxs participantes del taller. Te invitamos a llevar un termo para hidratación y así evitar generar residuos y el uso de vasos o recipientes de un solo uso.</li>
+                            <li> Parqueadero: El lugar cuenta con parqueadero disponible. El costo es de $14,000 pesos por día para carro y $7,000 pesos por día para moto.</li>
+                            <li> Cupo limitado: Solo para lxs primerxs 20 inscritxs.</li>
+                        </ul>
+
+                        <br />
+                        <b>¡Llena el formulario, prográmate para asistir y alcemos el vuelo juntxs!</b>
+                    </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <AnimatePresence>
@@ -177,10 +202,10 @@ export default function WorkshopForm() {
                                                 </FormControl>
                                                 <div className="space-y-1 leading-none">
                                                     <FormLabel>
-                                                        ¿El niñ@ tiene alguna discapacidad?
+                                                        ¿La niña o niño tiene alguna condición médica o discapacidad que requiera atención especial?
                                                     </FormLabel>
                                                     <FormDescription className="text-xs text-gray-500">
-                                                        Marque esta casilla si el niñ@ tiene alguna discapacidad o necesidad especial que debamos conocer.
+                                                        Marque esta casilla si el/la niñ@ tiene alguna discapacidad o necesidad especial que debamos conocer.
                                                     </FormDescription>
                                                     <FormMessage />
                                                 </div>
@@ -296,15 +321,18 @@ export default function WorkshopForm() {
                                             </FormControl>
                                             <div className="space-y-1 leading-none">
                                                 <FormLabel>
-                                                    Acepto los términos y condiciones <span className="text-red-500">*</span>
+                                                    Acepto la política de datos <span className="text-red-500">*</span>
                                                 </FormLabel>
                                                 <p className="text-xs text-gray-500">
-                                                    Al marcar esta casilla, confirmo que he leído y acepto los
-                                                    <button type="button"
+                                                    Al marcar esta casilla, confirmo que he leído y acepto la
+                                                    <a type="button"
                                                         className="text-verde-goodkidz hover:underline ml-1"
-                                                        onClick={() => alert("Aquí se mostrarían los términos y condiciones")}>
-                                                        términos y condiciones
-                                                    </button>.
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/web%20files//politica_datos.pdf"
+                                                    >
+                                                        Política de Tratamiento de Datos
+                                                    </a>
                                                 </p>
                                                 <FormMessage />
                                             </div>
