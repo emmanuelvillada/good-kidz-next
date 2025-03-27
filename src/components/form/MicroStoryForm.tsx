@@ -205,7 +205,7 @@ export default function MicroStoryForm() {
 
                         <ul className="list-disc list-inside">
                             <li> Debe escribirse inicialmente en Microsoft Word y luego exportarse a formato .pdf.</li>
-                            <li>Fuente: Arial, tamaño: 12 pts, interlineado: 1.5.</li>
+                            <li>Fuente: Times New Roman, tamaño: 12 pts, interlineado: 1.5.</li>
                             <li> Extensión máxima: 250 palabras.</li>
                             <li>Temática: Escoge un Guardián del Planeta Verde (puede ser un animal, planta, ecosistema u otro ser de la naturaleza) y crea una historia sobre cómo contribuye al equilibrio y conservación del medio ambiente.</li>
                         </ul>

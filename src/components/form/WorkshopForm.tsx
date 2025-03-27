@@ -93,26 +93,36 @@ export default function WorkshopForm() {
         >
             <Card className="space-y-4 ">
                 <CardHeader>
-                    <CardTitle className="text-4xl text-gray-800 py-4">Inscripción Taller</CardTitle>
-                    <CardDescription>Con este formulario te inscribes para asistir al taller.......</CardDescription>
+                    <CardTitle className="text-4xl text-gray-800 py-4">Taller Infantil de Expresión Creativa - <br /> Aves Poderosas</CardTitle>
+                    <CardDescription className="leading-relaxed tracking-wide space-y-4 text-base">En el marco del <b> 1er Festival de Microcuento Infantil Ilustrado -Guardianes del Planeta Verde- </b>, te invitamos a participar en un taller lleno de imaginación y aprendizaje, donde exploraremos el fascinante mundo de las aves.
+                        A través de juegos, cartas y un recorrido por el Parque de la Conservación, refugio para los animales silvestres nativos rescatados del tráfico ilegal de fauna, descubriremos su importancia dentro de los ecosistemas, los desafíos que enfrentan
+                        y cómo podemos protegerlas. Conocerás a Chimuelo, un divertido loro que nos llevará a vivir una experiencia única en un entorno natural.
+
+                        <br />
+                        <br />
+                        <b>Fecha: </b> Sábado 5 de abril
+                        <br />
+                        <b>Horario: </b> 9:00 a.m. a 12:00 m
+                        <br />
+                        <b>Lugar: </b> Parque de la Conservación – Calle 20 #28-40, Medellín
+                        <br />
+                        <br />
+                        <b>Información importante:</b>
+                        <br />
+                        <ul className="list-disc list-inside">
+                            <li> ¡El taller es completamente gratuito!</li>
+                            <li> Ingreso gratuito para acompañantes: Lxs niñxs participantes pueden ingresar al parque junto con sus acompañantes, quienes podrán disfrutar de las instalaciones mientras lxs peques están en el taller.</li>
+                            <li> Refrigerio: Habrá un refrigerio especial para lxs niñxs participantes del taller. Te invitamos a llevar un termo para hidratación y así evitar generar residuos y el uso de vasos o recipientes de un solo uso.</li>
+                            <li> Parqueadero: El lugar cuenta con parqueadero disponible. El costo es de $14,000 pesos por día para carro y $7,000 pesos por día para moto.</li>
+                            <li> Cupo limitado: Solo para lxs primerxs 20 inscritxs.</li>
+                        </ul>
+
+                        <br />
+                        <b>¡Llena el formulario, prográmate para asistir y alcemos el vuelo juntxs!</b>
+                    </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <AnimatePresence>
-                        {success && (
-                            <motion.div
-                                initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0 }}
-                                className="mb-4"
-                            >
-                                <Alert className="bg-green-50 border-green-200 text-green-800">
-                                    <AlertDescription>
-                                        ¡Formulario enviado exitosamente! Gracias por registrarte.
-                                    </AlertDescription>
-                                </Alert>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+
 
                     <Form {...form} >
                         <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -177,10 +187,10 @@ export default function WorkshopForm() {
                                                 </FormControl>
                                                 <div className="space-y-1 leading-none">
                                                     <FormLabel>
-                                                        ¿El niñ@ tiene alguna discapacidad?
+                                                        ¿La niña o niño tiene alguna condición médica o discapacidad que requiera atención especial?
                                                     </FormLabel>
                                                     <FormDescription className="text-xs text-gray-500">
-                                                        Marque esta casilla si el niñ@ tiene alguna discapacidad o necesidad especial que debamos conocer.
+                                                        Marque esta casilla si el/la niñx tiene alguna discapacidad o necesidad especial que debamos conocer.
                                                     </FormDescription>
                                                     <FormMessage />
                                                 </div>
@@ -199,7 +209,7 @@ export default function WorkshopForm() {
                                                 name="disability_details"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>Detalles de la discapacidad <span className="text-red-500">*</span></FormLabel>
+                                                        <FormLabel>Detalles de la condición <span className="text-red-500">*</span></FormLabel>
                                                         <FormControl>
                                                             <Textarea
                                                                 placeholder="Por favor, describa la discapacidad o necesidad especial para poder prepararnos adecuadamente"
@@ -208,7 +218,7 @@ export default function WorkshopForm() {
                                                             />
                                                         </FormControl>
                                                         <FormDescription className="text-xs text-gray-500">
-                                                            Esta información nos ayudará a preparar el taller para atender correctamente las necesidades del niño.
+                                                            Esta información nos ayudará a preparar el taller para atender correctamente las necesidades de los niñxs.
                                                         </FormDescription>
                                                         <FormMessage />
                                                     </FormItem>
@@ -220,16 +230,16 @@ export default function WorkshopForm() {
 
 
                                 <div className="p-4 bg-gray-50 rounded-lg space-y-4">
-                                    <h3 className="text-sm font-medium text-gray-700">Información del Responsable</h3>
+                                    <h3 className="text-sm font-medium text-gray-700">Información del acompañante</h3>
 
                                     <FormField
                                         control={form.control}
                                         name="responsable_name"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Nombre del Responsable <span className="text-red-500">*</span></FormLabel>
+                                                <FormLabel>Nombre del acompañante <span className="text-red-500">*</span></FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="Nombre completo del responsable" {...field} />
+                                                    <Input placeholder="Nombre completo del acompañante" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -241,9 +251,9 @@ export default function WorkshopForm() {
                                         name="responsable_document"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Documento del Responsable <span className="text-red-500">*</span></FormLabel>
+                                                <FormLabel>Documento del acompañante <span className="text-red-500">*</span></FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="Número de documento del responsable" {...field} />
+                                                    <Input placeholder="Número de documento del acompañante" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -259,7 +269,7 @@ export default function WorkshopForm() {
                                         name="cellphone"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Celular del Responsable <span className="text-red-500">*</span></FormLabel>
+                                                <FormLabel>Celular del acompañante <span className="text-red-500">*</span></FormLabel>
                                                 <FormControl>
                                                     <Input placeholder="Número de celular" {...field} />
                                                 </FormControl>
@@ -273,7 +283,7 @@ export default function WorkshopForm() {
                                         name="email"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Correo del Responsable <span className="text-red-500">*</span></FormLabel>
+                                                <FormLabel>Correo del acompañante <span className="text-red-500">*</span></FormLabel>
                                                 <FormControl>
                                                     <Input type="email" placeholder="ejemplo@correo.com" {...field} />
                                                 </FormControl>
@@ -296,15 +306,18 @@ export default function WorkshopForm() {
                                             </FormControl>
                                             <div className="space-y-1 leading-none">
                                                 <FormLabel>
-                                                    Acepto los términos y condiciones <span className="text-red-500">*</span>
+                                                    Acepto la política de datos <span className="text-red-500">*</span>
                                                 </FormLabel>
                                                 <p className="text-xs text-gray-500">
-                                                    Al marcar esta casilla, confirmo que he leído y acepto los
-                                                    <button type="button"
+                                                    Al marcar esta casilla, confirmo que he leído y acepto la
+                                                    <a type="button"
                                                         className="text-verde-goodkidz hover:underline ml-1"
-                                                        onClick={() => alert("Aquí se mostrarían los términos y condiciones")}>
-                                                        términos y condiciones
-                                                    </button>.
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/web%20files//politica_datos.pdf"
+                                                    >
+                                                        Política de Tratamiento de Datos
+                                                    </a>
                                                 </p>
                                                 <FormMessage />
                                             </div>
@@ -319,6 +332,23 @@ export default function WorkshopForm() {
                                 >
                                     {loading ? "Enviando..." : "Enviar Formulario"}
                                 </Button>
+                                <AnimatePresence>
+                                    {success && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: -10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0 }}
+                                            className="mb-4"
+                                        >
+                                            <Alert className="bg-green-50 border-green-200 text-green-800">
+                                                <AlertDescription>
+                                                    ¡Formulario enviado exitosamente! Gracias por registrarte.
+                                                </AlertDescription>
+                                            </Alert>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+
                             </div>
                         </form>
                     </Form>
