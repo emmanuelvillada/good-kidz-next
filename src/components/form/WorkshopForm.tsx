@@ -93,8 +93,8 @@ export default function WorkshopForm() {
         >
             <Card className="space-y-4 ">
                 <CardHeader>
-                    <CardTitle className="text-4xl text-gray-800 py-4">Taller Infantil de Expresión Creativa - Aves Poderosas</CardTitle>
-                    <CardDescription>En el marco del <b> 1er Festival de Microcuento Infantil Ilustrado -Guardianes del Planeta Verde- </b>, te invitamos a participar en un taller lleno de imaginación y aprendizaje, donde exploraremos el fascinante mundo de las aves.
+                    <CardTitle className="text-4xl text-gray-800 py-4">Taller Infantil de Expresión Creativa - <br /> Aves Poderosas</CardTitle>
+                    <CardDescription className="leading-relaxed tracking-wide space-y-4 text-base">En el marco del <b> 1er Festival de Microcuento Infantil Ilustrado -Guardianes del Planeta Verde- </b>, te invitamos a participar en un taller lleno de imaginación y aprendizaje, donde exploraremos el fascinante mundo de las aves.
                         A través de juegos, cartas y un recorrido por el Parque de la Conservación, refugio para los animales silvestres nativos rescatados del tráfico ilegal de fauna, descubriremos su importancia dentro de los ecosistemas, los desafíos que enfrentan
                         y cómo podemos protegerlas. Conocerás a Chimuelo, un divertido loro que nos llevará a vivir una experiencia única en un entorno natural.
 
@@ -205,7 +205,7 @@ export default function WorkshopForm() {
                                                         ¿La niña o niño tiene alguna condición médica o discapacidad que requiera atención especial?
                                                     </FormLabel>
                                                     <FormDescription className="text-xs text-gray-500">
-                                                        Marque esta casilla si el/la niñ@ tiene alguna discapacidad o necesidad especial que debamos conocer.
+                                                        Marque esta casilla si el/la niñx tiene alguna discapacidad o necesidad especial que debamos conocer.
                                                     </FormDescription>
                                                     <FormMessage />
                                                 </div>
@@ -224,7 +224,7 @@ export default function WorkshopForm() {
                                                 name="disability_details"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>Detalles de la discapacidad <span className="text-red-500">*</span></FormLabel>
+                                                        <FormLabel>Detalles de la condición <span className="text-red-500">*</span></FormLabel>
                                                         <FormControl>
                                                             <Textarea
                                                                 placeholder="Por favor, describa la discapacidad o necesidad especial para poder prepararnos adecuadamente"
@@ -233,7 +233,7 @@ export default function WorkshopForm() {
                                                             />
                                                         </FormControl>
                                                         <FormDescription className="text-xs text-gray-500">
-                                                            Esta información nos ayudará a preparar el taller para atender correctamente las necesidades del niño.
+                                                            Esta información nos ayudará a preparar el taller para atender correctamente las necesidades de los niñxs.
                                                         </FormDescription>
                                                         <FormMessage />
                                                     </FormItem>
@@ -245,16 +245,16 @@ export default function WorkshopForm() {
 
 
                                 <div className="p-4 bg-gray-50 rounded-lg space-y-4">
-                                    <h3 className="text-sm font-medium text-gray-700">Información del Responsable</h3>
+                                    <h3 className="text-sm font-medium text-gray-700">Información del acompañante</h3>
 
                                     <FormField
                                         control={form.control}
                                         name="responsable_name"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Nombre del Responsable <span className="text-red-500">*</span></FormLabel>
+                                                <FormLabel>Nombre del acompañante <span className="text-red-500">*</span></FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="Nombre completo del responsable" {...field} />
+                                                    <Input placeholder="Nombre completo del acompañante" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -266,9 +266,9 @@ export default function WorkshopForm() {
                                         name="responsable_document"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Documento del Responsable <span className="text-red-500">*</span></FormLabel>
+                                                <FormLabel>Documento del acompañante <span className="text-red-500">*</span></FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="Número de documento del responsable" {...field} />
+                                                    <Input placeholder="Número de documento del acompañante" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -284,7 +284,7 @@ export default function WorkshopForm() {
                                         name="cellphone"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Celular del Responsable <span className="text-red-500">*</span></FormLabel>
+                                                <FormLabel>Celular del acompañante <span className="text-red-500">*</span></FormLabel>
                                                 <FormControl>
                                                     <Input placeholder="Número de celular" {...field} />
                                                 </FormControl>
@@ -298,7 +298,7 @@ export default function WorkshopForm() {
                                         name="email"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Correo del Responsable <span className="text-red-500">*</span></FormLabel>
+                                                <FormLabel>Correo del acompañante <span className="text-red-500">*</span></FormLabel>
                                                 <FormControl>
                                                     <Input type="email" placeholder="ejemplo@correo.com" {...field} />
                                                 </FormControl>
