@@ -69,15 +69,16 @@ export default function WorkshopForm() {
             setSuccess(true);
             form.reset();
         } catch (err: unknown) {
-            //verificar si el error es de tipo postgres
             if ((err as { code: string }).code === "23505") {
                 setError("Ya has registrado tu participación en este taller");
+            }
+            else if ((err as { code: string }).code === "45001") {  // Código único para el límite de inscripciones
+                setError("El taller ha alcanzado el límite de 20 participantes. No se pueden aceptar más inscripciones.");
             }
             else {
                 setError("Error al enviar el formulario");
                 console.error("Error submitting form:", err);
             }
-
         } finally {
             setLoading(false);
         }
