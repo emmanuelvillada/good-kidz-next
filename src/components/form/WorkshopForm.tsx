@@ -122,22 +122,7 @@ export default function WorkshopForm() {
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <AnimatePresence>
-                        {success && (
-                            <motion.div
-                                initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0 }}
-                                className="mb-4"
-                            >
-                                <Alert className="bg-green-50 border-green-200 text-green-800">
-                                    <AlertDescription>
-                                        ¡Formulario enviado exitosamente! Gracias por registrarte.
-                                    </AlertDescription>
-                                </Alert>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+
 
                     <Form {...form} >
                         <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -347,6 +332,23 @@ export default function WorkshopForm() {
                                 >
                                     {loading ? "Enviando..." : "Enviar Formulario"}
                                 </Button>
+                                <AnimatePresence>
+                                    {success && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: -10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0 }}
+                                            className="mb-4"
+                                        >
+                                            <Alert className="bg-green-50 border-green-200 text-green-800">
+                                                <AlertDescription>
+                                                    ¡Formulario enviado exitosamente! Gracias por registrarte.
+                                                </AlertDescription>
+                                            </Alert>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+
                             </div>
                         </form>
                     </Form>
