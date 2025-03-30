@@ -98,6 +98,7 @@ export default function MicrostoryTable() {
 
     return (
         <div className="p-4 m-12">
+            <h1 className="text-6xl font-bold mb-4">Microcuentos</h1>
             <h1 className="text-xl font-bold mb-4">Inscritos en el Concurso</h1>
             <Input
                 placeholder="Buscar por nombre..."
