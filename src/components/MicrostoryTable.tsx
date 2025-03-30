@@ -1,5 +1,5 @@
 'use client';
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import Image from "next/image";
 import { Table } from "./ui/Table";
@@ -24,8 +24,10 @@ export default function MicrostoryTable() {
     const [loading, setLoading] = useState(true);
 
 
-    const fetchMicrostories = async () => {
-        const { data, error } = await supabase.from("micro_stories").select("*");
+    const fetchMicrostories = async (pageIndex: number, pageSize: number) => {
+        const { data, error } = await supabase.from("micro_stories").select("*")
+            .order("created_at", { ascending: false })
+            .range(pageIndex * pageSize, (pageIndex + 1) * pageSize);
         if (error) {
             console.error("Error fetching microstories:", error);
             return;
@@ -34,7 +36,10 @@ export default function MicrostoryTable() {
         setLoading(false);
     };
 
-
+    // Fetch microstories when the component mounts
+    useEffect(() => {
+        fetchMicrostories(0, 10);
+    }, []);
 
 
     const columns = useMemo(
