@@ -59,15 +59,19 @@ export default function WorkshopTable() {
     ];
 
     return (
-        <Table
-            data={workshops}
-            columns={columns}
-            totalCount={totalCount}
-            isLoading={loading}
-            searchField="name"
-            fetchData={fetchWorkshops}
-            emptyMessage="No se encontraron talleres."
-            pageSizeOptions={[5, 10, 20, 50]}
-        />
+        <div className="flex flex-col items-center justify-center  py-2 bg-gray-100 m-6">
+
+            <h1 className="text-4xl font-bold mb-4">Talleres</h1>
+            <Table
+                data={workshops}
+                columns={columns}
+                totalCount={totalCount}
+                isLoading={loading}
+                searchField="name"
+                fetchData={fetchWorkshops}
+                emptyMessage="No se encontraron talleres."
+                pageSizeOptions={[5, 10, 20, 50]}
+            />
+        </div>
     );
 }
