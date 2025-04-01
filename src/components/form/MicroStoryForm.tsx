@@ -138,13 +138,15 @@ export default function MicroStoryForm() {
 
             if (storyError) {
                 console.error('Story Error:', storyError);
+                //Delete both files if DB insert fails
+                await supabase.storage.from('micro-stories').remove([uploadData.fullPath, uploadData2.fullPath]);
                 throw storyError;
             }
 
             // Success handling
             setStatus({
                 type: 'success',
-                message: 'Microcuento ' + data.title + ' guardado con éxito!'
+                message: '¡Microcuento ' + data.title + ' guardado con éxito!'
             });
 
             // Reset form
@@ -153,6 +155,7 @@ export default function MicroStoryForm() {
 
         } catch (error: unknown) {
             console.error('Submission Error:', error);
+
 
             // Verificamos si el error es de tipo PostgrestError
             if (typeof error === 'object' && error !== null && 'code' in error) {
