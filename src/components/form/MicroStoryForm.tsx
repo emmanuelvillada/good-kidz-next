@@ -514,17 +514,6 @@ export default function MicroStoryForm() {
                                                 </p>
                                             )}
                                         </FormMessage>
-
-                                        {previewUrls.file2 && (
-                                            <div className="mt-2 relative aspect-video rounded-lg overflow-hidden">
-                                                <Image
-                                                    src={previewUrls.file2}
-                                                    alt="Vista previa"
-                                                    fill
-                                                    className="object-cover"
-                                                />
-                                            </div>
-                                        )}
                                     </FormItem>
                                 )}
                             />
