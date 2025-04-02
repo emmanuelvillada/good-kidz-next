@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import Image from "next/image";
+import { compressImage } from "@/lib/imageCompresion";
 
 // Form status interface
 interface FormStatus {
@@ -402,20 +403,53 @@ export default function MicroStoryForm() {
                                             <Input
                                                 type="file"
                                                 accept="image/jpeg, image/jpg"
-                                                onChange={(e) => {
+                                                onChange={async (e) => {
                                                     const files = e.target.files;
                                                     if (files && files.length > 0) {
-                                                        // Directly set the files
-                                                        field.onChange(files);
-                                                        handleFilePreview(files[0], 'file1');
+                                                        const originalFile = files[0];
+
+                                                        try {
+                                                            // Comprimir imagen antes de asignarla
+                                                            const compressedFile = await compressImage(originalFile);
+
+                                                            // Validar tamaño después de la compresión
+                                                            if (compressedFile.size > 5 * 1024 * 1024) {
+                                                                form.setError('file1', {
+                                                                    type: 'manual',
+                                                                    message: 'La imagen no puede exceder 5MB',
+                                                                });
+                                                                return;
+                                                            }
+
+                                                            // Limpiar error si el archivo es válido
+                                                            form.clearErrors('file1');
+
+                                                            // Asignar archivo comprimido al formulario
+                                                            field.onChange([compressedFile]); // Se envía como un array
+
+                                                            // Generar vista previa de la imagen comprimida
+                                                            handleFilePreview(compressedFile, 'file1');
+                                                        } catch (error) {
+                                                            console.error("Error al procesar la imagen:", error);
+                                                            form.setError('file1', {
+                                                                type: 'manual',
+                                                                message: 'Error al procesar la imagen, intenta con otra.',
+                                                            });
+                                                        }
                                                     }
                                                 }}
                                             />
                                         </FormControl>
                                         <FormDescription>
-                                            Solo se permiten archivos .jpg
+                                            Solo se permiten archivos .jpg y de menos de 5MB
                                         </FormDescription>
-                                        <FormMessage />
+                                        <FormMessage className="text-red-500" >
+                                            {form.formState.errors.file1 && (
+                                                <p className="text-red-500 text-sm mt-2">
+                                                    {typeof form.formState.errors.file1?.message === 'string' ? form.formState.errors.file1.message : ''}
+                                                </p>
+                                            )}
+                                        </FormMessage >
 
                                         {previewUrls.file1 && (
                                             <div className="mt-2 relative aspect-video rounded-lg overflow-hidden">
@@ -447,6 +481,22 @@ export default function MicroStoryForm() {
                                                 onChange={(e) => {
                                                     const files = e.target.files;
                                                     if (files && files.length > 0) {
+                                                        if (files[0].size > 5 * 1024 * 1024) {
+                                                            form.setError('file2', {
+                                                                type: 'manual',
+                                                                message: 'El PDF no puede exceder 5MB',
+                                                            });
+                                                            return;
+                                                        }
+                                                        if (files[0].type !== 'application/pdf') {
+                                                            form.setError('file2', {
+                                                                type: 'manual',
+                                                                message: 'Solo se permiten archivos .pdf'
+                                                            });
+                                                            return;
+                                                        }
+                                                        //clean error if file is valid
+                                                        form.clearErrors('file2');
                                                         // Directly set the files
                                                         field.onChange(files);
                                                         handleFilePreview(files[0], 'file2');
@@ -457,7 +507,13 @@ export default function MicroStoryForm() {
                                         <FormDescription>
                                             Solo se permiten archivos .pdf
                                         </FormDescription>
-                                        <FormMessage></FormMessage>
+                                        <FormMessage>
+                                            {form.formState.errors.file2 && (
+                                                <p className="text-red-500 text-sm mt-2">
+                                                    {typeof form.formState.errors.file2?.message === 'string' ? form.formState.errors.file2.message : ''}
+                                                </p>
+                                            )}
+                                        </FormMessage>
 
                                         {previewUrls.file2 && (
                                             <div className="mt-2 relative aspect-video rounded-lg overflow-hidden">
