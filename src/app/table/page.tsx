@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import MicrostoryTable from "@/components/MicrostoryTable";
-import WorkshopTable from "@/components/WorkshopTable";
 import ProtectedPage from "@/components/ProtectedPage";
 
 export default function TablePage() {
@@ -22,11 +21,11 @@ export default function TablePage() {
                 >
                     <option value="">Seleccione una tabla</option>
                     <option value="microstories">Microcuentos</option>
-                    <option value="workshops">Talleres</option>
+
                 </select>
 
                 {/* Renderizar la tabla según la selección */}
-                {selectedTable === "workshops" && <WorkshopTable />}
+
                 {selectedTable === "microstories" && <MicrostoryTable />}
 
             </div>
