@@ -94,7 +94,7 @@ export function Table<TData>({
     }
 
     return (
-        <div>
+        <div className="md:max-w-screen-xl mx-auto sm:max-w-screen-sm">
             {searchField && (
                 <div className="flex items-center mb-4">
                     <Input
