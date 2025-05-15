@@ -22,25 +22,34 @@ interface Microstory {
 export default function MicrostoryTable() {
     const [microstories, setMicrostories] = useState<Microstory[]>([]);
     const [loading, setLoading] = useState(true);
+    const [totalCount, setTotalCount] = useState(0);
 
+    const fetchMicrostories = async (pageIndex = 0, pageSize = 10) => {
+        setLoading(true);
+        const from = pageIndex * pageSize;
+        const to = from + pageSize - 1;
 
-    const fetchMicrostories = async (pageIndex: number, pageSize: number) => {
-        const { data, error } = await supabase.from("micro_stories").select("*")
+        const { data, error, count } = await supabase
+            .from("micro_stories")
+            .select("*", { count: "exact" }) // importante
             .order("created_at", { ascending: false })
-            .range(pageIndex * pageSize, (pageIndex + 1) * pageSize);
+            .range(from, to);
+
         if (error) {
             console.error("Error fetching microstories:", error);
+            setLoading(false);
             return;
         }
-        setMicrostories(data);
+
+        setMicrostories(data || []);
+        setTotalCount(count || 0);
         setLoading(false);
     };
 
-    // Fetch microstories when the component mounts
+    // Primera carga (solo se hace una vez)
     useEffect(() => {
         fetchMicrostories(0, 10);
     }, []);
-
 
     const columns = useMemo(
         () => [
@@ -56,7 +65,11 @@ export default function MicrostoryTable() {
                 header: "Imagen de la historia",
                 accessorKey: "file_image",
                 cell: ({ row }: { row: { original: Microstory } }) => (
-                    <a href={`https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/${row.original.file_image}`} target="_blank" rel="noopener noreferrer">
+                    <a
+                        href={`https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/${row.original.file_image}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
                         <Image
                             src={`https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/${row.original.file_image}`}
                             alt="Imagen de la historia"
@@ -66,14 +79,18 @@ export default function MicrostoryTable() {
                         />
                         <span className="text-verde-goodkidz hover:underline">Ver imagen</span>
                     </a>
-
                 ),
             },
             {
                 header: "PDF de la historia",
                 accessorKey: "file_pdf",
                 cell: ({ row }: { row: { original: Microstory } }) => (
-                    <a className="text-verde-goodkidz  hover:underline" href={`https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/${row.original.file_pdf}`} target="_blank" rel="noopener noreferrer">
+                    <a
+                        className="text-verde-goodkidz hover:underline"
+                        href={`https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/${row.original.file_pdf}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
                         Ver PDF
                     </a>
                 ),
@@ -82,10 +99,6 @@ export default function MicrostoryTable() {
         []
     );
 
-
-    if (loading) return <div className="text-center text-2xl">Cargando...</div>;
-    if (microstories.length === 0) return <div>No hay historias micro</div>;
-
     return (
         <div className="p-4 m-12">
             <h1 className="text-6xl font-bold mb-4 text-center">Microcuentos</h1>
@@ -93,12 +106,11 @@ export default function MicrostoryTable() {
             <Table
                 data={microstories}
                 columns={columns}
-                totalCount={microstories.length}
+                totalCount={totalCount}
                 isLoading={loading}
                 searchField="title"
                 fetchData={fetchMicrostories}
                 emptyMessage="No se encontraron Microcuentos."
-                pageSizeOptions={[5, 10, 20, 50]}
             />
         </div>
     );
