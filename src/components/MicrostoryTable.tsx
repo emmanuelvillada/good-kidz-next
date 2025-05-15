@@ -91,7 +91,7 @@ export default function MicrostoryTable() {
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        Ver PDF
+                        Ver PDF.
                     </a>
                 ),
             },
