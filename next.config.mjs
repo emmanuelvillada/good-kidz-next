@@ -1,6 +1,10 @@
 import { withNextVideo } from "next-video/process";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    serverActions: true,
+  },
+  matcher: ['/admin/:path*'],
   images: {
     remotePatterns: [
       {
