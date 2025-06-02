@@ -1,31 +1,34 @@
-// app/admin/layout.tsx o app/admin/page.tsx
+// app/admin/page.tsx
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import AdminPanel from '@/components/admin/AdminPanel'
 
-export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+export default async function AdminPage() {
     const supabase = createServerComponentClient({ cookies })
-    const { data: { session } } = await supabase.auth.getSession()
 
-    if (!session) {
-        redirect('/login') // o página pública
+    const {
+        data: { user },
+    } = await supabase.auth.getUser()
+
+    if (!user) {
+        redirect('/login')
     }
 
-    // Verifica si el usuario es admin
-    const { data: profile } = await supabase
-        .from('profiles') // tu tabla de usuarios
+    const { data: profile, error } = await supabase
+        .from('profiles')
         .select('role')
-        .eq('id', session.user.id)
+        .eq('id', user.id)
         .single()
 
-    if (profile?.role !== 'admin') {
-        redirect('/') // o muestra un 403
+    if (error || profile?.role !== 'admin') {
+        redirect('/login')
     }
 
     return (
         <section className="p-6">
             <h1 className="text-2xl mb-4">Panel de Administración</h1>
-            {children}
+            <AdminPanel />
         </section>
     )
 }

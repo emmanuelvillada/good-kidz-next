@@ -1,15 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import 'slick-carousel/slick/slick.css';
-@import 'slick-carousel/slick/slick-theme.css';
-@font-face {
-  font-family: 'Urbane Rounded';
-  src: url('../public/fonts/UrbaneRounded-Medium.woff2') format('woff2'),
-    url('../public/fonts/UrbaneRounded-Medium.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
 
 /* Si quieres incluir la fuente en bold */
 @font-face {
