@@ -1,4 +1,5 @@
 // app/admin/page.tsx
+
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -27,7 +28,6 @@ export default async function AdminPage() {
 
     return (
         <section className="p-6">
-            <h1 className="text-2xl mb-4">Panel de Administración</h1>
             <AdminPanel />
         </section>
     )

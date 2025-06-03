@@ -1,34 +1,33 @@
-"use client";
-import { useState } from "react";
 import MicrostoryTable from "@/components/MicrostoryTable";
-import ProtectedPage from "@/components/ProtectedPage";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-export default function TablePage() {
-    const [selectedTable, setSelectedTable] = useState(""); // Estado para la selección
+export default async function TablePage() {
+    const supabase = createServerComponentClient({ cookies })
+
+    const {
+        data: { user },
+    } = await supabase.auth.getUser()
+
+    if (!user) {
+        redirect('/login')
+    }
+
+    const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', user.id)
+        .single()
+
+    if (error || profile?.role !== 'admin') {
+        redirect('/login')
+    }
+
 
     return (
-        <ProtectedPage>
-            <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-gray-100 m-12">
-                <h1 className="text-6xl font-bold mb-4">Tablas</h1>
+        <MicrostoryTable>
 
-                {/* Selector de tabla */}
-                <label htmlFor="table" className="mb-2">Escoja la tabla que desea visualizar</label>
-                <select
-                    id="table"
-                    value={selectedTable}
-                    onChange={(e) => setSelectedTable(e.target.value)}
-                    className="mb-4 p-2 border rounded"
-                >
-                    <option value="">Seleccione una tabla</option>
-                    <option value="microstories">Microcuentos</option>
-
-                </select>
-
-                {/* Renderizar la tabla según la selección */}
-
-                {selectedTable === "microstories" && <MicrostoryTable />}
-
-            </div>
-        </ProtectedPage>
+        </MicrostoryTable>
     );
 }
