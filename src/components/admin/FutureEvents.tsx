@@ -11,6 +11,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import validateImageDimensions from '@/lib/validateImageDimensions'
 
 const supabase = createPagesBrowserClient()
 
@@ -61,23 +62,46 @@ export default function FutureEvents() {
         setEvents(eventsData || [])
     }
 
-    async function handleFileUpload(file: File, folder: string) {
+    async function handleFileUpload(file: File, folder: string, minWidth: number, minHeight: number): Promise<string> {
+        const isValid = await validateImageDimensions(file, minWidth, minHeight)
+        if (!isValid) {
+            toast.error(`La imagen debe tener mínimo ${minWidth}px de ancho y ${minHeight}px de alto`)
+            return ''
+        }
+
         const fileName = `${folder}/${uuidv4()}-${file.name}`
-        const { error } = await supabase.storage.from('public').upload(`events/${fileName}`, file)
+        const { error } = await supabase.storage.from('events').upload(fileName, file)
+
         if (error) {
             toast.error('Error subiendo archivo')
             return ''
         }
-        const { data: publicUrl } = supabase.storage.from('public').getPublicUrl(`events/${fileName}`)
-        return publicUrl?.publicUrl || ''
+
+        const { data: publicUrl } = supabase.storage.from('events').getPublicUrl(fileName)
+        if (!publicUrl) {
+            toast.error('Error obteniendo URL pública del archivo')
+            return ''
+        }
+
+        toast.success('Archivo subido exitosamente')
+        return publicUrl.publicUrl
     }
+
+
 
     async function onSubmit(data: EventFormData) {
         const toastId = toast.loading('Subiendo evento...')
         const { file, mobile_file, ...eventData } = data
 
-        const uploadedFile = file instanceof File ? await handleFileUpload(file, 'events') : ''
-        const uploadedMobile = mobile_file instanceof File ? await handleFileUpload(mobile_file, 'events/mobile') : ''
+        const uploadedFile = file instanceof File
+            ? await handleFileUpload(file, 'images', 1168, 300) // escritorio
+            : ''
+
+        const uploadedMobile = mobile_file instanceof File
+            ? await handleFileUpload(mobile_file, 'images', 366, 205) // móvil
+            : ''
+
+
 
         const finalEvent = {
             ...eventData,
@@ -96,11 +120,15 @@ export default function FutureEvents() {
     }
 
     async function deleteEvent(id: string) {
+        const confirmDelete = window.confirm('¿Estás seguro de eliminar este evento? Esta acción no se puede deshacer.')
+        if (!confirmDelete) return
+        const toastId = toast.loading('Eliminando evento...')
         const { error } = await supabase.from('events').delete().eq('id', id)
         if (!error) {
+            toast.update(toastId, { render: 'Evento eliminado exitosamente', type: 'success', isLoading: false })
             fetchData()
         } else {
-            toast.error('Error al eliminar el evento')
+            toast.update(toastId, { render: 'Error al eliminar el evento', type: 'error', isLoading: false })
         }
     }
 
@@ -147,6 +175,7 @@ export default function FutureEvents() {
                         <input
                             type="file"
                             title="Archivo principal"
+                            accept='image/webp'
                             className="text-sm"
                             onChange={(e) => {
                                 const file = e.target.files?.[0]
@@ -157,6 +186,7 @@ export default function FutureEvents() {
                         <input
                             type="file"
                             title="Archivo para móvil"
+                            accept='image/webp'
                             className="text-sm"
                             onChange={(e) => {
                                 const file = e.target.files?.[0]
@@ -187,7 +217,7 @@ export default function FutureEvents() {
                                     <p className="text-sm text-gray-600">{ev.date} – {ev.location}</p>
                                     {ev.file && (
                                         <a
-                                            className="text-blue-600 text-sm hover:underline flex items-center gap-1"
+                                            className="text-verde-goodkidz text-sm hover:underline flex items-center gap-1"
                                             href={ev.file}
                                             target="_blank"
                                             rel="noopener noreferrer"

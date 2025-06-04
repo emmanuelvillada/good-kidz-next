@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import validateImageDimensions from '@/lib/validateImageDimensions'
 
 const supabase = createPagesBrowserClient()
 //Zod schema
@@ -21,7 +22,7 @@ const eventSchema = z.object({
     date: z.string().min(1, 'La fecha es obligatoria'),
     location: z.string().optional(),
     description: z.string().optional(),
-    image: z.string().optional(),
+    image: z.any().optional(),
 })
 
 // Define the Event type
@@ -60,22 +61,45 @@ export default function PastEvent() {
         setPastEvents(pastEventsData || [])
     }
     async function handleFileUpload(file: File, folder: string) {
+        const isValid = await validateImageDimensions(file, 1136, 408)
+        if (!isValid) {
+            toast.error('La imagen debe tener al menos 1136x408 píxeles')
+            return ''
+        }
+
         const fileName = `${folder}/${uuidv4()}-${file.name}`
-        const { error } = await supabase.storage.from('public').upload(`past events/${fileName}`, file)
+        const { error } = await supabase.storage.from('public').upload(fileName, file)
 
         if (error) {
             toast.error('Error subiendo archivo')
             return ''
         }
 
-        const { data: publicUrl } = supabase.storage.from('public').getPublicUrl(`past events/${fileName}`)
+        const { data: publicUrl } = supabase.storage.from('public').getPublicUrl(fileName)
         return publicUrl?.publicUrl || ''
     }
 
     const onSubmit = async (data: z.infer<typeof eventSchema>) => {
         const toastId = toast.loading('Agregando evento...')
 
-        const { error } = await supabase.from('past_events').insert([data])
+        if (!data.image) {
+            toast.update(toastId, { render: 'Debes seleccionar una imagen', type: 'error', isLoading: false })
+            return
+        }
+
+        const uploadedImage = await handleFileUpload(data.image, 'past events')
+
+        if (!uploadedImage) {
+            toast.update(toastId, { render: 'Error al subir la imagen', type: 'error', isLoading: false })
+            return
+        }
+
+        const finalData = {
+            ...data,
+            image: uploadedImage,
+        }
+
+        const { error } = await supabase.from('past_events').insert([finalData])
 
         if (error) {
             toast.update(toastId, { render: 'Error al agregar evento', type: 'error', isLoading: false })
@@ -86,7 +110,10 @@ export default function PastEvent() {
         }
     }
 
+
     async function deleteEvent(id: string, table: string) {
+        const confirmation = confirm('¿Estás seguro de que deseas eliminar este evento? Esta acción no se puede deshacer.')
+        if (!confirmation) return
         const toastId = toast.loading('Eliminando evento...')
         const { error } = await supabase.from(table).delete().eq('id', id)
         if (error) {
@@ -149,8 +176,7 @@ export default function PastEvent() {
                             onChange={async (e) => {
                                 const file = e.target.files?.[0]
                                 if (!file) return
-                                const url = await handleFileUpload(file, 'past_events')
-                                setValue('image', url)
+                                setValue('image', file)
                             }}
                         />
 
