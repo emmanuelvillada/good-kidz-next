@@ -21,8 +21,8 @@ const eventSchema = z.object({
     date: z.string().min(1, 'Fecha requerida'),
     location: z.string().optional(),
     link: z.string().url('Debe ser una URL válida').optional(),
-    file: z.any().optional(),
-    mobile_file: z.any().optional(),
+    file: z.any(),
+    mobile_file: z.any(),
 })
 
 type EventFormData = z.infer<typeof eventSchema>
@@ -101,7 +101,10 @@ export default function FutureEvents() {
             ? await handleFileUpload(mobile_file, 'images', 366, 205) // móvil
             : ''
 
-
+        if (!uploadedFile || !uploadedMobile) {
+            toast.update(toastId, { render: 'Error al subir archivos', type: 'error', isLoading: false })
+            return
+        }
 
         const finalEvent = {
             ...eventData,
@@ -172,6 +175,9 @@ export default function FutureEvents() {
                         />
                         {errors.link && <p className="text-red-500 text-sm">{errors.link.message}</p>}
 
+                        <label className="block text-sm font-medium text-gray-700">
+                            Archivo escritorio
+                        </label>
                         <input
                             type="file"
                             title="Archivo principal"
@@ -183,6 +189,9 @@ export default function FutureEvents() {
                             }}
                         />
 
+                        <label className="block text-sm font-medium text-gray-700 mt-4">
+                            Archivo móvil
+                        </label>
                         <input
                             type="file"
                             title="Archivo para móvil"
