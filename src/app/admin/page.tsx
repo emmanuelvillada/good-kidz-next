@@ -1,9 +1,11 @@
-import MicrostoryTable from "@/components/MicrostoryTable";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+// app/admin/page.tsx
 
-export default async function TablePage() {
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
+import AdminPanel from '@/components/admin/AdminPanel'
+
+export default async function AdminPage() {
     const supabase = createServerComponentClient({ cookies })
 
     const {
@@ -24,10 +26,9 @@ export default async function TablePage() {
         redirect('/login')
     }
 
-
     return (
-        <MicrostoryTable>
-
-        </MicrostoryTable>
-    );
+        <section className="p-6">
+            <AdminPanel />
+        </section>
+    )
 }

@@ -1,6 +1,21 @@
 import { withNextVideo } from "next-video/process";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Activa el nuevo bundler experimental de Next.js
+  turbopack: {
+    enabled: true,
+    experimental: {
+      outputFileTracingRoot: process.cwd(),
+    },
+  },
+
+  // Habilita acciones del lado del servidor en componentes
+  experimental: {
+    serverActions: true,
+  },
+
+  // Configuración para permitir cargar imágenes externas
   images: {
     remotePatterns: [
       {
@@ -17,7 +32,7 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'www.youtube.com',
         pathname: '/**',
-      }
+      },
     ],
   },
 };
