@@ -12,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import validateImageDimensions from '@/lib/validateImageDimensions'
+import { EventCard } from './FutureEventCard' // Asegúrate de que la ruta sea correcta
 
 const supabase = createPagesBrowserClient()
 
@@ -40,6 +41,15 @@ type Event = {
 
 export default function FutureEvents() {
     const [events, setEvents] = useState<Event[]>([])
+    const [formData, setFormData] = useState<EventFormData>({
+        title: '',
+        description: '',
+        date: '',
+        location: '',
+        link: '',
+        file: null,
+        mobile_file: null,
+    })
 
     const {
         register,
@@ -145,6 +155,9 @@ export default function FutureEvents() {
                         <Input
                             placeholder="Título"
                             {...register('title')}
+                            type="text"
+                            autoComplete="off"
+                            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                             className="h-10 rounded-md border-gray-300 focus:ring-green-500 focus:border-green-500"
                         />
                         {errors.title && <p className="text-red-500 text-sm">{errors.title.message}</p>}
@@ -152,6 +165,7 @@ export default function FutureEvents() {
                         <Input
                             type="date"
                             {...register('date')}
+                            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                             className="h-10 rounded-md border-gray-300 focus:ring-green-500 focus:border-green-500"
                         />
                         {errors.date && <p className="text-red-500 text-sm">{errors.date.message}</p>}
@@ -159,24 +173,28 @@ export default function FutureEvents() {
                         <Input
                             placeholder="Lugar"
                             {...register('location')}
+                            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                             className="h-10 rounded-md border-gray-300 focus:ring-green-500 focus:border-green-500"
                         />
 
                         <Textarea
                             placeholder="Descripción"
                             {...register('description')}
+                            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                             className="rounded-md border-gray-300 focus:ring-green-500 focus:border-green-500"
                         />
 
                         <Input
                             placeholder="Link externo (opcional)"
                             {...register('link')}
+                            onChange={(e) => setFormData({ ...formData, link: e.target.value })}
                             className="h-10 rounded-md border-gray-300 focus:ring-green-500 focus:border-green-500"
                         />
                         {errors.link && <p className="text-red-500 text-sm">{errors.link.message}</p>}
 
                         <label className="block text-sm font-medium text-gray-700">
                             Archivo escritorio
+                            (1168 x 300 px)
                         </label>
                         <input
                             type="file"
@@ -184,13 +202,24 @@ export default function FutureEvents() {
                             accept='image/webp'
                             className="text-sm"
                             onChange={(e) => {
-                                const file = e.target.files?.[0]
-                                if (file) setValue('file', file)
+                                const file = e.target.files?.[0];
+                                if (file) {
+                                    setValue('file', file);
+                                    const reader = new FileReader();
+                                    reader.onloadend = () => {
+                                        setFormData(prev => ({
+                                            ...prev,
+                                            file: reader.result as string,
+                                        }));
+                                    };
+                                    reader.readAsDataURL(file);
+                                }
                             }}
                         />
 
                         <label className="block text-sm font-medium text-gray-700 mt-4">
                             Archivo móvil
+                            (366 x 205 px)
                         </label>
                         <input
                             type="file"
@@ -199,7 +228,17 @@ export default function FutureEvents() {
                             className="text-sm"
                             onChange={(e) => {
                                 const file = e.target.files?.[0]
-                                if (file) setValue('mobile_file', file)
+                                if (file) {
+                                    setValue('mobile_file', file)
+                                    const reader = new FileReader()
+                                    reader.onloadend = () => {
+                                        setFormData(prev => ({
+                                            ...prev,
+                                            mobile_file: reader.result as string,
+                                        }))
+                                    }
+                                    reader.readAsDataURL(file)
+                                }
                             }}
                         />
 
@@ -211,6 +250,22 @@ export default function FutureEvents() {
                         </button>
                     </form>
                 </div>
+                {/* preview */}
+                {formData.title && formData.date && formData.location && formData.file && formData.mobile_file && (
+                    <div className="max-w-xl mx-auto mt-4">
+                        <h2 className="text-xl font-bold mb-4 mx-auto">Previsualización del evento:</h2>
+                        <EventCard
+                            title={formData.title || "Título del Evento"}
+                            date={formData.date || "Fecha del Evento"}
+                            location={formData.location || "Lugar del Evento"}
+                            description={formData.description || "Descripción del Evento"}
+                            file={formData.file} // puede ser una URL temporal o ya subida
+                            mobile_file={formData.mobile_file}
+                            link={formData.link || "#"}
+                            isMobile={false}
+                        />
+                    </div>
+                )}
             </Card>
 
             {/* Card: Eventos Registrados */}
