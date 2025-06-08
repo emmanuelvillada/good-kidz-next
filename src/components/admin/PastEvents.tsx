@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import validateImageDimensions from '@/lib/validateImageDimensions'
+import EventCard from '@/components/admin/EventCard'
 
 const supabase = createPagesBrowserClient()
 //Zod schema
@@ -22,7 +23,7 @@ const eventSchema = z.object({
     date: z.string().min(1, 'La fecha es obligatoria'),
     location: z.string().optional(),
     description: z.string().optional(),
-    image: z.any().optional(),
+    image: z.any(),
 })
 
 // Define the Event type
@@ -50,6 +51,13 @@ export default function PastEvent() {
 
 
     const [pastEvents, setPastEvents] = useState<PastEvent[]>([])
+    const [formData, setFormData] = useState<z.infer<typeof eventSchema>>({
+        title: '',
+        date: '',
+        location: '',
+        description: '',
+        image: null
+    })
 
     useEffect(() => {
         fetchData()
@@ -145,6 +153,10 @@ export default function PastEvent() {
                         <Input
                             placeholder="Título"
                             {...register('title')}
+                            type="text"
+                            onChange={(e) => {
+                                setFormData((prev) => ({ ...prev, title: e.target.value }))
+                            }}
                             className="h-10 rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                         />
                         {errors.title && <p className="text-red-500 text-sm">{errors.title.message}</p>}
@@ -152,6 +164,9 @@ export default function PastEvent() {
                         <Input
                             type="date"
                             {...register('date')}
+                            onChange={(e) => {
+                                setFormData((prev) => ({ ...prev, date: e.target.value }))
+                            }}
                             className="h-10 rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                         />
                         {errors.date && <p className="text-red-500 text-sm">{errors.date.message}</p>}
@@ -159,15 +174,25 @@ export default function PastEvent() {
                         <Input
                             placeholder="Lugar"
                             {...register('location')}
+                            type="text"
+                            onChange={(e) => {
+                                setFormData((prev) => ({ ...prev, location: e.target.value }))
+                            }}
                             className="h-10 rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                         />
 
                         <Textarea
                             placeholder="Descripción"
                             {...register('description')}
+                            onChange={(e) => {
+                                setFormData((prev) => ({ ...prev, description: e.target.value }))
+                            }}
                             className="rounded-md border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                         />
 
+                        <label className="block text-sm font-medium text-gray-700">
+                            Imagen (1136x408 px)
+                        </label>
                         <input
                             title="Imagen"
                             type="file"
@@ -177,6 +202,11 @@ export default function PastEvent() {
                                 const file = e.target.files?.[0]
                                 if (!file) return
                                 setValue('image', file)
+                                const reader = new FileReader()
+                                reader.onloadend = () => {
+                                    setFormData((prev) => ({ ...prev, image: reader.result }))
+                                }
+                                reader.readAsDataURL(file)
                             }}
                         />
 
@@ -187,6 +217,10 @@ export default function PastEvent() {
                             <PlusIcon className="h-5 w-5" /> Agregar Evento
                         </button>
                     </form>
+                    {/* preview */}
+                    {formData.image && formData.title && formData.date && formData.location && formData.description && (
+                        <EventCard event={{ id: '', ...formData }} />
+                    )}
                 </div>
             </Card>
 
