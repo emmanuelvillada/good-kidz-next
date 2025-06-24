@@ -30,7 +30,7 @@ export default function MicrostoryCard({ cuento }: { cuento: Microcuento }) {
 
     return (
         <div className="rounded-2xl shadow-lg bg-white p-4 w-full max-w-sm">
-            <Image src={cuento.imageUrl} alt={`Imagen de ${cuento.title}`} className="rounded-xl object-cover w-full h-52" />
+            <Image width={0} height={0} src={cuento.imageUrl} alt={`Imagen de ${cuento.title}`} className="rounded-xl object-cover w-full h-52" />
             <h2 className="text-xl font-semibold mt-4">{cuento.title}</h2>
             {cuento.author && <p className="text-sm text-gray-500">por {cuento.author}</p>}
             <div className="mt-4 flex items-center gap-2">

@@ -2,17 +2,14 @@ import { withNextVideo } from "next-video/process";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Activa el nuevo bundler experimental de Next.js
-  turbopack: {
-    enabled: true,
-    experimental: {
-      outputFileTracingRoot: process.cwd(),
-    },
-  },
+  // Configuración de la aplicación Next.js
 
   // Habilita acciones del lado del servidor en componentes
   experimental: {
-    serverActions: true,
+    serverActions: {
+      // Permite el uso de acciones del lado del servidor en componentes
+      allowServerActions: true,
+    },
   },
 
   // Configuración para permitir cargar imágenes externas
