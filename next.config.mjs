@@ -12,6 +12,7 @@ const nextConfig = {
     },
   },
 
+
   // Configuración para permitir cargar imágenes externas
   images: {
     remotePatterns: [
