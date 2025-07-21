@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from "react";
-import { Slider } from "./ui/Slider";
+import { MSlider } from "./ui/MicrostorySlider";
 import MicrostoryCard from "./MicrostoryCard";
 import { PostgrestError } from '@supabase/supabase-js'
 import { supabaseClient } from '@/lib/supabase'
@@ -20,18 +20,29 @@ export default function MicrostorySlider() {
 
     useEffect(() => {
         const fetchCuentos = async () => {
-            const { data, error } = await supabase
-                .from('micro_stories')
-                .select('id, title, name, file_image, audio_url')
-                .not('audio_url', 'is', null)
-                .order('created_at', { ascending: false });
+            try {
+                setLoading(true);
+                setError(null);
+                const { data, error } = await supabase
+                    .from('micro_stories_audios')
+                    .select('id, title, name, file_image, audio_url')
+                    .not('audio_url', 'is', null)
+                    .order('created_at', { ascending: false });
 
-            if (error) {
-                setError(error);
-            } else {
-                setCuentos(data || []);
+                if (error) {
+                    throw error;
+                }
+
+                if (data) {
+                    setCuentos(data);
+                    console.log('Cuentos cargados:', data);
+                }
+            } catch (error) {
+                setError(error as PostgrestError);
             }
-            setLoading(false);
+            finally {
+                setLoading(false);
+            }
         };
         fetchCuentos();
     }, [supabase]);
@@ -53,23 +64,33 @@ export default function MicrostorySlider() {
         );
     }
 
+    if (cuentos.length === 0) {
+        return (
+            <p className="text-gray-600 mt-24 text-center text-3xl">
+                No hay cuentos disponibles.
+            </p>
+        );
+    }
+
 
     return (
-        <Slider>
-            {cuentos.map((cuento) => (
-                <MicrostoryCard
-                    key={cuento.id}
-                    cuento={{
-                        id: cuento.id,
-                        title: cuento.title,
-                        author: cuento.name,
-                        imageUrl:
-                            'https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/micro-stories/' +
-                            cuento.file_image,
-                        audioUrl: cuento.audio_url,
-                    }}
-                />
-            ))}
-        </Slider>
+        <section className="pt-10 mb-32 bg-transparent" id="microstories">
+            <div className="container mx-auto px-4 md:px-6">
+                <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-8 text-center">
+                    Microcuentos
+                </h2>
+            </div>
+            <MSlider>
+                {cuentos.map((cuento) => (
+                    <MicrostoryCard
+                        key={cuento.id}
+                        title={cuento.title}
+                        author={cuento.name ?? ""}
+                        imageUrl={cuento.file_image}
+                        audioUrl={cuento.audio_url}
+                    />
+                ))}
+            </MSlider>
+        </section>
     );
 }
