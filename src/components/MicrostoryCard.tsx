@@ -9,9 +9,10 @@ type MicrocuentoCardProps = {
     author: string
     imageUrl: string
     audioUrl: string
+    description?: string
 }
 
-export default function MicrocuentoCard({ title, author, imageUrl, audioUrl }: MicrocuentoCardProps) {
+export default function MicrocuentoCard({ title, author, imageUrl, audioUrl, description }: MicrocuentoCardProps) {
     const audioRef = useRef<HTMLAudioElement>(null)
     const progressRef = useRef<HTMLInputElement>(null)
 
@@ -79,6 +80,9 @@ export default function MicrocuentoCard({ title, author, imageUrl, audioUrl }: M
                         {title}
                     </h2>
                     <p className="text-sm sm:text-base text-gray-600 font-medium">
+                        {description}
+                    </p>
+                    <p className="text-sm sm:text-base text-gray-600 font-medium">
                         por <span className="text-green-600 font-semibold">{author}</span>
                     </p>
                 </div>
@@ -87,7 +91,7 @@ export default function MicrocuentoCard({ title, author, imageUrl, audioUrl }: M
                 <div className="space-y-3">
                     <button
                         onClick={toggleAudio}
-                        className="w-full flex items-center justify-center gap-3 px-6 py-3 sm:py-4 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-200 font-semibold text-sm sm:text-base shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+                        className="w-full flex items-center justify-center gap-3 px-6 py-3 sm:py-4 bg-verde-goodkidz text-white rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-200 font-semibold text-sm sm:text-base shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
                         disabled={!audioUrl}
                     >
                         {isPlaying ? (

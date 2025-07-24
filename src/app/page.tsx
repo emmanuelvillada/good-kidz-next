@@ -13,14 +13,13 @@ export default function Home() {
     <>
 
       <Hero />
-
+      <MicrostorySlider />
       <UpcomingEvents />
       {/* <About /> */}
       <Events />
       {/* <Blog /> */}
       {/* <Help /> */}
       {/* <Contributors /> */}
-      <MicrostorySlider />
     </>
   );
 }
