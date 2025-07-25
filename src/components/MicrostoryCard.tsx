@@ -10,15 +10,17 @@ type MicrocuentoCardProps = {
     imageUrl: string
     audioUrl: string
     description?: string
+    season: string
 }
 
-export default function MicrocuentoCard({ title, author, imageUrl, audioUrl, description }: MicrocuentoCardProps) {
+export default function MicrocuentoCard({ title, author, imageUrl, audioUrl, description, season }: MicrocuentoCardProps) {
     const audioRef = useRef<HTMLAudioElement>(null)
     const progressRef = useRef<HTMLInputElement>(null)
 
     const [isPlaying, setIsPlaying] = useState(false)
     const [progress, setProgress] = useState(0)
     const [duration, setDuration] = useState(0)
+    const [expanded, setExpanded] = useState(false)
 
     const toggleAudio = () => {
         if (!audioRef.current) return
@@ -80,8 +82,26 @@ export default function MicrocuentoCard({ title, author, imageUrl, audioUrl, des
                         {title}
                     </h2>
                     <p className="text-sm sm:text-base text-gray-600 font-medium">
-                        {description}
+                        <span className="text-green-600 font-semibold">{season}</span>
                     </p>
+                    {/* Descripción con ver más/ver menos */}
+                    <div className="text-sm sm:text-base text-gray-600 font-medium relative">
+                        <p
+                            className={`transition-all duration-300 ${expanded ? '' : 'line-clamp-2'
+                                }`}
+                        >
+                            {description}
+                        </p>
+
+                        {description && description.length > 120 && (
+                            <button
+                                onClick={() => setExpanded(!expanded)}
+                                className="mt-1 text-green-600 font-semibold focus:outline-none"
+                            >
+                                {expanded ? 'Ver menos' : 'Ver más'}
+                            </button>
+                        )}
+                    </div>
                     <p className="text-sm sm:text-base text-gray-600 font-medium">
                         por <span className="text-green-600 font-semibold">{author}</span>
                     </p>
