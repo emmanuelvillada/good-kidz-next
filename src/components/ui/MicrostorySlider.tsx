@@ -73,7 +73,7 @@ export function MSlider({ children, autoPlay = false, interval = 7000 }: Microst
                 {/* Loading progress bar */}
                 {autoPlay && !isHovered && (
                     <motion.div
-                        className="absolute top-0 left-0 h-1 bg-green-400 rounded-full"
+                        className="absolute top-0 left-0 h-1 bg-verde-goodkidz rounded-full"
                         initial={{ width: "0%" }}
                         animate={{ width: "100%" }}
                         transition={{ duration: interval / 1000, ease: "linear" }}
@@ -119,14 +119,14 @@ export function MSlider({ children, autoPlay = false, interval = 7000 }: Microst
                         onClick={() => setCurrentIndex(index)}
                         className={`relative transition-all duration-300 rounded-full overflow-hidden
                           ${currentIndex === index
-                                ? 'w-6 h-2 bg-green-500'
+                                ? 'w-6 h-2 bg-verde-goodkidz hover:bg-green-600'
                                 : 'w-2 h-2 bg-gray-300 hover:bg-green-300'
                             }`}
                         aria-label={`Ver microcuento ${index + 1}`}
                     >
                         {currentIndex === index && autoPlay && !isHovered && (
                             <motion.div
-                                className="absolute inset-0 bg-green-600"
+                                className="absolute inset-0 bg-verde-goodkidz"
                                 initial={{ width: "0%" }}
                                 animate={{ width: "100%" }}
                                 transition={{ duration: interval / 1000, ease: "linear" }}
