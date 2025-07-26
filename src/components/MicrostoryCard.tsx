@@ -82,7 +82,7 @@ export default function MicrocuentoCard({ title, author, imageUrl, audioUrl, des
                         {title}
                     </h2>
                     <p className="text-sm sm:text-base text-gray-600 font-medium">
-                        <span className="text-green-600 font-semibold">{season}</span>
+                        <span className="text-verde-goodkidz font-semibold">{season}</span>
                     </p>
                     {/* Descripción con ver más/ver menos */}
                     <div className="text-sm sm:text-base text-gray-600 font-medium relative">
@@ -96,14 +96,14 @@ export default function MicrocuentoCard({ title, author, imageUrl, audioUrl, des
                         {description && description.length > 120 && (
                             <button
                                 onClick={() => setExpanded(!expanded)}
-                                className="mt-1 text-green-600 font-semibold focus:outline-none"
+                                className="mt-1 text-verde-goodkidz font-semibold focus:outline-none"
                             >
                                 {expanded ? 'Ver menos' : 'Ver más'}
                             </button>
                         )}
                     </div>
                     <p className="text-sm sm:text-base text-gray-600 font-medium">
-                        por <span className="text-green-600 font-semibold">{author}</span>
+                        por <span className="text-verde-goodkidz font-semibold">{author}</span>
                     </p>
                 </div>
 
@@ -111,18 +111,18 @@ export default function MicrocuentoCard({ title, author, imageUrl, audioUrl, des
                 <div className="space-y-3">
                     <button
                         onClick={toggleAudio}
-                        className="w-full flex items-center justify-center gap-3 px-6 py-3 sm:py-4 bg-verde-goodkidz text-white rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-200 font-semibold text-sm sm:text-base shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+                        className="w-full flex items-center justify-center gap-3 px-6 py-3 sm:py-4 bg-verde-goodkidz text-white rounded-xl hover:from-verde-goodkidz hover:to-green-700 transition-all duration-200 font-semibold text-sm sm:text-base shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
                         disabled={!audioUrl}
                     >
                         {isPlaying ? (
                             <>
                                 <Pause size={18} className="sm:w-5 sm:h-5" />
-                                <span>Pausar relato</span>
+                                <span>Pausar microcuento</span>
                             </>
                         ) : (
                             <>
                                 <Play size={18} className="sm:w-5 sm:h-5" />
-                                <span>Reproducir relato</span>
+                                <span>Reproducir microcuento</span>
                             </>
                         )}
                     </button>
@@ -137,10 +137,10 @@ export default function MicrocuentoCard({ title, author, imageUrl, audioUrl, des
                             max={duration || 100}
                             value={progress}
                             onChange={handleSeek}
-                            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-green-500 hover:accent-green-600"
+                            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-green-500 hover:accent-verde-goodkidz"
                             title="Progreso del audio"
                             style={{
-                                background: `linear-gradient(to right, #10b981 0%, #10b981 ${(progress / (duration || 100)) * 100}%, #e5e7eb ${(progress / (duration || 100)) * 100}%, #e5e7eb 100%)`
+                                background: `linear-gradient(to right, #00E58D 0%, #00E58D ${(progress / (duration || 100)) * 100}%, #e5e7eb ${(progress / (duration || 100)) * 100}%, #e5e7eb 100%)`
                             }}
                         />
 
