@@ -50,7 +50,7 @@ export function MSlider({ children, autoPlay = false, interval = 7000 }: Microst
             onMouseLeave={() => setIsHovered(false)}
         >
             {/* Slider container - Altura optimizada para microcuentos */}
-            <div className="overflow-hidden relative h-[600px] sm:h-[700px] md:h-[750px] lg:h-[900px] bg-gradient-to-br from-blue-50 via-white to-green-50 rounded-3xl shadow-lg">
+            <div className="overflow-hidden relative h-[620px] sm:h-[700px] md:h-[750px] lg:h-[900px] bg-gradient-to-br from-blue-50 via-white to-green-50 rounded-3xl shadow-lg">
                 <AnimatePresence initial={false} custom={currentIndex} mode="wait">
                     <motion.div
                         key={currentIndex}
