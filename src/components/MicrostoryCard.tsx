@@ -1,10 +1,12 @@
 'use client'
 
 import Image from 'next/image'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useCallback } from 'react'
 import { Play, Pause } from 'lucide-react'
+import { supabaseClient } from '@/lib/supabase'
 
 type MicrocuentoCardProps = {
+    id: string
     title: string
     author: string
     imageUrl: string
@@ -13,7 +15,15 @@ type MicrocuentoCardProps = {
     season: string
 }
 
-export default function MicrocuentoCard({ title, author, imageUrl, audioUrl, description, season }: MicrocuentoCardProps) {
+export default function MicrocuentoCard({
+    id,
+    title,
+    author,
+    imageUrl,
+    audioUrl,
+    description,
+    season,
+}: MicrocuentoCardProps) {
     const audioRef = useRef<HTMLAudioElement>(null)
     const progressRef = useRef<HTMLInputElement>(null)
 
@@ -21,15 +31,25 @@ export default function MicrocuentoCard({ title, author, imageUrl, audioUrl, des
     const [progress, setProgress] = useState(0)
     const [duration, setDuration] = useState(0)
     const [expanded, setExpanded] = useState(false)
+    const [hasRegisteredView, setHasRegisteredView] = useState(false)
 
-    const toggleAudio = () => {
+    const toggleAudio = async () => {
         if (!audioRef.current) return
+
         if (isPlaying) {
             audioRef.current.pause()
+            setIsPlaying(false)
         } else {
-            audioRef.current.play()
+            try {
+                await audioRef.current.play()
+                setIsPlaying(true)
+                if (!hasRegisteredView) {
+                    registerView()
+                }
+            } catch (err) {
+                console.error('Error al reproducir audio', err)
+            }
         }
-        setIsPlaying(!isPlaying)
     }
 
     const handleTimeUpdate = () => {
@@ -48,6 +68,25 @@ export default function MicrocuentoCard({ title, author, imageUrl, audioUrl, des
         audioRef.current.currentTime = newTime
         setProgress(newTime)
     }
+
+    // función para registrar la vista (una sola vez por sesión de reproducción)
+    const registerView = useCallback(async () => {
+        try {
+            const { data, error } = await supabaseClient.rpc('increment_microcuento_visita', {
+                p_id: id,
+            })
+            if (data) {
+                console.log('Visita registrada correctamente', data)
+            }
+            if (error) {
+                console.error('Error al registrar visita', error)
+            } else {
+                setHasRegisteredView(true)
+            }
+        } catch (err) {
+            console.error('Error inesperado al registrar visita', err)
+        }
+    }, [id])
 
     useEffect(() => {
         const audio = audioRef.current
@@ -140,15 +179,22 @@ export default function MicrocuentoCard({ title, author, imageUrl, audioUrl, des
                             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-green-500 hover:accent-verde-goodkidz"
                             title="Progreso del audio"
                             style={{
-                                background: `linear-gradient(to right, #00E58D 0%, #00E58D ${(progress / (duration || 100)) * 100}%, #e5e7eb ${(progress / (duration || 100)) * 100}%, #e5e7eb 100%)`
+                                background: `linear-gradient(to right, #00E58D 0%, #00E58D ${(progress / (duration || 100)) * 100
+                                    }%, #e5e7eb ${(progress / (duration || 100)) * 100}%, #e5e7eb 100%)`,
                             }}
                         />
 
                         {/* Tiempo */}
                         {duration > 0 && (
                             <div className="flex justify-between text-xs sm:text-sm text-gray-500 font-medium">
-                                <span>{Math.floor(progress / 60)}:{Math.floor(progress % 60).toString().padStart(2, '0')}</span>
-                                <span>{Math.floor(duration / 60)}:{Math.floor(duration % 60).toString().padStart(2, '0')}</span>
+                                <span>
+                                    {Math.floor(progress / 60)}:
+                                    {Math.floor(progress % 60).toString().padStart(2, '0')}
+                                </span>
+                                <span>
+                                    {Math.floor(duration / 60)}:
+                                    {Math.floor(duration % 60).toString().padStart(2, '0')}
+                                </span>
                             </div>
                         )}
                     </div>
