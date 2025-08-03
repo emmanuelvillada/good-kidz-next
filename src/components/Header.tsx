@@ -9,12 +9,7 @@ import logo from '@/public/logo.png';
 import SuscribeModal from './form/SuscribeForm';
 import { useRouter, usePathname } from 'next/navigation';
 
-const navLinks = [
-  // { href: "#about", label: "Sobre Nosotros" },
-  { href: "#upcoming-events", label: "VEN Y DESCUBRE..." },
-  // { href: "/#help", label: "Cómo Ayudar" },
-  { href: "microstory", label: "FORMULARIO MICROCUENTO" },
-];
+const navLinks: { href: string; label: string }[] = [];
 
 
 
