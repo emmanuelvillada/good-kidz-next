@@ -61,7 +61,7 @@ export default function MicrostorySlider() {
                 setSeasons(uniqueSeasons)
                 // si no hay aún season seleccionada, preselecciona la primera
                 if (!selectedSeason && uniqueSeasons.length > 0) {
-                    setSelectedSeason(uniqueSeasons[0])
+                    setSelectedSeason(uniqueSeasons[uniqueSeasons.length - 1])
                 }
             }
         } catch (err) {
