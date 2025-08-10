@@ -42,10 +42,7 @@ export default function MicrostorySlider() {
         setErrorSeasons(null)
         try {
             const { data, error } = await supabase
-                .from('micro_stories_audios')
-                .select('season, created_at')
-                .not('audio_url', 'is', null)
-                .neq('season', '')
+                .from('latest_seasons').select('season, created_at').order('created_at', { ascending: false })
 
             if (error) throw error
 
