@@ -43,7 +43,7 @@ export default function MicrostorySlider() {
         try {
             const { data, error } = await supabase
                 .from('micro_stories_audios')
-                .select('season')
+                .select('season, created_at')
                 .not('audio_url', 'is', null)
                 .neq('season', '')
                 .order('season', { ascending: true })
@@ -56,12 +56,26 @@ export default function MicrostorySlider() {
                         data
                             .map((row: { season: string | null }) => row.season as string | null)
                             .filter((s): s is string => !!s)
+                            .map((s) => s.replace(/\r?\n/g, '').trim()) // 🔹 Limpia saltos invisibles
+                            //origabizar por la fecha de creacion más reciente dentro de cada temporada
+                            .sort((a, b) => {
+                                const dateA = data
+                                    .filter((row) => row.season === a)
+                                    .map((row) => new Date(row.created_at))
+                                    .sort((d1, d2) => d2.getTime() - d1.getTime())[0]
+                                const dateB = data
+                                    .filter((row) => row.season === b)
+                                    .map((row) => new Date(row.created_at))
+                                    .sort((d1, d2) => d2.getTime() - d1.getTime())[0]
+                                return dateB.getTime() - dateA.getTime()
+                            })
                     )
                 )
                 setSeasons(uniqueSeasons)
-                // si no hay aún season seleccionada, preselecciona la primera
+
+                // si no hay aún season seleccionada, preselecciona la última
                 if (!selectedSeason && uniqueSeasons.length > 0) {
-                    setSelectedSeason(uniqueSeasons[uniqueSeasons.length - 1])
+                    setSelectedSeason(uniqueSeasons[0]) // la última temporada (más reciente)
                 }
             }
         } catch (err) {
@@ -70,6 +84,7 @@ export default function MicrostorySlider() {
             setLoadingSeasons(false)
         }
     }, [supabase, selectedSeason])
+
 
     const fetchCuentos = useCallback(
         async (season?: string) => {
