@@ -46,36 +46,34 @@ export default function MicrostorySlider() {
                 .select('season, created_at')
                 .not('audio_url', 'is', null)
                 .neq('season', '')
-                .order('season', { ascending: true })
 
             if (error) throw error
 
             if (data) {
-                const uniqueSeasons = Array.from(
-                    new Set(
-                        data
-                            .map((row: { season: string | null }) => row.season as string | null)
-                            .filter((s): s is string => !!s)
-                            .map((s) => s.replace(/\r?\n/g, '').trim()) // 🔹 Limpia saltos invisibles
-                            //origabizar por la fecha de creacion más reciente dentro de cada temporada
-                            .sort((a, b) => {
-                                const dateA = data
-                                    .filter((row) => row.season === a)
-                                    .map((row) => new Date(row.created_at))
-                                    .sort((d1, d2) => d2.getTime() - d1.getTime())[0]
-                                const dateB = data
-                                    .filter((row) => row.season === b)
-                                    .map((row) => new Date(row.created_at))
-                                    .sort((d1, d2) => d2.getTime() - d1.getTime())[0]
-                                return dateB.getTime() - dateA.getTime()
-                            })
-                    )
-                )
+                // Normalizar nombres y agrupar con la fecha más reciente
+                const seasonMap = new Map<string, Date>()
+
+                data.forEach(({ season, created_at }) => {
+                    if (!season) return
+                    const cleanName = season.replace(/\r?\n/g, '').trim()
+                    const date = new Date(created_at)
+
+                    // Guardar la fecha más reciente para cada temporada
+                    if (!seasonMap.has(cleanName) || date > seasonMap.get(cleanName)!) {
+                        seasonMap.set(cleanName, date)
+                    }
+                })
+
+                // Ordenar por fecha más reciente y obtener solo nombres
+                const uniqueSeasons = [...seasonMap.entries()]
+                    .sort((a, b) => b[1].getTime() - a[1].getTime())
+                    .map(([name]) => name)
+
                 setSeasons(uniqueSeasons)
 
-                // si no hay aún season seleccionada, preselecciona la última
+                // Si no hay aún season seleccionada, preselecciona la última (más reciente)
                 if (!selectedSeason && uniqueSeasons.length > 0) {
-                    setSelectedSeason(uniqueSeasons[0]) // la última temporada (más reciente)
+                    setSelectedSeason(uniqueSeasons[0])
                 }
             }
         } catch (err) {
@@ -84,7 +82,6 @@ export default function MicrostorySlider() {
             setLoadingSeasons(false)
         }
     }, [supabase, selectedSeason])
-
 
     const fetchCuentos = useCallback(
         async (season?: string) => {
