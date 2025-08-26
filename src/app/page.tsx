@@ -1,6 +1,6 @@
 // import Hero from '@/components/Hero';
-// import About from '@/components/About';
-// import Contributors from '@/components/Contributors';
+import About from '@/components/About';
+import Contributors from '@/components/Contributors';
 // import Blog from '@/components/Blog';
 import UpcomingEvents from '@/components/UpcomingEvents';
 // import Help from '@/components/Help';
@@ -15,11 +15,11 @@ export default function Home() {
       {/* <Hero /> */}
       <MicrostorySlider />
       <UpcomingEvents />
-      {/* <About /> */}
+      <About />
       <Events />
       {/* <Blog /> */}
       {/* <Help /> */}
-      {/* <Contributors /> */}
+      <Contributors />
     </>
   );
 }
