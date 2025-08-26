@@ -1,42 +1,40 @@
 'use client'
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-
+import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
+import { useEffect } from 'react';
 
 export default function About() {
-    const [numbers, setNumbers] = useState({
-        kids: 0,
-        programs: 0,
-        projects: 0,
-        schools: 0
-    });
+    const valores = [
+        'Educación Artística',
+        'Desarrollo Personal',
+        'Inclusión Social',
+        'Innovación Educativa'
+    ];
 
-    useEffect(() => {
-        // Generar números aleatorios para las estadísticas
-        const targetNumbers = { kids: 1300, programs: 50, projects: 100, schools: 20 };
-        const duration = 2500; // 2.5 segundos
-        const steps = 50; // Cantidad de actualizaciones
-        const intervalTime = duration / steps;
+    const stats = [
+        { label: 'Niños Beneficiados', value: 1300 },
+        { label: 'Programas Educativos', value: 50 },
+        { label: 'Proyectos Ejecutados', value: 100 },
+        { label: 'Colaboraciones', value: 20 }
+    ];
 
-        let count = 0;
-        const interval = setInterval(() => {
-            setNumbers({
-                kids: Math.floor(Math.random() * targetNumbers.kids),
-                programs: Math.floor(Math.random() * targetNumbers.programs),
-                projects: Math.floor(Math.random() * targetNumbers.projects),
-                schools: Math.floor(Math.random() * targetNumbers.schools)
-            });
-            count++;
-            if (count >= steps) {
-                clearInterval(interval);
-                setNumbers(targetNumbers);
-            }
-        }, intervalTime);
-    }, []);
+    // Hook para animar números suavemente
+    function AnimatedCounter({ from = 0, to }: { from?: number; to: number }) {
+        const count = useMotionValue(from);
+        const rounded = useTransform(count, latest => Math.floor(latest));
+
+        useEffect(() => {
+            const controls = animate(count, to, { duration: 2.5 });
+            return controls.stop;
+        }, [to]);
+
+        return <motion.span>{rounded}</motion.span>;
+    }
 
     return (
-        <section id="about" className="mt-40 bg-gradient-to-b from-white to-gray-50 ">
+        <section id="about" className="mt-16 bg-gradient-to-b from-white to-gray-50">
             <div className="container mx-auto px-6 max-w-7xl">
+
+                {/* Encabezado */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -46,90 +44,82 @@ export default function About() {
                     <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
                         Sobre Good Kidz
                     </h2>
-                    <div className="w-24 h-1 bg-green-500 mx-auto mb-8"></div>
+                    <div className="w-24 h-1 bg-verde-goodkidz mx-auto mb-8"></div>
                     <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                        Es la idea original de <strong>FEID y su familia </strong>
-                        con la intención de transformar
-                        positivamente la sociedad.
+                        Es la idea original de <strong>FEID y su familia</strong> con la intención de transformar positivamente la sociedad.
                     </p>
                 </motion.div>
 
+                {/* Misión y Visión */}
                 <div className="grid md:grid-cols-2 gap-12 mb-20">
-                    <motion.div
+                    {/* Misión */}
+                    <motion.article
                         initial={{ opacity: 0, x: -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.5 }}
                         className="space-y-6 p-8 bg-white rounded-2xl shadow-xl"
                     >
-                        <h3 className="text-3xl font-bold text-blue-600">Nuestra Misión</h3>
-                        <p className="text-lg text-gray-700 leading-relaxed ">
-                            Fomentar la adquisición de habilidades
-                            para la vida de niños, jóvenes y adultos
-                            a través del aprendizaje y práctica de
-                            actividades creativas, para el cultivo de
-                            la sensibilidad, la adquisición de buenos
-                            hábitos y sentido de pertenencia, mediante
-                            la conformación de grupos de diferentes
-                            edades, géneros y condición en los campos
-                            de las artes, las artesanías y , con miras a
-                            la formación, la integración y el empleo
-                            productivo del tiempo libre.
+                        <h3 className="text-3xl font-bold text-verde-goodkidz">Nuestra Misión</h3>
+                        <p className="text-lg text-gray-700 leading-relaxed">
+                            Fomentar la adquisición de habilidades para la vida de niños, jóvenes y adultos
+                            a través del aprendizaje y práctica de actividades creativas, para el cultivo de la sensibilidad,
+                            la adquisición de buenos hábitos y sentido de pertenencia, mediante la conformación de grupos
+                            de diferentes edades, géneros y condición en los campos de las artes, las artesanías y,
+                            con miras a la formación, la integración y el empleo productivo del tiempo libre.
                         </p>
-                        <div className="space-y-4">
-                            {['Educación Artística', 'Desarrollo Personal', 'Inclusión Social', 'Innovación Educativa'].map((value, index) => (
-                                <div key={index} className="flex items-center gap-3">
-                                    <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span className="text-gray-700">{value}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </motion.div>
 
-                    <motion.div
+                    </motion.article>
+
+                    {/* Visión */}
+                    <motion.article
                         initial={{ opacity: 0, x: 50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.5 }}
-                        className="bg-white p-8 rounded-2xl shadow-xl"
+                        className="space-y-6"
                     >
-                        <h3 className="text-3xl font-bold text-verde-goodkidz mb-8">Nuestro Impacto</h3>
-                        <div className="grid grid-cols-2 gap-8">
-                            {[
-                                { label: 'Niños Beneficiados', value: numbers.kids },
-                                { label: 'Programas Educativos', value: numbers.programs },
-                                { label: 'Proyectos Ejecutados', value: numbers.projects },
-                                { label: 'Colaboraciones', value: numbers.schools }
-                            ].map((stat, index) => (
-                                <motion.div
-                                    key={index}
-                                    className="text-center"
-                                    whileHover={{ scale: 1.05 }}
-                                >
-                                    <motion.p className="text-4xl font-bold text-gray-800 mb-2">
-                                        {stat.value}+
-                                    </motion.p>
-                                    <p className="text-sm text-gray-600">{stat.label}</p>
-                                </motion.div>
+                        <h3 className="text-3xl font-bold text-verde-goodkidz mb-8">Nuestra Visión</h3>
+                        <p className="text-lg text-gray-700 leading-relaxed">
+                            Ser un referente en la educación artística y el desarrollo integral de niños y jóvenes,
+                            promoviendo la inclusión y la innovación en todos nuestros programas.
+                        </p>
+                        <ul className="space-y-4">
+                            {valores.map((value, index) => (
+                                <li key={index} className="flex items-center gap-3">
+                                    <svg aria-hidden="true" className="w-6 h-6 text-verde-goodkidz" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span className="text-gray-700">{value}</span>
+                                </li>
                             ))}
-                        </div>
-                    </motion.div>
+                        </ul>
+                    </motion.article>
                 </div>
-                {/* 
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    className="text-center"
-                >
-                    <h3 className="text-2xl font-bold text-gray-800 mb-6">¿Quieres ser parte del cambio?</h3>
-                    <button className="bg-green-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-green-600 transition-colors duration-300"
-                    >
-                        Únete como voluntario
-                    </button>
-                </motion.div> */}
-            </div>
 
+                {/* Impacto */}
+                <motion.div
+                    initial={{ opacity: 0, x: 50 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="bg-white p-8 rounded-2xl shadow-xl"
+                >
+                    <h3 className="text-3xl font-bold text-verde-goodkidz mb-8 text-center">Nuestro Impacto</h3>
+                    <div className="grid grid-cols-2 gap-8">
+                        {stats.map((stat, index) => (
+                            <motion.div
+                                key={index}
+                                className="text-center"
+                                whileHover={{ scale: 1.05 }}
+                            >
+                                <p className="text-4xl font-bold text-gray-800 mb-2">
+                                    <AnimatedCounter to={stat.value} />+
+                                </p>
+                                <p className="text-sm text-gray-600">{stat.label}</p>
+                            </motion.div>
+                        ))}
+                    </div>
+                </motion.div>
+
+            </div>
         </section>
     );
 }

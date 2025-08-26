@@ -61,9 +61,10 @@ export default function TeamCarousel() {
     return (
         <section className="py-16 bg-[#FCFCFC]" id="team">
             <div className="max-w-6xl mx-auto px-6 text-center">
-                <h2 className="text-3xl font-bold text-[#525156] mb-10">
+                <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
                     Nuestro Equipo
                 </h2>
+                <div className="w-24 h-1 bg-verde-goodkidz mx-auto mb-16"></div>
 
                 <div className="relative">
                     {/* Slider */}
@@ -74,6 +75,8 @@ export default function TeamCarousel() {
                                     <Image
                                         src={member.photo}
                                         alt={member.name}
+                                        width={500}
+                                        height={500}
                                         className="w-full h-56 object-cover"
                                     />
                                     <CardContent className="p-6">
