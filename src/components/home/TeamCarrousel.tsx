@@ -67,7 +67,7 @@ export default function TeamCarousel() {
                                 <Card className="shadow-md rounded-2xl overflow-hidden">
                                     <Image
                                         src={member.photo ?? "/placeholder.png"}
-                                        alt={member.name}
+                                        alt={member.name ?? "Team Member"}
                                         width={500}
                                         height={500}
                                         className="w-full h-56 object-cover"
