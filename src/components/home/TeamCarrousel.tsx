@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { useEffect, useState } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import Image from "next/image"
+import { getTeam } from "@/lib/home/getTeam"
 
 type Member = {
     name: string
@@ -15,34 +16,21 @@ type Member = {
     bio?: string
 }
 
-const team: Member[] = [
-    {
-        name: "Ana María López",
-        role: "Directora",
-        photo: "/images/team/ana.jpg",
-        bio: "Encargada de la gestión general y estrategia de la fundación."
-    },
-    {
-        name: "Carlos Pérez",
-        role: "Coordinador de proyectos",
-        photo: "/images/team/carlos.jpg",
-        bio: "Lidera los programas sociales y educativos."
-    },
-    {
-        name: "Laura Gómez",
-        role: "Diseñadora",
-        photo: "/images/team/laura.jpg",
-        bio: "Apoya en la comunicación visual y diseño de materiales."
-    },
-    {
-        name: "Juan Torres",
-        role: "Comunicaciones",
-        photo: "/images/team/juan.jpg",
-        bio: "Gestiona la difusión de actividades y eventos."
-    }
-]
+
+
 
 export default function TeamCarousel() {
+    const [team, setTeam] = useState<Member[]>([])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const teamData = await getTeam()
+            setTeam(teamData)
+        }
+
+        fetchData()
+    }, [])
+
     const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
         loop: true,
         mode: "snap",
@@ -58,6 +46,7 @@ export default function TeamCarousel() {
         if (instanceRef.current) setLoaded(true)
     }, [instanceRef])
 
+
     return (
         <section className="py-16 bg-[#FCFCFC]" id="team">
             <div className="max-w-6xl mx-auto px-6 text-center">
@@ -67,20 +56,24 @@ export default function TeamCarousel() {
                 <div className="w-24 h-1 bg-verde-goodkidz mx-auto mb-16"></div>
 
                 <div className="relative">
+                    {/* Loading indicator */}
+                    {loaded == false && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-10">Cargando...</div>
+                    )}
                     {/* Slider */}
                     <div ref={sliderRef} className="keen-slider">
                         {team.map((member, idx) => (
                             <div key={idx} className="keen-slider__slide">
                                 <Card className="shadow-md rounded-2xl overflow-hidden">
                                     <Image
-                                        src={member.photo}
+                                        src={member.photo ?? "/placeholder.png"}
                                         alt={member.name}
                                         width={500}
                                         height={500}
                                         className="w-full h-56 object-cover"
                                     />
                                     <CardContent className="p-6">
-                                        <h3 className="text-xl font-semibold text-[#00E58D]">
+                                        <h3 className="text-xl font-semibold text-verde-goodkidz">
                                             {member.name}
                                         </h3>
                                         <p className="text-sm text-[#525156] font-medium">
