@@ -42,7 +42,7 @@ export default function About() {
                     className="text-center mb-16"
                 >
                     <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-                        Sobre Good Kidz
+                        SOBRE GOOD KIDZ
                     </h2>
                     <div className="w-24 h-1 bg-verde-goodkidz mx-auto mb-8"></div>
                     <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -77,7 +77,7 @@ export default function About() {
                         transition={{ duration: 0.5 }}
                         className="space-y-6"
                     >
-                        <h3 className="text-3xl font-bold text-verde-goodkidz mb-8">Nuestra Visión</h3>
+                        <h3 className="text-3xl font-bold text-verde-goodkidz mb-8 mt-8">Nuestra Visión</h3>
                         <p className="text-lg text-gray-700 leading-relaxed">
                             Ser un referente en la educación artística y el desarrollo integral de niños y jóvenes,
                             promoviendo la inclusión y la innovación en todos nuestros programas.
@@ -107,7 +107,7 @@ export default function About() {
                         {stats.map((stat, index) => (
                             <motion.div
                                 key={index}
-                                className="text-center"
+                                className="text-center cursor-pointer"
                                 whileHover={{ scale: 1.05 }}
                             >
                                 <p className="text-4xl font-bold text-gray-800 mb-2">

@@ -51,7 +51,7 @@ export default function TeamCarousel() {
         <section className="py-16 bg-[#FCFCFC]" id="team">
             <div className="max-w-6xl mx-auto px-6 text-center">
                 <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-                    Nuestro Equipo
+                    NUESTRO EQUIPO
                 </h2>
                 <div className="w-24 h-1 bg-verde-goodkidz mx-auto mb-16"></div>
 
