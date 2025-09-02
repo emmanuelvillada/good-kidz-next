@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react"
 import { MSlider } from "./ui/MicrostorySlider"
-import MicrostoryCard from "./MicrostoryCard"
+import MicrostoryCard from "./home/MicrostoryCard"
 import { PostgrestError } from '@supabase/supabase-js'
 import { supabaseClient } from '@/lib/supabase'
 import {

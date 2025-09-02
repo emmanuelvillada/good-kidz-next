@@ -9,7 +9,12 @@ import logo from '@/public/logo.png';
 import SuscribeModal from './form/SuscribeForm';
 import { useRouter, usePathname } from 'next/navigation';
 
-const navLinks: { href: string; label: string }[] = [];
+const navLinks: { href: string; label: string }[] = [
+  { href: '#about', label: 'Nosotros' },
+  { href: '/events', label: 'Eventos' },
+  { href: '/sowings', label: 'Siembras' }
+
+];
 
 
 
