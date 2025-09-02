@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { Calendar, MapPin } from 'lucide-react';
 import Image from "next/image";
 import { StaticImageData } from "next/image";
-import { Slider } from "./ui/Slider";
+import { Slider } from "@/components/ui/Slider";
 
 interface Event {
     id: number;

@@ -65,8 +65,9 @@ export default function Header() {
 
   return (
     <nav
+      style={{ zIndex: 2000 }}
       className={`
-      fixed top-0 z-50 lg:w-full
+      fixed top-0 lg:w-full
       py-3 px-4 md:px-6 
       border-b border-gray-200/80 
       bg-white/80 backdrop-blur-sm
