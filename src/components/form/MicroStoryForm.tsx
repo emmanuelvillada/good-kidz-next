@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { zodResolver } from '@hookform/resolvers/zod';
 import MicroStorySchema, { MicroStory } from "@/components/form/schemas/MicroStory";
 //ui
-import { Upload, Phone, MapPin, User } from 'lucide-react';
+import { Upload, Phone, MapPin } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -42,7 +42,6 @@ export default function MicroStoryForm() {
     const [status, setStatus] = useState<FormStatus>({ type: null, message: null });
     const [previewUrls, setPreviewUrls] = useState<{
         file1?: string | null,
-        file2?: string | null,
 
     }>({});
 
@@ -55,11 +54,8 @@ export default function MicroStoryForm() {
             email: '',
             age: '',
             phone: '',
-            address: '',
             city: '',
-            attendant_name: '',
             file1: null,
-            file2: null,
             terms: false,
             policy: false
         }
@@ -193,44 +189,13 @@ export default function MicroStoryForm() {
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="max-w-2xl mx-auto p-6"
+            className="max-w-4xl mx-auto p-6"
         >
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-4xl text-gray-800 py-4">Formulario Microcuento</CardTitle>
-                    <CardDescription className="text-gray-600 ">¡Participa en el 1er Festival de Microcuento Infantil Ilustrado -Guardianes del Planeta Verde-! <br />
-                        Completa el formulario con la información del participante, su representante legal y los archivos requeridos.
-                        <br />
-                        <br />
-                        <b>Antes de subir tu información, ten en cuenta:</b>
-
-                        <br />
-                        <br />
-                        <b>Microcuento:</b>
-
-                        <ul className="list-disc list-inside">
-                            <li> Debe escribirse inicialmente en Microsoft Word y luego exportarse a formato .pdf.</li>
-                            <li>Fuente: Times New Roman, tamaño: 12 pts, interlineado: 1.5.</li>
-                            <li> Extensión máxima: 250 palabras.</li>
-                            <li>Temática: Escoge un Guardián del Planeta Verde (puede ser un animal, planta, ecosistema u otro ser de la naturaleza) y crea una historia sobre cómo contribuye al equilibrio y conservación del medio ambiente.</li>
-                        </ul>
-                        <br />
-                        <b>Ilustración:</b>
-                        <ul className="list-disc list-inside">
-                            <li> Debe estar en formato .jpg.</li>
-                            <li> Tamaño carta (21.6 x 27.9 cm) y resolución de 150 dpi.</li>
-                            <li> La ilustración debe representar al Guardián del Planeta Verde protagonista del microcuento.</li>
-                        </ul>
-                        <br />
-                        <b>Categorias por edad:</b>
-                        <ul className="list-disc list-inside">
-                            <li> 6 a 7 años</li>
-                            <li> 8 a 9 años</li>
-                            <li> 10 a 11 años</li>
-                        </ul>
-                        <br />
-
-                        <b>Importante:</b> <p>Este formulario debe ser completado por el/la representante legal del participante.</p>
+                    <CardTitle className="text-4xl text-verde-goodkidz py-4">Formulario Segundo Festival Arte y Vida</CardTitle>
+                    <CardDescription className="text-gray-600 ">Participa <br />
+                        <span className="text-sm text-gray-500">Llena el siguiente formulario para participar en el 2do Festival Arte y Vida</span>
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -305,27 +270,7 @@ export default function MicroStoryForm() {
                             />
 
 
-
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <FormField
-                                    control={form.control}
-                                    name="address"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel className="flex items-center gap-2">
-                                                <MapPin className="w-4 h-4" />
-                                                Dirección
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    placeholder="Escribe tu dirección"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
 
                                 <FormField
                                     control={form.control}
@@ -346,29 +291,7 @@ export default function MicroStoryForm() {
                                         </FormItem>
                                     )}
                                 />
-                            </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <FormField
-                                    control={form.control}
-                                    name="attendant_name"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel className="flex items-center gap-2">
-                                                <User className="w-4 h-4" />
-                                                Nombre del representante
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    placeholder="Escribe tu nombre"
-
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
 
                                 <FormField
                                     control={form.control}
@@ -377,7 +300,7 @@ export default function MicroStoryForm() {
                                         <FormItem>
                                             <FormLabel className="flex items-center gap-2">
                                                 <Phone className="w-4 h-4" />
-                                                Teléfono del representante
+                                                Teléfono o celular
                                             </FormLabel>
                                             <FormControl>
                                                 <Input
@@ -398,7 +321,13 @@ export default function MicroStoryForm() {
                                     <FormItem>
                                         <FormLabel className="flex items-center gap-2">
                                             <Upload className="w-4 h-4" />
-                                            Ilustración del microcuento
+                                            Sube tu obra de arte  con las siguientes características:
+                                            <ul className="list-disc list-inside">
+                                                <li>Formato: JPG</li>
+                                                <li>Tamaño: 5MB</li>
+                                                <li>Dimensiones: 1920x1080 píxeles</li>
+                                                <li>Resolución: 300 ppp</li>
+                                            </ul>
                                         </FormLabel>
                                         <FormControl>
                                             <Input
@@ -466,58 +395,7 @@ export default function MicroStoryForm() {
                                 )}
                             />
 
-                            <Controller
-                                control={form.control}
-                                name="file2"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="flex items-center gap-2">
-                                            <Upload className="w-4 h-4" />
-                                            Microcuento
-                                        </FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                type="file"
-                                                accept="application/pdf"
-                                                onChange={(e) => {
-                                                    const files = e.target.files;
-                                                    if (files && files.length > 0) {
-                                                        if (files[0].size > 5 * 1024 * 1024) {
-                                                            form.setError('file2', {
-                                                                type: 'manual',
-                                                                message: 'El PDF no puede exceder 5MB',
-                                                            });
-                                                            return;
-                                                        }
-                                                        if (files[0].type !== 'application/pdf') {
-                                                            form.setError('file2', {
-                                                                type: 'manual',
-                                                                message: 'Solo se permiten archivos .pdf'
-                                                            });
-                                                            return;
-                                                        }
-                                                        //clean error if file is valid
-                                                        form.clearErrors('file2');
-                                                        // Directly set the files
-                                                        field.onChange(files);
-                                                        handleFilePreview(files[0], 'file2');
-                                                    }
-                                                }}
-                                            />
-                                        </FormControl>
-                                        <FormDescription>
-                                            Solo se permiten archivos .pdf
-                                        </FormDescription>
-                                        <FormMessage>
-                                            {form.formState.errors.file2 && (
-                                                <p className="text-red-500 text-sm mt-2">
-                                                    {typeof form.formState.errors.file2?.message === 'string' ? form.formState.errors.file2.message : ''}
-                                                </p>
-                                            )}
-                                        </FormMessage>
-                                    </FormItem>
-                                )}
-                            />
+
 
                             <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                                 <FormControl>
@@ -563,7 +441,7 @@ export default function MicroStoryForm() {
 
                                     <FormDescription className="mt-2">
                                         Al hacer clic en &quot;Guardar Historia&quot;, aceptas los
-                                        <a href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/web%20files//terminos-condiciones-microcuento.pdf" target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline"> Términos y Condiciones</a> del 1er Festival de Microcuento Infantil Ilustrado -Guardianes del Planeta Verde-.
+                                        <a href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/web%20files//terminos-condiciones-microcuento.pdf" target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline"> Términos y Condiciones</a> del festival.
                                     </FormDescription>
                                 </div>
                                 <FormMessage />
@@ -605,6 +483,6 @@ export default function MicroStoryForm() {
                     </Form>
                 </CardContent>
             </Card>
-        </motion.div>
+        </motion.div >
     );
 }

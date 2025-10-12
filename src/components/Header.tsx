@@ -108,13 +108,7 @@ export default function Header() {
                 {link.label}
               </a>
             ))}
-            <Button
-              className="bg-verde-goodkidz text-white hover:bg-verde-goodkidz/90 
-                        shadow-md hover:shadow-lg transition-all duration-200"
-              onClick={() => setIsModalOpen(true)}
-            >
-              ¿CÓMO TE PUEDES UNIR?
-            </Button>
+
           </nav>
 
           {/* Botón móvil */}
@@ -149,13 +143,7 @@ export default function Header() {
                     {link.label}
                   </a>
                 ))}
-                <Button
-                  className="bg-verde-goodkidz text-white hover:bg-verde-goodkidz/90 
-                            shadow-md hover:shadow-lg transition-all duration-200 w-full"
-                  onClick={() => setIsModalOpen(true)}
-                >
-                  ¿CÓMO TE PUEDES UNIR?
-                </Button>
+
               </nav>
             </motion.div>
           )}
