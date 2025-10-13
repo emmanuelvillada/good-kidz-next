@@ -10,9 +10,9 @@ import SuscribeModal from './form/SuscribeForm';
 import { useRouter, usePathname } from 'next/navigation';
 
 const navLinks: { href: string; label: string }[] = [
-  { href: '#about', label: 'Nosotros' },
-  { href: '/events', label: 'Eventos' },
-  { href: '/sowings', label: 'Siembras' }
+  { href: '/', label: '¿Qué queremos lograr?' },
+  { href: '/', label: '¿Quiénes somos?' },
+  { href: '/', label: '¿Como te puedes unir?' }
 
 ];
 
@@ -103,7 +103,7 @@ export default function Header() {
                   e.preventDefault();
                   handleNavigation(link.href);
                 }}
-                className="text-gray-700 hover:text-verde-goodkidz transition-colors duration-200 text-sm font-medium cursor-pointer"
+                className=" rounded-xl text- text-white bg-verde-goodkidz transition-colors duration-200 text-base font-medium cursor-pointer p-3  hover:bg-verde-goodkidz/80"
               >
                 {link.label}
               </a>
