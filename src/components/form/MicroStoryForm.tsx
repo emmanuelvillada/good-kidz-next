@@ -411,10 +411,10 @@ export default function MicroStoryForm() {
                                         Términos y condiciones
                                     </FormLabel>
                                     <FormDescription>
-                                        En mi condición de representante legal del niño o niña identificada previamente, manifiesto que mediante
-                                        el diligenciamiento y envío del presente formulario autorizo expresamente su participación en el
-                                        &quot;1er Festival de Microcuento Infantil Ilustrado -Guardianes del Planeta Verde-&quot;.
+                                        He leído y acepto los
+                                        <a href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/web%20files//terminos-condiciones-microcuento.pdf" target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline"> Términos y Condiciones</a> del festival.
                                     </FormDescription>
+
                                 </div>
                             </FormItem>
                             <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
@@ -463,7 +463,7 @@ export default function MicroStoryForm() {
 
                             <Button
                                 type="submit"
-                                className="w-full bg-verde-goodkidz hover:bg-verde-goodkidz/90"
+                                className="w-full bg-verde-goodkidz hover:bg-green-400 focus:ring-4 focus:ring-green-300 text-white font-bold py-2 px-4 rounded-lg"
                                 disabled={isLoading}
                             >
                                 {isLoading ? (
