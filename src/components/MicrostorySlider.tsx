@@ -161,20 +161,22 @@ export default function MicrostorySlider() {
     return (
         <section className="pt-10 mb-32 bg-transparent" id="microstories">
             <div className="container mx-auto px-4 md:px-6">
-                <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-8 text-center mt-8">
-                    GUARDIANES DEL PLANETA VERDE
+                <h2 className="text-4xl sm:text-5xl large:text-6xl font-bold text-verde-goodkidz mb-8 text-center mt-8">
+                    PODCAST
                 </h2>
                 <div>
                     <div className="bg-verde-goodkidz w-32 h-1 mx-auto mb-6"></div>
                 </div>
-                <p className="text-lg md:text-xl text-gray-600 mb-12 text-center">
-                    Un viaje sonoro tejido con la imaginación y la sabiduría de niñas y niños
-                    que sueñan un mundo mejor. Este podcast nació en el Festival de Microcuento
-                    Infantil Ilustrado Planeta Verde Good Kidz 2025, donde sus letras —dulces,
-                    audaces y llenas de magia— se convirtieron en faros para imaginar un futuro
-                    más verde y justo. Cinco universos narrativos reúnen las voces de estos
-                    pequeños guardianes del planeta: historias que inspiran, conmueven y
-                    despiertan el deseo de cuidar la Tierra desde la ternura y la acción.
+                <p className="text-lg md:text-xl text-black mb-12 text-center">
+                    Un viaje sonoro tejido con la imaginación y la sabiduría
+                    de niñas y niños que sueñan un mundo mejor.
+                    Este podcast nació en el Festival de  Microcuento Infantil Ilustrado
+                    Planeta Verde Good Kidz 2025, donde sus  letras -dulces, audaces
+                    y llenas de magia- se convirtieron en faros para imaginar un futuro
+                    más verde y justo. Cinco universos narrativos reúnen las voces de
+                    estos pequeños guardianes del planeta: historias que  inspiran,
+                    conmueven y despiertan el deseo de cuidar la Tierra desde la  ternura
+                    y la acción.
                 </p>
 
                 <div className="flex flex-col items-center justify-center mb-8">

@@ -1,7 +1,8 @@
 import Hero from '@/components/home/Hero';
-import About from '@/components/home/About';
+// import About from '@/components/home/About';
+import MissionVision from '@/components/home/Mision';
 // // import Help from '@/components/Help';
-// import MicrostorySlider from '@/components/MicrostorySlider';
+import MicrostorySlider from '@/components/MicrostorySlider';
 // import TeamCarousel from '@/components/home/TeamCarrousel';
 
 export default function Home() {
@@ -10,8 +11,9 @@ export default function Home() {
     <>
 
       <Hero />
-      <About />
-      {/* <MicrostorySlider />  */}
+      {/* <About /> */}
+      <MissionVision />
+      <MicrostorySlider />
 
       {/* <Blog /> */}
       {/* <Help /> */}
