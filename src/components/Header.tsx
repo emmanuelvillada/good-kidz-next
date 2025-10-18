@@ -13,7 +13,7 @@ const navLinks: { href: string; label: string }[] = [
   { href: '/', label: '¿Qué queremos lograr?' },
   { href: '/', label: '¿Quiénes somos?' },
   { href: '/', label: '¿Como te puedes unir?' },
-  { href: '/form', label: 'Arte y vida' }
+  { href: '/form', label: 'Arte y vida ' }
 
 ];
 
