@@ -63,7 +63,7 @@ export default function MicroStoryForm() {
     });
 
     // Image preview handling
-    const handleFilePreview = (file: File, fileType: 'file1' | 'file2' | 'file3') => {
+    const handleFilePreview = (file: File, fileType: 'file1') => {
         if (!file) return;
 
         const reader = new FileReader();
@@ -78,6 +78,7 @@ export default function MicroStoryForm() {
 
     // Form submission handler
     const onSubmit: SubmitHandler<MicroStory> = async (data) => {
+        console.log("Submitting data:", data);
         setIsLoading(true);
         setStatus({ type: null, message: null });
 
@@ -118,7 +119,6 @@ export default function MicroStoryForm() {
                     email: data.email,
                     age: data.age,
                     phone: data.phone,
-                    address: data.address,
                     city: data.city,
                 }]);
 
@@ -386,55 +386,60 @@ export default function MicroStoryForm() {
 
 
 
-                            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                                <FormControl>
-                                    <input
-                                        type="checkbox"
-                                        required
-                                        id="terms"
-                                        {...form.register('terms', { required: true })}
-                                    />
-                                </FormControl>
-                                <div className="space-y-1 leading-none">
-                                    <FormLabel htmlFor="terms">
-                                        Términos y condiciones
-                                    </FormLabel>
-                                    <FormDescription>
-                                        He leído y acepto los
-                                        <a href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/web%20files//terminos-condiciones-microcuento.pdf" target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline"> Términos y Condiciones</a> del festival.
-                                    </FormDescription>
+                            <FormField
+                                control={form.control}
+                                name="terms"
+                                render={({ field }) => (
+                                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                                        <FormControl>
+                                            <input
+                                                aria-label="Términos y condiciones"
+                                                type="checkbox"
+                                                checked={field.value}
+                                                onChange={field.onChange}
+                                                id="terms"
+                                            />
+                                        </FormControl>
+                                        <div className="space-y-1 leading-none">
+                                            <FormLabel htmlFor="terms">
+                                                Términos y condiciones
+                                            </FormLabel>
+                                            <FormDescription>
+                                                He leído y acepto los
+                                                <a href="..." target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline"> Términos y Condiciones</a> del festival.
+                                            </FormDescription>
+                                        </div>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
 
-                                </div>
-                            </FormItem>
-                            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                                <FormControl>
-                                    <input
-                                        type="checkbox"
-                                        required
-                                        id="policy"
-                                        {...form.register('policy', { required: true })}
-                                    />
-                                </FormControl>
-                                <div className="space-y-1 leading-none">
-                                    <FormLabel htmlFor="policy">
-                                        Tratamiento de datos personales
-                                    </FormLabel>
-                                    <FormDescription>
-                                        Acepto la <a href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/web%20files//politica_datos.pdf" target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline">política de tratamiento de datos personales.</a>
-                                    </FormDescription>
-                                </div>
-                            </FormItem>
-
-                            <FormItem className="mt-6">
-                                <div className="text-center">
-
-                                    <FormDescription className="mt-2">
-                                        Al hacer clic en &quot;Guardar Historia&quot;, aceptas los
-                                        <a href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/web%20files//terminos-condiciones-microcuento.pdf" target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline"> Términos y Condiciones</a> del festival.
-                                    </FormDescription>
-                                </div>
-                                <FormMessage />
-                            </FormItem>
+                            <FormField
+                                control={form.control}
+                                name="policy"
+                                render={({ field }) => (
+                                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                                        <FormControl>
+                                            <input
+                                                aria-label="Política de tratamiento de datos personales"
+                                                type="checkbox"
+                                                checked={field.value}
+                                                onChange={field.onChange}
+                                                id="policy"
+                                            />
+                                        </FormControl>
+                                        <div className="space-y-1 leading-none">
+                                            <FormLabel htmlFor="policy">
+                                                Tratamiento de datos personales
+                                            </FormLabel>
+                                            <FormDescription>
+                                                Acepto la <a href="..." target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline">política de tratamiento de datos personales.</a>
+                                            </FormDescription>
+                                        </div>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
 
                             <AnimatePresence>
                                 {status.message && (
@@ -454,19 +459,15 @@ export default function MicroStoryForm() {
                                 type="submit"
                                 className="w-full bg-verde-goodkidz hover:bg-green-400 focus:ring-4 focus:ring-green-300 text-white font-bold py-2 px-4 rounded-lg"
                                 disabled={isLoading}
+                                onClick={() => {
+                                    console.log("=== BUTTON CLICKED ===");
+                                    console.log("Button type:", "submit");
+                                    console.log("Form is valid:", form.formState.isValid);
+                                    console.log("Form errors:", form.formState.errors);
+                                    console.log("Form values:", form.getValues());
+                                }}
                             >
-                                {isLoading ? (
-                                    <motion.div
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        className="flex items-center gap-2"
-                                    >
-                                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
-                                        Guardando...
-                                    </motion.div>
-                                ) : (
-                                    'Guardar Historia'
-                                )}
+                                Enviar
                             </Button>
                         </form>
                     </Form>
