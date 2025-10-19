@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Menu } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from '@/public/logo.png';
-import SuscribeModal from './form/SuscribeForm';
 import { useRouter, usePathname } from 'next/navigation';
 
 const navLinks: { href: string; label: string }[] = [
@@ -22,7 +21,6 @@ const navLinks: { href: string; label: string }[] = [
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
 
 
@@ -150,7 +148,7 @@ export default function Header() {
           )}
         </AnimatePresence>
       </div>
-      <SuscribeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+
     </nav>
 
   );

@@ -18,8 +18,7 @@ const MicroStorySchema = z.object({
     age: z.string()
         .min(1, 'La edad debe tener al menos 1 caracter')
         .refine((value) => /^[0-9]+$/.test(value), 'La edad debe ser un número')
-        //edad minima 6 y maxima 10
-        .refine((value) => parseInt(value) >= 6 && parseInt(value) <= 11, 'La edad debe estar entre 6 y 11 años'),
+    ,
     phone: z.string()
         .min(10, 'El teléfono debe tener al menos 10 caracteres')
         .max(15, 'El teléfono no puede exceder los 15 caracteres'),

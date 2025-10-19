@@ -29,6 +29,7 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import Image from "next/image";
 import { compressImage } from "@/lib/imageCompresion";
+import { toast } from "react-toastify";
 
 // Form status interface
 interface FormStatus {
@@ -82,8 +83,8 @@ export default function MicroStoryForm() {
 
         try {
             // Verify files are present
-            if (!data.file1 || !data.file1[0] || !data.file2 || !data.file2[0]) {
-                throw new Error("Por favor, sube ambos archivos");
+            if (!data.file1 || !data.file1[0]) {
+                throw new Error("Por favor, sube el archivo requerido.");
             }
 
             //clean the name and the title for files names
@@ -94,56 +95,45 @@ export default function MicroStoryForm() {
             const file1 = data.file1[0];
             const fileExt = file1.name.split('.').pop();
             const fileName = `${Math.random().toString(36).substring(2) + '-' + sanitizedName + '-' + sanitizedTitle + '-imagen'}.${fileExt}`;
-            const file2 = data.file2[0];
-            const fileExt2 = file2.name.split('.').pop();
-            const fileName2 = `${Math.random().toString(36).substring(2) + '-' + sanitizedName + '-' + sanitizedTitle + '-pdf'}.${fileExt2}`;
 
             const { error: uploadError, data: uploadData } = await supabase.storage
-                .from('micro-stories')
+                .from('arte y vida')
                 .upload(fileName, file1, {
                     cacheControl: '3600',
                     upsert: false
                 });
 
-            const { error: uploadError2, data: uploadData2 } = await supabase.storage
-                .from('micro-stories')
-                .upload(fileName2, file2, {
-                    cacheControl: '3600',
-                    upsert: false
-                });
-
-            if (uploadError || uploadError2) {
-                console.error('Upload Error:', uploadError, uploadError2);
-                throw new Error(`Error al subir los archivos: ${uploadError?.message || uploadError2?.message}`);
+            if (uploadError) {
+                toast.error('Error al subir la imagen: ' + uploadError.message);
+                throw uploadError;
             }
 
             // Save story data
             const { error: storyError } = await supabase
-                .from("micro_stories")
+                .from("arte y vida")
                 .insert([{
                     title: data.title,
                     file_image: uploadData.fullPath,
-                    file_pdf: uploadData2.fullPath,
                     name: data.name,
                     email: data.email,
                     age: data.age,
                     phone: data.phone,
                     address: data.address,
                     city: data.city,
-                    attendant_name: data.attendant_name
                 }]);
 
             if (storyError) {
-                console.error('Story Error:', storyError);
+                toast.error('Error al guardar el microcuento: ' + storyError.message);
                 //Delete both files if DB insert fails
-                await supabase.storage.from('micro-stories').remove([uploadData.fullPath, uploadData2.fullPath]);
+                await supabase.storage.from('arte y vida').remove([uploadData.fullPath]);
                 throw storyError;
             }
 
+            toast.success('¡Obra ' + data.title + ' guardada con éxito!');
             // Success handling
             setStatus({
                 type: 'success',
-                message: '¡Microcuento ' + data.title + ' guardado con éxito!'
+                message: '¡Obra ' + data.title + ' guardada con éxito!'
             });
 
             // Reset form
@@ -151,8 +141,7 @@ export default function MicroStoryForm() {
             setPreviewUrls({});
 
         } catch (error: unknown) {
-            console.error('Submission Error:', error);
-
+            toast.error('Error al guardar el microcuento. Inténtalo de nuevo más tarde.');
 
             // Verificamos si el error es de tipo PostgrestError
             if (typeof error === 'object' && error !== null && 'code' in error) {
@@ -161,7 +150,7 @@ export default function MicroStoryForm() {
                 if (supabaseError.code === '23505') {  // Código de error de clave duplicada en PostgreSQL
                     setStatus({
                         type: 'error',
-                        message: 'Ya guardaste un microcuento. Solo puedes guardar uno.'
+                        message: 'Ya guardaste . Solo puedes guardar uno.'
                     });
                 } else {
                     setStatus({
@@ -223,7 +212,7 @@ export default function MicroStoryForm() {
                                 name="name"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Participante</FormLabel>
+                                        <FormLabel>Nombre</FormLabel>
                                         <FormControl>
                                             <Input
                                                 placeholder="Escribe tu nombre"
@@ -239,7 +228,7 @@ export default function MicroStoryForm() {
                                 name="age"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Edad del participante</FormLabel>
+                                        <FormLabel>Edad</FormLabel>
                                         <FormControl>
                                             <Input
                                                 placeholder="Escribe tu edad"
