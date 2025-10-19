@@ -1,18 +1,18 @@
 export default function MissionVision() {
     return (
-        <section className="w-full bg-white py-12 sm:py-16 lg:py-20">
+        <section className="w-full bg-white overflow-hidden pt-8 sm:pt-12 lg:pt-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
                     {/* Misión */}
                     <div className="space-y-4 sm:space-y-6">
                         <div>
-                            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#5FD4A6] mb-2">
+                            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-verde-goodkidz mb-2">
                                 MISIÓN
                             </h2>
-                            <div className="w-full sm:w-48 h-1 bg-[#5FD4A6]"></div>
+                            <div className="w-full sm:w-48 h-1 bg-verde-goodkidz"></div>
                         </div>
 
-                        <p className="text-sm sm:text-base text-gray-800 leading-relaxed">
+                        <p className="text-base sm:text-lg text-gray-800 leading-relaxed">
                             La Fundación GOOD KIDZ es una organización sin ánimo de lucro que
                             impulsa el desarrollo humano a través de proyectos formativos de
                             carácter artístico, recreativo y lúdico promoviendo inclusión, conciencia
@@ -27,13 +27,13 @@ export default function MissionVision() {
                     {/* Visión */}
                     <div className="space-y-4 sm:space-y-6">
                         <div>
-                            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#5FD4A6] mb-2">
+                            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-verde-goodkidz mb-2">
                                 VISIÓN
                             </h2>
-                            <div className="w-full sm:w-48 h-1 bg-[#5FD4A6]"></div>
+                            <div className="w-full sm:w-48 h-1 bg-verde-goodkidz"></div>
                         </div>
 
-                        <p className="text-sm sm:text-base text-gray-800 leading-relaxed">
+                        <p className="text-base sm:text-lg text-gray-800 leading-relaxed">
                             Para el 2035, la Fundación GOOD KIDZ será reconocida como
                             un referente de transformación social a través de las artes, la educación
                             y la recreación, fomentando conciencia ambiental, inclusión y bienestar

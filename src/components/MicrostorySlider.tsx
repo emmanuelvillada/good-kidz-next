@@ -161,13 +161,13 @@ export default function MicrostorySlider() {
     return (
         <section className="pt-10 mb-32 bg-transparent" id="microstories">
             <div className="container mx-auto px-4 md:px-6">
-                <h2 className="text-4xl sm:text-5xl large:text-6xl font-bold text-verde-goodkidz mb-8 text-center mt-8">
+                <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-center text-verde-goodkidz my-4 ">
                     PODCAST
                 </h2>
                 <div>
                     <div className="bg-verde-goodkidz w-32 h-1 mx-auto mb-6"></div>
                 </div>
-                <p className="text-lg md:text-xl text-black mb-12 text-center">
+                <p className="text-base sm:text-lg text-black mb-12 text-center">
                     Un viaje sonoro tejido con la imaginación y la sabiduría
                     de niñas y niños que sueñan un mundo mejor.
                     Este podcast nació en el Festival de  Microcuento Infantil Ilustrado

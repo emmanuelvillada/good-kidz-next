@@ -90,10 +90,12 @@ export default function UpcomingEvents() {
                     transition={{ duration: 0.5 }}
                     className="text-center mb-16"
                 >
-                    <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-                        VEN Y DESCUBRE...
+                    <h2 className="text-4xl md:text-5xl font-bold text-verde-goodkidz mb-4">
+                        AL COMPÁS
+                        DE LAS
+                        ACCIONES
                     </h2>
-                    <div className="w-24 h-1 bg-verde-goodkidz mx-auto mb-6"></div>
+                    <div className="w-96 h-1 bg-verde-goodkidz mx-auto mb-6"></div>
                 </motion.div>
 
                 {events.length === 0 ? (
