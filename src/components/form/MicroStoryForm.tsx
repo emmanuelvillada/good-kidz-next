@@ -1,13 +1,12 @@
 'use client';
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { supabase } from "@/lib/supabase";
-import { PostgrestError } from '@supabase/supabase-js';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { zodResolver } from '@hookform/resolvers/zod';
 import MicroStorySchema, { MicroStory } from "@/components/form/schemas/MicroStory";
 //ui
-import { Upload, Phone, MapPin } from 'lucide-react';
+import { Upload, Phone, MapPin, Globe, FileText } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -37,14 +36,29 @@ interface FormStatus {
     message: string | null;
 }
 
+// Agrega esta interfaz al inicio del archivo, después de FormStatus
+interface InsertData {
+    title: string;
+    file_image: string;
+    file_pdf: string;
+    name: string;
+    email: string;
+    age: string;
+    phone: string;
+    country: string;
+    city: string;
+    guardian_name?: string;
+    guardian_document?: string;
+}
+
 export default function MicroStoryForm() {
     // State management
     const [isLoading, setIsLoading] = useState(false);
     const [status, setStatus] = useState<FormStatus>({ type: null, message: null });
     const [previewUrls, setPreviewUrls] = useState<{
         file1?: string | null,
-
     }>({});
+    const [showGuardianFields, setShowGuardianFields] = useState(false);
 
     // React Hook Form setup with Zod validation
     const form = useForm<MicroStory>({
@@ -55,12 +69,33 @@ export default function MicroStoryForm() {
             email: '',
             age: '',
             phone: '',
+            country: '',
             city: '',
+            isMinor: false,
+            guardianName: '',
+            guardianDocument: '',
             file1: null,
-            terms: false,
-            policy: false
+            file2: null,
+            terms: true,
+            policy: true
         }
     });
+
+    // Watch age field to show/hide guardian fields
+    const ageValue = form.watch('age');
+
+    useEffect(() => {
+        const age = parseInt(ageValue);
+        if (!isNaN(age) && age < 18) {
+            setShowGuardianFields(true);
+            form.setValue('isMinor', true);
+        } else {
+            setShowGuardianFields(false);
+            form.setValue('isMinor', false);
+            form.setValue('guardianName', '');
+            form.setValue('guardianDocument', '');
+        }
+    }, [ageValue, form]);
 
     // Image preview handling
     const handleFilePreview = (file: File, fileType: 'file1') => {
@@ -78,14 +113,17 @@ export default function MicroStoryForm() {
 
     // Form submission handler
     const onSubmit: SubmitHandler<MicroStory> = async (data) => {
-        console.log("Submitting data:", data);
+
         setIsLoading(true);
         setStatus({ type: null, message: null });
 
         try {
             // Verify files are present
             if (!data.file1 || !data.file1[0]) {
-                throw new Error("Por favor, sube el archivo requerido.");
+                throw new Error("Por favor, sube la imagen requerida.");
+            }
+            if (!data.file2 || !data.file2[0]) {
+                throw new Error("Por favor, sube el PDF con la descripción.");
             }
 
             //clean the name and the title for files names
@@ -94,38 +132,69 @@ export default function MicroStoryForm() {
 
             // Upload image
             const file1 = data.file1[0];
-            const fileExt = file1.name.split('.').pop();
-            const fileName = `${Math.random().toString(36).substring(2) + '-' + sanitizedName + '-' + sanitizedTitle + '-imagen'}.${fileExt}`;
+            const fileExt1 = file1.name.split('.').pop();
+            const fileName1 = `${Math.random().toString(36).substring(2)}-${sanitizedName}-${sanitizedTitle}-imagen.${fileExt1}`;
 
-            const { error: uploadError, data: uploadData } = await supabase.storage
+            const { error: uploadError1, data: uploadData1 } = await supabase.storage
                 .from('arte y vida')
-                .upload(fileName, file1, {
+                .upload(fileName1, file1, {
                     cacheControl: '3600',
                     upsert: false
                 });
 
-            if (uploadError) {
-                toast.error('Error al subir la imagen: ' + uploadError.message);
-                throw uploadError;
+            if (uploadError1) {
+                toast.error('Error al subir la imagen: ' + uploadError1.message);
+                throw uploadError1;
+            }
+
+            // Upload PDF
+            const file2 = data.file2[0];
+            const fileName2 = `${Math.random().toString(36).substring(2)}-${sanitizedName}-${sanitizedTitle}-descripcion.pdf`;
+
+            const { error: uploadError2, data: uploadData2 } = await supabase.storage
+                .from('arte y vida')
+                .upload(fileName2, file2, {
+                    cacheControl: '3600',
+                    upsert: false
+                });
+
+            if (uploadError2) {
+                toast.error('Error al subir el PDF: ' + uploadError2.message);
+                // Delete the image if PDF upload fails
+                await supabase.storage.from('arte y vida').remove([uploadData1.fullPath]);
+                throw uploadError2;
             }
 
             // Save story data
+            const insertData: InsertData = {
+                title: data.title,
+                file_image: uploadData1.fullPath,
+                file_pdf: uploadData2.fullPath,
+                name: data.name,
+                email: data.email,
+                age: data.age,
+                phone: data.phone,
+                country: data.country,
+                city: data.city,
+            };
+
+            // Add guardian info if minor
+            if (data.isMinor && data.guardianName && data.guardianDocument) {
+                insertData.guardian_name = data.guardianName;
+                insertData.guardian_document = data.guardianDocument;
+            }
+
             const { error: storyError } = await supabase
                 .from("arte y vida")
-                .insert([{
-                    title: data.title,
-                    file_image: uploadData.fullPath,
-                    name: data.name,
-                    email: data.email,
-                    age: data.age,
-                    phone: data.phone,
-                    city: data.city,
-                }]);
+                .insert([insertData]);
 
             if (storyError) {
-                toast.error('Error al guardar el microcuento: ' + storyError.message);
+                toast.error('Error al guardar la obra: ' + storyError.message);
                 //Delete both files if DB insert fails
-                await supabase.storage.from('arte y vida').remove([uploadData.fullPath]);
+                await supabase.storage.from('arte y vida').remove([
+                    uploadData1.fullPath,
+                    uploadData2.fullPath
+                ]);
                 throw storyError;
             }
 
@@ -141,38 +210,18 @@ export default function MicroStoryForm() {
             setPreviewUrls({});
 
         } catch (error: unknown) {
-            toast.error('Error al guardar el microcuento. Inténtalo de nuevo más tarde.');
+            toast.error('Error al guardar la obra. Inténtalo de nuevo más tarde.');
 
-            // Verificamos si el error es de tipo PostgrestError
-            if (typeof error === 'object' && error !== null && 'code' in error) {
-                const supabaseError = error as PostgrestError;
+            setStatus({
+                type: 'error',
+                message: 'Ocurrió un error inesperado. Inténtalo de nuevo más tarde.' + (error instanceof Error ? `Detalles: ${error.message}` : '')
+            });
 
-                if (supabaseError.code === '23505') {  // Código de error de clave duplicada en PostgreSQL
-                    setStatus({
-                        type: 'error',
-                        message: 'Ya guardaste . Solo puedes guardar uno.'
-                    });
-                } else {
-                    setStatus({
-                        type: 'error',
-                        message: supabaseError.message || 'Ocurrió un error inesperado.'
-                    });
-                }
-            } else {
-                setStatus({
-                    type: 'error',
-                    message: 'Ocurrió un error inesperado. Inténtalo de nuevo más tarde.'
-                });
-            }
         }
         finally {
             setIsLoading(false);
         }
     };
-
-
-
-
 
     return (
         <motion.div
@@ -182,23 +231,30 @@ export default function MicroStoryForm() {
         >
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-4xl text-verde-goodkidz py-4">Formulario Segundo Festival Arte y Vida</CardTitle>
-                    <CardDescription className="text-gray-600 ">Participa <br />
-                        <span className="text-sm text-gray-500">Llena el siguiente formulario para participar en el 2do Festival Arte y Vida</span>
+                    <CardTitle className="text-2xl text-verde-goodkidz py-4">2do Encuentro Arte y Vida, Fundación GOOD KIDZ Colombia 2025: PLANETA VERDE</CardTitle>
+                    <CardDescription className="text-gray-600 "> <br />
+                        <span className="text-black text-sm">La Fundación GOOD KIDZ, organización sin ánimo de lucro que impulsa el desarrollo humano a través de proyectos artísticos, educativos y recreativos, promoviendo inclusión, conciencia ambiental, autoconocimiento y bienestar, invita al
+                            &quot;2do Encuentro Arte y Vida, Fundación GOOD KIDZ Colombia 2025: PLANETA VERDE.&quot;</span>
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                        <form
+                            onSubmit={form.handleSubmit(
+                                onSubmit,
+
+                            )}
+                            className="space-y-6"
+                        >
                             <FormField
                                 control={form.control}
-                                name="title"
+                                name="name"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Título</FormLabel>
+                                        <FormLabel>Nombre completo</FormLabel>
                                         <FormControl>
                                             <Input
-                                                placeholder="Escribe un título para tu historia"
+                                                placeholder="Escribe tu nombre completo"
                                                 {...field}
                                             />
                                         </FormControl>
@@ -207,22 +263,6 @@ export default function MicroStoryForm() {
                                 )}
                             />
 
-                            <FormField
-                                control={form.control}
-                                name="name"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Nombre</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                placeholder="Escribe tu nombre"
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
                             <FormField
                                 control={form.control}
                                 name="age"
@@ -231,25 +271,79 @@ export default function MicroStoryForm() {
                                         <FormLabel>Edad</FormLabel>
                                         <FormControl>
                                             <Input
+                                                type="number"
                                                 placeholder="Escribe tu edad"
                                                 {...field}
                                             />
                                         </FormControl>
+                                        <FormDescription>
+                                            Si eres menor de 18 años, se solicitarán datos del acudiente
+                                        </FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
 
+                            {/* Guardian fields - shown only if minor */}
+                            <AnimatePresence>
+                                {showGuardianFields && (
+                                    <motion.div
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: 'auto' }}
+                                        exit={{ opacity: 0, height: 0 }}
+                                        className="space-y-4 border-l-4 border-verde-goodkidz pl-4"
+                                    >
+                                        <h3 className="text-lg font-semibold text-verde-goodkidz">
+                                            Datos del Acudiente o Responsable
+                                        </h3>
+
+                                        <FormField
+                                            control={form.control}
+                                            name="guardianName"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Nombre del acudiente</FormLabel>
+                                                    <FormControl>
+                                                        <Input
+                                                            placeholder="Nombre completo del acudiente"
+                                                            {...field}
+                                                        />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+
+                                        <FormField
+                                            control={form.control}
+                                            name="guardianDocument"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Documento del acudiente</FormLabel>
+                                                    <FormControl>
+                                                        <Input
+                                                            placeholder="Número de documento"
+                                                            {...field}
+                                                        />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
 
                             <FormField
                                 control={form.control}
                                 name="email"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Correo</FormLabel>
+                                        <FormLabel>Correo electrónico</FormLabel>
                                         <FormControl>
                                             <Input
-                                                placeholder="Escribe tu correo"
+                                                type="email"
+                                                placeholder="tu@correo.com"
                                                 {...field}
                                             />
                                         </FormControl>
@@ -258,8 +352,26 @@ export default function MicroStoryForm() {
                                 )}
                             />
 
-
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <FormField
+                                    control={form.control}
+                                    name="country"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="flex items-center gap-2">
+                                                <Globe className="w-4 h-4" />
+                                                País
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    placeholder="Escribe tu país"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
 
                                 <FormField
                                     control={form.control}
@@ -280,29 +392,46 @@ export default function MicroStoryForm() {
                                         </FormItem>
                                     )}
                                 />
-
-
-                                <FormField
-                                    control={form.control}
-                                    name="phone"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel className="flex items-center gap-2">
-                                                <Phone className="w-4 h-4" />
-                                                Teléfono o celular
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    placeholder="Escribe tu teléfono"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
                             </div>
 
+                            <FormField
+                                control={form.control}
+                                name="phone"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="flex items-center gap-2">
+                                            <Phone className="w-4 h-4" />
+                                            Teléfono o celular
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder="Escribe tu teléfono"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                control={form.control}
+                                name="title"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Título de la obra</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder="Escribe un título para tu obra"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            {/* Image upload */}
                             <Controller
                                 control={form.control}
                                 name="file1"
@@ -310,14 +439,14 @@ export default function MicroStoryForm() {
                                     <FormItem>
                                         <FormLabel className="flex items-center gap-2">
                                             <Upload className="w-4 h-4" />
-                                            Sube tu obra de arte  con las siguientes características:
-                                            <ul className="list-disc list-inside">
-                                                <li>Formato: JPG</li>
-                                                <li>Tamaño: 5MB</li>
-                                                <li>Dimensiones: 1920x1080 píxeles</li>
-                                                <li>Resolución: 300 ppp</li>
-                                            </ul>
+                                            Sube tu obra de arte
                                         </FormLabel>
+                                        <ul className="list-disc list-inside flex flex-col mt-2 text-sm text-gray-600">
+                                            <li>Formato: JPG</li>
+                                            <li>Medidas de la obra: 50 x 32 cm</li>
+                                            <li>Dimensiones: 1920x1080 píxeles</li>
+                                            <li>Resolución: 150 dpi</li>
+                                        </ul>
                                         <FormControl>
                                             <Input
                                                 type="file"
@@ -328,25 +457,18 @@ export default function MicroStoryForm() {
                                                         const originalFile = files[0];
 
                                                         try {
-                                                            // Comprimir imagen antes de asignarla
                                                             const compressedFile = await compressImage(originalFile);
 
-                                                            // Validar tamaño después de la compresión
-                                                            if (compressedFile.size > 5 * 1024 * 1024) {
+                                                            if (compressedFile.size > 25 * 1024 * 1024) {
                                                                 form.setError('file1', {
                                                                     type: 'manual',
-                                                                    message: 'La imagen no puede exceder 5MB',
+                                                                    message: 'La imagen no puede exceder 25MB',
                                                                 });
                                                                 return;
                                                             }
 
-                                                            // Limpiar error si el archivo es válido
                                                             form.clearErrors('file1');
-
-                                                            // Asignar archivo comprimido al formulario
-                                                            field.onChange([compressedFile]); // Se envía como un array
-
-                                                            // Generar vista previa de la imagen comprimida
+                                                            field.onChange([compressedFile]);
                                                             handleFilePreview(compressedFile, 'file1');
                                                         } catch (error) {
                                                             console.error("Error al procesar la imagen:", error);
@@ -359,16 +481,7 @@ export default function MicroStoryForm() {
                                                 }}
                                             />
                                         </FormControl>
-                                        <FormDescription>
-                                            Solo se permiten archivos .jpg y de menos de 5MB
-                                        </FormDescription>
-                                        <FormMessage className="text-red-500" >
-                                            {form.formState.errors.file1 && (
-                                                <p className="text-red-500 text-sm mt-2">
-                                                    {typeof form.formState.errors.file1?.message === 'string' ? form.formState.errors.file1.message : ''}
-                                                </p>
-                                            )}
-                                        </FormMessage >
+                                        <FormMessage />
 
                                         {previewUrls.file1 && (
                                             <div className="mt-2 relative aspect-video rounded-lg overflow-hidden">
@@ -384,7 +497,52 @@ export default function MicroStoryForm() {
                                 )}
                             />
 
+                            {/* PDF upload */}
+                            <Controller
+                                control={form.control}
+                                name="file2"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="flex items-center gap-2">
+                                            <FileText className="w-4 h-4" />
+                                            Descripción de la obra (PDF)
+                                        </FormLabel>
+                                        <FormDescription>
+                                            Breve descripción y justificación con ficha técnica
+                                        </FormDescription>
+                                        <ul className="list-disc list-inside flex flex-col mt-2 text-sm text-gray-600">
+                                            <li>Formato: PDF</li>
+                                            <li>Fuente: Times New Roman, 12 puntos</li>
+                                            <li>Máximo: 250 caracteres</li>
+                                            <li>Tamaño máximo: 5MB</li>
+                                        </ul>
+                                        <FormControl>
+                                            <Input
+                                                type="file"
+                                                accept="application/pdf"
+                                                onChange={(e) => {
+                                                    const files = e.target.files;
+                                                    if (files && files.length > 0) {
+                                                        const file = files[0];
 
+                                                        if (file.size > 5 * 1024 * 1024) {
+                                                            form.setError('file2', {
+                                                                type: 'manual',
+                                                                message: 'El archivo no puede exceder 5MB',
+                                                            });
+                                                            return;
+                                                        }
+
+                                                        form.clearErrors('file2');
+                                                        field.onChange([file]);
+                                                    }
+                                                }}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
 
                             <FormField
                                 control={form.control}
@@ -406,7 +564,7 @@ export default function MicroStoryForm() {
                                             </FormLabel>
                                             <FormDescription>
                                                 He leído y acepto los
-                                                <a href="..." target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline"> Términos y Condiciones</a> del festival.
+                                                <a href="..." target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline"> Términos y Condiciones</a> 2do Encuentro Arte y Vida, Fundación GOOD KIDZ Colombia 2025: PLANETA VERDE.
                                             </FormDescription>
                                         </div>
                                         <FormMessage />
@@ -459,20 +617,24 @@ export default function MicroStoryForm() {
                                 type="submit"
                                 className="w-full bg-verde-goodkidz hover:bg-green-400 focus:ring-4 focus:ring-green-300 text-white font-bold py-2 px-4 rounded-lg"
                                 disabled={isLoading}
-                                onClick={() => {
-                                    console.log("=== BUTTON CLICKED ===");
-                                    console.log("Button type:", "submit");
-                                    console.log("Form is valid:", form.formState.isValid);
-                                    console.log("Form errors:", form.formState.errors);
-                                    console.log("Form values:", form.getValues());
-                                }}
                             >
-                                Enviar
+                                {isLoading ? (
+                                    <motion.div
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        className="flex items-center gap-2"
+                                    >
+                                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
+                                        Enviando...
+                                    </motion.div>
+                                ) : (
+                                    'Enviar obra'
+                                )}
                             </Button>
                         </form>
                     </Form>
                 </CardContent>
             </Card>
-        </motion.div >
+        </motion.div>
     );
 }
