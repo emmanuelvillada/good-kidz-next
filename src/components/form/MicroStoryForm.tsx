@@ -29,6 +29,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import Image from "next/image";
 import { compressImage } from "@/lib/imageCompresion";
 import { toast } from "react-toastify";
+import imagen_escritorio from '@/public/formulario escritorio.png';
+import imagen_movil from '@/public/formulñario movil.png';
 
 // Form status interface
 interface FormStatus {
@@ -227,15 +229,30 @@ export default function MicroStoryForm() {
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="max-w-4xl mx-auto p-6"
+            className="max-w-3xl mx-auto p-6"
         >
             <Card>
                 <CardHeader>
                     <CardTitle className="text-2xl text-verde-goodkidz py-4">2do Encuentro Arte y Vida, Fundación GOOD KIDZ Colombia 2025: PLANETA VERDE</CardTitle>
+                    <Image
+                        src={imagen_escritorio}
+                        alt="Encuentro Arte y Vida"
+                        width={800}
+                        height={200}
+                        className="mt-4 rounded-lg shadow-md sm:hidden"
+                    />
+                    <Image
+                        src={imagen_movil}
+                        alt="Encuentro Arte y Vida"
+                        width={800}
+                        height={200}
+                        className="mt-4 rounded-lg shadow-md hidden sm:block"
+                    />
                     <CardDescription className="text-gray-600 "> <br />
                         <span className="text-black text-sm">La Fundación GOOD KIDZ, organización sin ánimo de lucro que impulsa el desarrollo humano a través de proyectos artísticos, educativos y recreativos, promoviendo inclusión, conciencia ambiental, autoconocimiento y bienestar, invita al
                             &quot;2do Encuentro Arte y Vida, Fundación GOOD KIDZ Colombia 2025: PLANETA VERDE.&quot;</span>
                     </CardDescription>
+
                 </CardHeader>
                 <CardContent>
                     <Form {...form}>

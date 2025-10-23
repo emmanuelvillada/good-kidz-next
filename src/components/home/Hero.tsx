@@ -9,7 +9,7 @@ export default function GoodKidzHero() {
                     <div className="space-y-6 sm:space-y-8 z-10">
                         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold">
                             <span className="text-verde-goodkidz">FUNDACIÓN</span>
-                            <br className="hidden sm:block" />
+                            <br className="" />
                             <span className="text-verde-goodkidz">GOOD KIDZ</span>
                         </h1>
 
@@ -26,13 +26,17 @@ export default function GoodKidzHero() {
 
                     {/* Área de imagen (placeholder para la foto grupal) */}
                     <div className="relative h-96 sm:h-[500px] lg:h-[600px]">
-                        <div className="absolute bottom-[-120px] left-[-340px] w-[1200px] h-4/5  rounded-lg flex items-center justify-center text-gray-400">
+                        <div className="absolute 
+                    bottom-[-60px] sm:bottom-[-120px] md:bottom-[-120px] lg:bottom-[-120px]
+                    left-0 sm:left-[-150px] md:left-[-200px] lg:left-[-240px]
+                    w-full sm:w-[700px] md:w-[800px] lg:w-[1000px]
+                    h-4/5 rounded-lg flex items-center justify-center text-gray-400 ">
                             <Image
                                 src={image}
                                 alt="Fundación Good Kidz"
                                 width={1000}
                                 height={1500}
-                                className="object-cover rounded-lg shadow-lg "
+                                className="object-cover w-full h-full rounded-lg"
                             />
                         </div>
                     </div>
