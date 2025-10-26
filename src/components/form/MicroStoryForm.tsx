@@ -135,13 +135,11 @@ export default function MicroStoryForm() {
     // Form submission handler
     const onSubmit: SubmitHandler<MicroStory> = async (data) => {
 
-        console.log("Submitting data:", data);
 
         setIsLoading(true);
         setStatus({ type: null, message: null });
 
         try {
-            console.log("Uploading files...");
             // Verify files are present
             if (!data.file1 || !data.file1[0]) {
                 throw new Error("Por favor, sube la imagen requerida.");
@@ -161,7 +159,6 @@ export default function MicroStoryForm() {
             const fileExt1 = file1.name.split('.').pop();
             const fileName1 = `${Math.random().toString(36).substring(2)}-${sanitizedName}-${sanitizedTitle}-imagen.${fileExt1}`;
 
-            console.log("Uploading image:", fileName1);
             const { error: uploadError1, data: uploadData1 } = await supabase.storage
                 .from('arte_y_vida')
                 .upload(fileName1, file1, {
@@ -185,7 +182,6 @@ export default function MicroStoryForm() {
                     upsert: false
                 });
 
-            console.log("Uploading PDF:", fileName2);
             if (uploadError2) {
                 toast.error('Error al subir el PDF: ' + uploadError2.message);
                 // Delete the image if PDF upload fails
@@ -233,7 +229,6 @@ export default function MicroStoryForm() {
                 category: data.category,
                 artist_cv: uploadData3?.path || 'null',
             };
-            console.log("Insert data:", insertData);
 
             // Add guardian info if minor
             if (data.isMinor && data.guardianName && data.guardianDocument) {
@@ -808,9 +803,7 @@ export default function MicroStoryForm() {
                                 type="submit"
                                 className="w-full bg-verde-goodkidz hover:bg-green-400 focus:ring-4 focus:ring-green-300 text-white font-bold py-2 px-4 rounded-lg"
                                 disabled={isLoading}
-                                onClick={() => {
-                                    console.log("form status:", status);
-                                }}
+
                             >
                                 {isLoading ? (
                                     <motion.div
