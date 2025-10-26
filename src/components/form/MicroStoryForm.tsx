@@ -407,6 +407,7 @@ export default function MicroStoryForm() {
                                                     <FormLabel>Documento del acudiente</FormLabel>
                                                     <FormControl>
                                                         <Input
+                                                            type="number"
                                                             placeholder="Número de documento"
                                                             {...field}
                                                         />
