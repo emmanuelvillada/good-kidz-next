@@ -295,7 +295,7 @@ export default function MicroStoryForm() {
         >
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-2xl text-verde-goodkidz py-4">2do Encuentro arte_y_vida, Fundación GOOD KIDZ Colombia 2025: PLANETA VERDE</CardTitle>
+                    <CardTitle className="text-2xl text-verde-goodkidz py-4">2do Encuentro arte y vida, Fundación GOOD KIDZ Colombia 2025: PLANETA VERDE</CardTitle>
                     <Image
                         src={imagen_escritorio}
                         alt="Encuentro arte_y_vida"
@@ -750,7 +750,7 @@ export default function MicroStoryForm() {
                                             </FormLabel>
                                             <FormDescription>
                                                 He leído y acepto los
-                                                <a href="..." target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline"> Términos y Condiciones</a> 2do Encuentro arte_y_vida, Fundación GOOD KIDZ Colombia 2025: PLANETA VERDE.
+                                                <a href="..." target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline"> Términos y Condiciones</a> 2do Encuentro arte y vida, Fundación GOOD KIDZ Colombia 2025: PLANETA VERDE.
                                             </FormDescription>
                                         </div>
                                         <FormMessage />

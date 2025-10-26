@@ -5,6 +5,7 @@ import Team from '@/components/home/Team';
 import UpcomingEvents from '@/components/home/UpcomingEvents';
 // // import Help from '@/components/Help';
 import MicrostorySlider from '@/components/MicrostorySlider'
+import ProtectedRoute from '@/components/home/ProtectedRoute';
 
 // import TeamCarousel from '@/components/home/TeamCarrousel';
 
@@ -18,6 +19,7 @@ export default function Home() {
       <MissionVision />
       <Team />
       <MicrostorySlider />
+      <ProtectedRoute />
       <UpcomingEvents />
 
       {/* <Blog /> */}
