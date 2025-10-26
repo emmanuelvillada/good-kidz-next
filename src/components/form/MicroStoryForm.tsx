@@ -312,7 +312,7 @@ export default function MicroStoryForm() {
                     />
                     <CardDescription className="text-gray-600 "> <br />
                         <span className="text-black text-sm">La Fundación GOOD KIDZ, organización sin ánimo de lucro que impulsa el desarrollo humano a través de proyectos artísticos, educativos y recreativos, promoviendo inclusión, conciencia ambiental, autoconocimiento y bienestar, invita al
-                            &quot;2do Encuentro arte_y_vida, Fundación GOOD KIDZ Colombia 2025: PLANETA VERDE.&quot;</span>
+                            &quot;2do Encuentro arte y vida, Fundación GOOD KIDZ Colombia 2025: PLANETA VERDE.&quot;</span>
                     </CardDescription>
 
                 </CardHeader>
