@@ -32,7 +32,6 @@ import { compressImage } from "@/lib/imageCompresion";
 import { toast } from "react-toastify";
 import imagen_escritorio from '@/public/formulario-escritorio.png';
 import imagen_movil from '@/public/formulario-movil.png';
-import { PostgrestError } from "@supabase/supabase-js";
 
 // Form status interface
 interface FormStatus {
@@ -206,7 +205,6 @@ export default function MicroStoryForm() {
                         cacheControl: '3600',
                         upsert: false
                     });
-                console.log("Uploading CV:", fileName3);
 
                 if (uploadError3) {
                     toast.error('Error al subir el CV: ' + uploadError3.message);
@@ -243,19 +241,33 @@ export default function MicroStoryForm() {
                 insertData.guardian_document = data.guardianDocument;
             }
 
-            console.log("Insert data:", insertData);
             const { error: storyError } = await supabase
                 .from("arte_y_vida")
                 .insert([insertData]);
 
             if (storyError) {
-                toast.error('Error al guardar la obra: ' + storyError.message);
-                //Delete both files if DB insert fails
-                await supabase.storage.from('arte_y_vida').remove([
-                    uploadData1.fullPath,
-                    uploadData2.fullPath
-                ]);
-                throw storyError;
+                // Delete uploaded files if DB insert fails
+                const filesToDelete = [
+                    uploadData1!.fullPath,
+                    uploadData2!.fullPath
+                ];
+                if (uploadData3?.fullPath) {
+                    filesToDelete.push(uploadData3.fullPath);
+                }
+                await supabase.storage.from('arte_y_vida').remove(filesToDelete);
+
+                // Verificar si es error de email duplicado
+                if (storyError.code === '23505') {
+                    // NO hacemos throw aquí, solo mostramos el toast
+                    toast.error('Ya registraste una obra. Solo se permite una obra por participante.');
+                    setStatus({
+                        type: 'error',
+                        message: 'Ya registraste una obra. Solo se permite una obra por participante.'
+                    });
+                    return; // Salir sin hacer throw
+                } else {
+                    throw new Error('Error al guardar la obra: ' + storyError.message);
+                }
             }
 
             toast.success('¡Obra ' + data.title + ' guardada con éxito!');
@@ -272,9 +284,7 @@ export default function MicroStoryForm() {
         } catch (error: unknown) {
             toast.error('Error al guardar la obra. Inténtalo de nuevo más tarde.');
 
-            if (error instanceof PostgrestError) {
-                console.error("PostgrestError:", error.message + error.code + error.details);
-            }
+
 
             setStatus({
                 type: 'error',
@@ -282,6 +292,7 @@ export default function MicroStoryForm() {
             });
 
         }
+
         finally {
             setIsLoading(false);
         }
@@ -526,9 +537,9 @@ export default function MicroStoryForm() {
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
-                                                <SelectItem value="categoria-a">Categoría A - Niños y Niñas (8-14 años)</SelectItem>
+                                                <SelectItem value="categoria-a">Categoría A - Niñas y Niños (8-14 años)</SelectItem>
                                                 <SelectItem value="categoria-b">Categoría B - Jóvenes (15-17 años)</SelectItem>
-                                                <SelectItem value="categoria-c">Categoría C - Adultos (18+ años)</SelectItem>
+                                                <SelectItem value="categoria-c">Categoría C - Adultxs Aficionadxs (18+ años)</SelectItem>
                                                 <SelectItem value="artistas">Categoría D - Artistas</SelectItem>
                                             </SelectContent>
                                         </Select>
@@ -567,7 +578,7 @@ export default function MicroStoryForm() {
                                                     </FormDescription>
                                                     <ul className="list-disc list-inside flex flex-col mt-2 text-sm text-gray-600">
                                                         <li>Formato: PDF</li>
-                                                        <li>Tamaño máximo: 5MB</li>
+                                                        <li>Tamaño máximo: 10MB</li>
                                                     </ul>
                                                     <FormControl>
                                                         <Input
@@ -578,10 +589,10 @@ export default function MicroStoryForm() {
                                                                 if (files && files.length > 0) {
                                                                     const file = files[0];
 
-                                                                    if (file.size > 5 * 1024 * 1024) {
+                                                                    if (file.size > 10 * 1024 * 1024) {
                                                                         form.setError('file3', {
                                                                             type: 'manual',
-                                                                            message: 'El archivo no puede exceder 5MB',
+                                                                            message: 'El archivo no puede exceder 10MB',
                                                                         });
                                                                         return;
                                                                     }
@@ -591,6 +602,7 @@ export default function MicroStoryForm() {
                                                                             type: 'manual',
                                                                             message: 'El archivo debe ser un PDF',
                                                                         });
+                                                                        form.setFocus('file3');
                                                                         return;
                                                                     }
 
@@ -635,14 +647,6 @@ export default function MicroStoryForm() {
 
                                                         try {
                                                             const compressedFile = await compressImage(originalFile);
-
-                                                            if (compressedFile.size > 25 * 1024 * 1024) {
-                                                                form.setError('file1', {
-                                                                    type: 'manual',
-                                                                    message: 'La imagen no puede exceder 25MB',
-                                                                });
-                                                                return;
-                                                            }
 
                                                             form.clearErrors('file1');
                                                             field.onChange([compressedFile]);
@@ -691,7 +695,7 @@ export default function MicroStoryForm() {
                                             <li>Formato: PDF</li>
                                             <li>Fuente: Times New Roman, 12 puntos</li>
                                             <li>Máximo: 250 caracteres</li>
-                                            <li>Tamaño máximo: 5MB</li>
+                                            <li>Tamaño máximo: 10 MB</li>
                                         </ul>
                                         <FormControl>
                                             <Input
@@ -702,10 +706,10 @@ export default function MicroStoryForm() {
                                                     if (files && files.length > 0) {
                                                         const file = files[0];
 
-                                                        if (file.size > 5 * 1024 * 1024) {
+                                                        if (file.size > 10 * 1024 * 1024) {
                                                             form.setError('file2', {
                                                                 type: 'manual',
-                                                                message: 'El archivo no puede exceder 5MB',
+                                                                message: 'El archivo no puede exceder 10MB',
                                                             });
                                                             return;
                                                         }
@@ -715,6 +719,7 @@ export default function MicroStoryForm() {
                                                                 type: 'manual',
                                                                 message: 'El archivo debe ser un PDF',
                                                             });
+                                                            form.setFocus('file2');
                                                             return;
                                                         }
 
@@ -750,7 +755,7 @@ export default function MicroStoryForm() {
                                             </FormLabel>
                                             <FormDescription>
                                                 He leído y acepto los
-                                                <a href="..." target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline"> Términos y Condiciones</a> 2do Encuentro arte y vida, Fundación GOOD KIDZ Colombia 2025: PLANETA VERDE.
+                                                <a href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/arte_y_vida/T%20y%20C%202do%20Encuentro%20Arte%20y%20Vida.pdf" target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline"> Términos y Condiciones</a> 2do Encuentro arte y vida, Fundación GOOD KIDZ Colombia 2025: PLANETA VERDE.
                                             </FormDescription>
                                         </div>
                                         <FormMessage />
@@ -777,7 +782,7 @@ export default function MicroStoryForm() {
                                                 Tratamiento de datos personales
                                             </FormLabel>
                                             <FormDescription>
-                                                Acepto la <a href="..." target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline">política de tratamiento de datos personales.</a>
+                                                Acepto la <a href="https://asisdninqgnkereutwxt.supabase.co/storage/v1/object/public/obras/web%20documents/politica%20tratamiento%20de%20datos.pdf" target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline">política de tratamiento de datos personales.</a>
                                             </FormDescription>
                                         </div>
                                         <FormMessage />
