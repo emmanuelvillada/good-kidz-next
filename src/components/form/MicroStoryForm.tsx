@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { zodResolver } from '@hookform/resolvers/zod';
 import MicroStorySchema, { MicroStory } from "@/components/form/schemas/MicroStory";
 //ui
-import { Upload, Phone, MapPin, Globe, FileText } from 'lucide-react';
+import { Upload, Phone, MapPin, Globe, FileText, Users } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -17,6 +17,7 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import {
     Card,
@@ -29,8 +30,9 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import Image from "next/image";
 import { compressImage } from "@/lib/imageCompresion";
 import { toast } from "react-toastify";
-import imagen_escritorio from '@/public/formulario escritorio.png';
-import imagen_movil from '@/public/formulñario movil.png';
+import imagen_escritorio from '@/public/formulario-escritorio.png';
+import imagen_movil from '@/public/formulario-movil.png';
+import { PostgrestError } from "@supabase/supabase-js";
 
 // Form status interface
 interface FormStatus {
@@ -43,6 +45,8 @@ interface InsertData {
     title: string;
     file_image: string;
     file_pdf: string;
+    artist_cv?: string;
+    category: string;
     name: string;
     email: string;
     age: string;
@@ -61,6 +65,8 @@ export default function MicroStoryForm() {
         file1?: string | null,
     }>({});
     const [showGuardianFields, setShowGuardianFields] = useState(false);
+    const [showArtistCV, setShowArtistCV] = useState(false);
+
 
     // React Hook Form setup with Zod validation
     const form = useForm<MicroStory>({
@@ -73,11 +79,13 @@ export default function MicroStoryForm() {
             phone: '',
             country: '',
             city: '',
+            category: '',
             isMinor: false,
             guardianName: '',
             guardianDocument: '',
             file1: null,
             file2: null,
+            file3: null,
             terms: true,
             policy: true
         }
@@ -85,6 +93,9 @@ export default function MicroStoryForm() {
 
     // Watch age field to show/hide guardian fields
     const ageValue = form.watch('age');
+    const categoryValue = form.watch('category');
+
+    // Show artist CV upload if category is 'artistas'
 
     useEffect(() => {
         const age = parseInt(ageValue);
@@ -98,6 +109,15 @@ export default function MicroStoryForm() {
             form.setValue('guardianDocument', '');
         }
     }, [ageValue, form]);
+
+    useEffect(() => {
+        if (categoryValue === 'artistas') {
+            setShowArtistCV(true);
+        } else {
+            setShowArtistCV(false);
+            form.setValue('file3', null);
+        }
+    }, [categoryValue, form]);
 
     // Image preview handling
     const handleFilePreview = (file: File, fileType: 'file1') => {
@@ -116,10 +136,13 @@ export default function MicroStoryForm() {
     // Form submission handler
     const onSubmit: SubmitHandler<MicroStory> = async (data) => {
 
+        console.log("Submitting data:", data);
+
         setIsLoading(true);
         setStatus({ type: null, message: null });
 
         try {
+            console.log("Uploading files...");
             // Verify files are present
             if (!data.file1 || !data.file1[0]) {
                 throw new Error("Por favor, sube la imagen requerida.");
@@ -127,6 +150,8 @@ export default function MicroStoryForm() {
             if (!data.file2 || !data.file2[0]) {
                 throw new Error("Por favor, sube el PDF con la descripción.");
             }
+
+
 
             //clean the name and the title for files names
             const sanitizedName = data.name.replace(/[^a-zA-Z0-9]/g, '');
@@ -137,8 +162,9 @@ export default function MicroStoryForm() {
             const fileExt1 = file1.name.split('.').pop();
             const fileName1 = `${Math.random().toString(36).substring(2)}-${sanitizedName}-${sanitizedTitle}-imagen.${fileExt1}`;
 
+            console.log("Uploading image:", fileName1);
             const { error: uploadError1, data: uploadData1 } = await supabase.storage
-                .from('arte y vida')
+                .from('arte_y_vida')
                 .upload(fileName1, file1, {
                     cacheControl: '3600',
                     upsert: false
@@ -154,31 +180,62 @@ export default function MicroStoryForm() {
             const fileName2 = `${Math.random().toString(36).substring(2)}-${sanitizedName}-${sanitizedTitle}-descripcion.pdf`;
 
             const { error: uploadError2, data: uploadData2 } = await supabase.storage
-                .from('arte y vida')
+                .from('arte_y_vida')
                 .upload(fileName2, file2, {
                     cacheControl: '3600',
                     upsert: false
                 });
 
+            console.log("Uploading PDF:", fileName2);
             if (uploadError2) {
                 toast.error('Error al subir el PDF: ' + uploadError2.message);
                 // Delete the image if PDF upload fails
-                await supabase.storage.from('arte y vida').remove([uploadData1.fullPath]);
+                await supabase.storage.from('arte_y_vida').remove([uploadData1.fullPath]);
                 throw uploadError2;
             }
+
+            // Upload Artist CV if category is "artistas"
+            let uploadData3 = null;
+            if (data.category === 'artistas' && data.file3 && data.file3[0]) {
+                const file3 = data.file3[0];
+                const fileName3 = `${Math.random().toString(36).substring(2)}-${sanitizedName}-${sanitizedTitle}-cv.pdf`;
+
+                const { error: uploadError3, data: uploadDataCV } = await supabase.storage
+                    .from('arte_y_vida')
+                    .upload(fileName3, file3, {
+                        cacheControl: '3600',
+                        upsert: false
+                    });
+                console.log("Uploading CV:", fileName3);
+
+                if (uploadError3) {
+                    toast.error('Error al subir el CV: ' + uploadError3.message);
+                    // Delete previous uploads if CV upload fails
+                    await supabase.storage.from('arte_y_vida').remove([
+                        uploadData1.fullPath,
+                        uploadData2.fullPath
+                    ]);
+                    throw uploadError3;
+                }
+                uploadData3 = uploadDataCV;
+            }
+
 
             // Save story data
             const insertData: InsertData = {
                 title: data.title,
-                file_image: uploadData1.fullPath,
-                file_pdf: uploadData2.fullPath,
+                file_image: uploadData1.path,
+                file_pdf: uploadData2.path,
                 name: data.name,
                 email: data.email,
                 age: data.age,
                 phone: data.phone,
                 country: data.country,
                 city: data.city,
+                category: data.category,
+                artist_cv: uploadData3?.path || 'null',
             };
+            console.log("Insert data:", insertData);
 
             // Add guardian info if minor
             if (data.isMinor && data.guardianName && data.guardianDocument) {
@@ -186,14 +243,15 @@ export default function MicroStoryForm() {
                 insertData.guardian_document = data.guardianDocument;
             }
 
+            console.log("Insert data:", insertData);
             const { error: storyError } = await supabase
-                .from("arte y vida")
+                .from("arte_y_vida")
                 .insert([insertData]);
 
             if (storyError) {
                 toast.error('Error al guardar la obra: ' + storyError.message);
                 //Delete both files if DB insert fails
-                await supabase.storage.from('arte y vida').remove([
+                await supabase.storage.from('arte_y_vida').remove([
                     uploadData1.fullPath,
                     uploadData2.fullPath
                 ]);
@@ -214,6 +272,10 @@ export default function MicroStoryForm() {
         } catch (error: unknown) {
             toast.error('Error al guardar la obra. Inténtalo de nuevo más tarde.');
 
+            if (error instanceof PostgrestError) {
+                console.error("PostgrestError:", error.message + error.code + error.details);
+            }
+
             setStatus({
                 type: 'error',
                 message: 'Ocurrió un error inesperado. Inténtalo de nuevo más tarde.' + (error instanceof Error ? `Detalles: ${error.message}` : '')
@@ -233,24 +295,24 @@ export default function MicroStoryForm() {
         >
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-2xl text-verde-goodkidz py-4">2do Encuentro Arte y Vida, Fundación GOOD KIDZ Colombia 2025: PLANETA VERDE</CardTitle>
+                    <CardTitle className="text-2xl text-verde-goodkidz py-4">2do Encuentro arte_y_vida, Fundación GOOD KIDZ Colombia 2025: PLANETA VERDE</CardTitle>
                     <Image
                         src={imagen_escritorio}
-                        alt="Encuentro Arte y Vida"
+                        alt="Encuentro arte_y_vida"
                         width={800}
                         height={200}
                         className="mt-4 rounded-lg shadow-md sm:hidden"
                     />
                     <Image
                         src={imagen_movil}
-                        alt="Encuentro Arte y Vida"
+                        alt="Encuentro arte_y_vida"
                         width={800}
                         height={200}
                         className="mt-4 rounded-lg shadow-md hidden sm:block"
                     />
                     <CardDescription className="text-gray-600 "> <br />
                         <span className="text-black text-sm">La Fundación GOOD KIDZ, organización sin ánimo de lucro que impulsa el desarrollo humano a través de proyectos artísticos, educativos y recreativos, promoviendo inclusión, conciencia ambiental, autoconocimiento y bienestar, invita al
-                            &quot;2do Encuentro Arte y Vida, Fundación GOOD KIDZ Colombia 2025: PLANETA VERDE.&quot;</span>
+                            &quot;2do Encuentro arte_y_vida, Fundación GOOD KIDZ Colombia 2025: PLANETA VERDE.&quot;</span>
                     </CardDescription>
 
                 </CardHeader>
@@ -448,6 +510,105 @@ export default function MicroStoryForm() {
                                 )}
                             />
 
+                            <FormField
+                                control={form.control}
+                                name="category"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="flex items-center gap-2">
+                                            <Users className="w-4 h-4" />
+                                            Categoría
+                                        </FormLabel>
+                                        <Select onValueChange={field.onChange} value={field.value}>
+                                            <FormControl>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Selecciona tu categoría" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                <SelectItem value="categoria-a">Categoría A - Niños y Niñas (8-14 años)</SelectItem>
+                                                <SelectItem value="categoria-b">Categoría B - Jóvenes (15-17 años)</SelectItem>
+                                                <SelectItem value="categoria-c">Categoría C - Adultos (18+ años)</SelectItem>
+                                                <SelectItem value="artistas">Categoría D - Artistas</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                        <FormDescription>
+                                            Selecciona la categoría según tu edad o experiencia artística
+                                        </FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            {/* Artist CV upload - shown only if category is artistas */}
+                            <AnimatePresence>
+                                {showArtistCV && (
+                                    <motion.div
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: 'auto' }}
+                                        exit={{ opacity: 0, height: 0 }}
+                                        className="space-y-4 border-l-4 border-verde-goodkidz pl-4"
+                                    >
+                                        <h3 className="text-lg font-semibold text-verde-goodkidz">
+                                            Hoja de Vida de Artista
+                                        </h3>
+
+                                        <Controller
+                                            control={form.control}
+                                            name="file3"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel className="flex items-center gap-2">
+                                                        <FileText className="w-4 h-4" />
+                                                        CV de Artista (PDF)
+                                                    </FormLabel>
+                                                    <FormDescription>
+                                                        Adjunta tu hoja de vida artística
+                                                    </FormDescription>
+                                                    <ul className="list-disc list-inside flex flex-col mt-2 text-sm text-gray-600">
+                                                        <li>Formato: PDF</li>
+                                                        <li>Tamaño máximo: 5MB</li>
+                                                    </ul>
+                                                    <FormControl>
+                                                        <Input
+                                                            type="file"
+                                                            accept="application/pdf"
+                                                            onChange={(e) => {
+                                                                const files = e.target.files;
+                                                                if (files && files.length > 0) {
+                                                                    const file = files[0];
+
+                                                                    if (file.size > 5 * 1024 * 1024) {
+                                                                        form.setError('file3', {
+                                                                            type: 'manual',
+                                                                            message: 'El archivo no puede exceder 5MB',
+                                                                        });
+                                                                        return;
+                                                                    }
+
+                                                                    if (file.type !== 'application/pdf') {
+                                                                        form.setError('file3', {
+                                                                            type: 'manual',
+                                                                            message: 'El archivo debe ser un PDF',
+                                                                        });
+                                                                        return;
+                                                                    }
+
+                                                                    form.clearErrors('file3');
+                                                                    field.onChange([file]);
+                                                                }
+                                                            }}
+                                                        />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+
+
                             {/* Image upload */}
                             <Controller
                                 control={form.control}
@@ -460,8 +621,7 @@ export default function MicroStoryForm() {
                                         </FormLabel>
                                         <ul className="list-disc list-inside flex flex-col mt-2 text-sm text-gray-600">
                                             <li>Formato: JPG</li>
-                                            <li>Medidas de la obra: 50 x 32 cm</li>
-                                            <li>Dimensiones: 1920x1080 píxeles</li>
+                                            <li>Medidas de la obra: 50 x 35 cm</li>
                                             <li>Resolución: 150 dpi</li>
                                         </ul>
                                         <FormControl>
@@ -550,6 +710,14 @@ export default function MicroStoryForm() {
                                                             return;
                                                         }
 
+                                                        if (file.type !== 'application/pdf') {
+                                                            form.setError('file2', {
+                                                                type: 'manual',
+                                                                message: 'El archivo debe ser un PDF',
+                                                            });
+                                                            return;
+                                                        }
+
                                                         form.clearErrors('file2');
                                                         field.onChange([file]);
                                                     }
@@ -560,6 +728,7 @@ export default function MicroStoryForm() {
                                     </FormItem>
                                 )}
                             />
+
 
                             <FormField
                                 control={form.control}
@@ -581,7 +750,7 @@ export default function MicroStoryForm() {
                                             </FormLabel>
                                             <FormDescription>
                                                 He leído y acepto los
-                                                <a href="..." target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline"> Términos y Condiciones</a> 2do Encuentro Arte y Vida, Fundación GOOD KIDZ Colombia 2025: PLANETA VERDE.
+                                                <a href="..." target="_blank" rel="noopener noreferrer" className="text-verde-goodkidz underline"> Términos y Condiciones</a> 2do Encuentro arte_y_vida, Fundación GOOD KIDZ Colombia 2025: PLANETA VERDE.
                                             </FormDescription>
                                         </div>
                                         <FormMessage />
@@ -634,6 +803,9 @@ export default function MicroStoryForm() {
                                 type="submit"
                                 className="w-full bg-verde-goodkidz hover:bg-green-400 focus:ring-4 focus:ring-green-300 text-white font-bold py-2 px-4 rounded-lg"
                                 disabled={isLoading}
+                                onClick={() => {
+                                    console.log("form status:", status);
+                                }}
                             >
                                 {isLoading ? (
                                     <motion.div

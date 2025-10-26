@@ -9,7 +9,6 @@ const MicroStorySchema = z.object({
     country: z.string().min(1, "El país es requerido"),
     city: z.string().min(1, "La ciudad es requerida"),
 
-    // Campos condicionales para menores de edad
     isMinor: z.boolean().optional(),
     guardianName: z.string().optional(),
     guardianDocument: z.string().optional(),
@@ -18,26 +17,23 @@ const MicroStorySchema = z.object({
         (files) => files && files.length > 0,
         "La imagen es requerida"
     ),
-    file2: z.any().refine(
-        (files) => files && files.length > 0,
-        "El PDF con la descripción es requerido"
-    ).refine(
-        (files) => files?.[0]?.type === 'application/pdf',
-        "Solo se permiten archivos PDF"
-    ).refine(
-        (files) => files?.[0]?.size <= 5 * 1024 * 1024,
-        "El archivo debe ser menor a 5MB"
-    ),
+    file2: z.any()
+        .refine((files) => files && files.length > 0, "El PDF con la descripción es requerido")
+        .refine((files) => files?.[0]?.type === 'application/pdf', "Solo se permiten archivos PDF")
+        .refine((files) => files?.[0]?.size <= 10 * 1024 * 1024, "El archivo debe ser menor a 10MB"),
 
-    terms: z.literal(true, {
-        errorMap: () => ({ message: "Debes aceptar los términos" })
-    }),
-    policy: z.literal(true, {
-        errorMap: () => ({ message: "Debes aceptar la política" })
-    })
+    file3: z.any().optional()
+        .refine((files) => !files || files.length === 0 || files?.[0]?.type === 'application/pdf', "Solo se permiten archivos PDF")
+        .refine((files) => !files || files.length === 0 || files?.[0]?.size <= 10 * 1024 * 1024, "El archivo debe ser menor a 10MB"),
+
+    category: z.string(),
+
+    terms: z.literal(true, { errorMap: () => ({ message: "Debes aceptar los términos" }) }),
+    policy: z.literal(true, { errorMap: () => ({ message: "Debes aceptar la política" }) }),
 }).refine(
     (data) => {
         const age = parseInt(data.age);
+        if (!age || isNaN(age)) return false;
         if (age < 18) {
             return data.guardianName && data.guardianDocument;
         }
@@ -45,7 +41,7 @@ const MicroStorySchema = z.object({
     },
     {
         message: "Debes proporcionar los datos del acudiente para menores de edad",
-        path: ["guardianName"]
+        path: ["guardianName"],
     }
 );
 
