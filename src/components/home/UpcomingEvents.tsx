@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { Calendar, MapPin } from 'lucide-react';
 import Image from "next/image";
 import { StaticImageData } from "next/image";
-import { Slider } from "./ui/Slider";
+import { Slider } from "@/components/ui/Slider";
 
 interface Event {
     id: number;
@@ -90,10 +90,12 @@ export default function UpcomingEvents() {
                     transition={{ duration: 0.5 }}
                     className="text-center mb-16"
                 >
-                    <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-                        VEN Y DESCUBRE...
+                    <h2 className="text-4xl md:text-5xl font-bold text-verde-goodkidz mb-4">
+                        AL COMPÁS
+                        DE LAS
+                        ACCIONES
                     </h2>
-                    <div className="w-24 h-1 bg-verde-goodkidz mx-auto mb-6"></div>
+                    <div className="w-96 h-1 bg-verde-goodkidz mx-auto mb-6"></div>
                 </motion.div>
 
                 {events.length === 0 ? (

@@ -1,55 +1,49 @@
 import { z } from 'zod';
 
-// Zod schema for form micro story
 const MicroStorySchema = z.object({
-    title: z.string()
-        .min(3, 'El título debe tener al menos 3 caracteres')
-        .max(100, 'El título no puede exceder los 100 caracteres')
-    ,
-    attendant_name: z.string()
-        .min(3, 'El nombre debe tener al menos 3 caracteres')
-        .max(100, 'El nombre no puede exceder los 100 caracteres'),
-    name: z.string()
-        .min(3, 'El nombre debe tener al menos 3 caracteres')
-        .max(100, 'El nombre no puede exceder los 100 caracteres'),
-    email: z.string()
-        .email('Correo electrónico inválido')
-        .max(100, 'El correo electrónico no puede exceder los 100 caracteres'),
-    age: z.string()
-        .min(1, 'La edad debe tener al menos 1 caracter')
-        .refine((value) => /^[0-9]+$/.test(value), 'La edad debe ser un número')
-        //edad minima 6 y maxima 10
-        .refine((value) => parseInt(value) >= 6 && parseInt(value) <= 11, 'La edad debe estar entre 6 y 11 años'),
-    phone: z.string()
-        .min(10, 'El teléfono debe tener al menos 10 caracteres')
-        .max(15, 'El teléfono no puede exceder los 15 caracteres'),
-    address: z.string()
-        .min(3, 'La dirección debe tener al menos 3 caracteres')
-        .max(100, 'La dirección no puede exceder los 100 caracteres'),
-    city: z.string()
-        .min(3, 'La ciudad debe tener al menos 3 caracteres')
-        .max(100, 'La ciudad no puede exceder los 100 caracteres'),
-    file1: z.any()
-        .refine((file) => file?.length === 1, "La imagen es requerida")
-        .refine((file) => file?.[0]?.size <= 5000000, "La imagen no puede exceder 5MB")
-        .refine(
-            (file) => ['image/jpeg', 'image/jpg'].includes(file?.[0]?.type),
-            "Solo se permiten archivos .jpg, .jpeg"
-        ),
+    title: z.string().min(1, "El título es requerido"),
+    name: z.string().min(1, "El nombre es requerido"),
+    email: z.string().email("Email inválido"),
+    age: z.string().min(1, "La edad es requerida"),
+    phone: z.string().min(1, "El teléfono es requerido"),
+    country: z.string().min(1, "El país es requerido"),
+    city: z.string().min(1, "La ciudad es requerida"),
+
+    isMinor: z.boolean().optional(),
+    guardianName: z.string().optional(),
+    guardianDocument: z.string().optional(),
+
+    file1: z.any().refine(
+        (files) => files && files.length > 0,
+        "La imagen es requerida"
+    ),
     file2: z.any()
-        .refine((file) => file?.length === 1, "El PDF es requerido")
-        .refine((file) => file?.[0]?.size <= 5000000, "El PDF no puede exceder 5MB")
-        .refine(
-            (file) => file?.[0]?.type === 'application/pdf',
-            "Solo se permiten archivos .pdf"
-        ),
-    terms: z.boolean().refine((value) => value, 'Debes aceptar los términos y condiciones'),
-    policy: z.boolean().refine((value) => value, 'Debes aceptar la política de tratamiento de datos'),
+        .refine((files) => files && files.length > 0, "El PDF con la descripción es requerido")
+        .refine((files) => files?.[0]?.type === 'application/pdf', "Solo se permiten archivos PDF")
+        .refine((files) => files?.[0]?.size <= 10 * 1024 * 1024, "El archivo debe ser menor a 10MB"),
 
-});
+    file3: z.any().optional()
+        .refine((files) => !files || files.length === 0 || files?.[0]?.type === 'application/pdf', "Solo se permiten archivos PDF")
+        .refine((files) => !files || files.length === 0 || files?.[0]?.size <= 10 * 1024 * 1024, "El archivo debe ser menor a 10MB"),
 
-// Infer the type from the Zod schema
-type MicroStory = z.infer<typeof MicroStorySchema>;
+    category: z.string(),
+
+    terms: z.literal(true, { errorMap: () => ({ message: "Debes aceptar los términos" }) }),
+    policy: z.literal(true, { errorMap: () => ({ message: "Debes aceptar la política" }) }),
+}).refine(
+    (data) => {
+        const age = parseInt(data.age);
+        if (!age || isNaN(age)) return false;
+        if (age < 18) {
+            return data.guardianName && data.guardianDocument;
+        }
+        return true;
+    },
+    {
+        message: "Debes proporcionar los datos del acudiente para menores de edad",
+        path: ["guardianName"],
+    }
+);
 
 export default MicroStorySchema;
-export type { MicroStory };
+export type MicroStory = z.infer<typeof MicroStorySchema>;

@@ -1,8 +1,8 @@
-import { withNextVideo } from "next-video/process";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Configuración de la aplicación Next.js
+  reactStrictMode: false,
 
   // Habilita acciones del lado del servidor en componentes
   experimental: {
@@ -35,4 +35,4 @@ const nextConfig = {
   },
 };
 
-export default withNextVideo(nextConfig);
+export default nextConfig;

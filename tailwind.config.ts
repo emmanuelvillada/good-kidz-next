@@ -19,7 +19,7 @@ const config: Config = {
 			colors: {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
-				'verde-goodkidz': '#00E58D',
+				'verde-goodkidz': '#68E194',
 				'gris-goodkidz': '#525156',
 				'blanco-goodkidz': '#FCFCFC',
 				card: {

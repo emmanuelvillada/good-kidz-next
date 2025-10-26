@@ -6,17 +6,21 @@ import { Button } from '@/components/ui/button';
 import { Menu } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from '@/public/logo.png';
-import SuscribeModal from './form/SuscribeForm';
 import { useRouter, usePathname } from 'next/navigation';
 
-const navLinks: { href: string; label: string }[] = [];
+const navLinks: { href: string; label: string }[] = [
+  { href: '/', label: '¿Qué queremos lograr?' },
+  { href: '/', label: '¿Quiénes somos?' },
+  { href: '/', label: '¿Como te puedes unir?' },
+  { href: '/form', label: 'Arte y vida ' }
+
+];
 
 
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
 
 
@@ -60,8 +64,9 @@ export default function Header() {
 
   return (
     <nav
+      style={{ zIndex: 2000 }}
       className={`
-      fixed top-0 z-50 lg:w-full
+      fixed top-0 lg:w-full
       py-3 px-4 md:px-6 
       border-b border-gray-200/80 
       bg-white/80 backdrop-blur-sm
@@ -97,18 +102,12 @@ export default function Header() {
                   e.preventDefault();
                   handleNavigation(link.href);
                 }}
-                className="text-gray-700 hover:text-verde-goodkidz transition-colors duration-200 text-sm font-medium cursor-pointer"
+                className=" rounded-xl text- text-white bg-verde-goodkidz transition-colors duration-200 text-base font-medium cursor-pointer p-3  hover:bg-verde-goodkidz/80"
               >
                 {link.label}
               </a>
             ))}
-            <Button
-              className="bg-verde-goodkidz text-white hover:bg-verde-goodkidz/90 
-                        shadow-md hover:shadow-lg transition-all duration-200"
-              onClick={() => setIsModalOpen(true)}
-            >
-              ¿CÓMO TE PUEDES UNIR?
-            </Button>
+
           </nav>
 
           {/* Botón móvil */}
@@ -143,19 +142,13 @@ export default function Header() {
                     {link.label}
                   </a>
                 ))}
-                <Button
-                  className="bg-verde-goodkidz text-white hover:bg-verde-goodkidz/90 
-                            shadow-md hover:shadow-lg transition-all duration-200 w-full"
-                  onClick={() => setIsModalOpen(true)}
-                >
-                  ¿CÓMO TE PUEDES UNIR?
-                </Button>
+
               </nav>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
-      <SuscribeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+
     </nav>
 
   );
