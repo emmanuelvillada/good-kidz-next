@@ -18,21 +18,18 @@ export default function MaintenanceModal() {
                 {/* Mensaje de acceso */}
                 <div className="bg-blue-50 rounded-xl p-6 mb-6">
                     <p className="text-slate-700 mb-4">
-                        Mientras tanto, puedes acceder a nuestro formulario:
+                        Accede a nuestro formulario:
                     </p>
                     <button
                         onClick={() => handleNavigate()}
-                        className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl"
+                        className="inline-flex items-center gap-2 bg-verde-goodkidz hover:bg-verde-goodkidz/80 text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl"
                     >
                         Ir al Formulario Arte y Vida
                         <ArrowRight className="w-5 h-5" />
                     </button>
                 </div>
 
-                {/* Footer */}
-                <p className="text-sm text-slate-500">
-                    Gracias por tu paciencia
-                </p>
+
             </div>
         </div>
     );
