@@ -573,7 +573,7 @@ export default function MicroStoryForm() {
                                                         Adjunta tu hoja de vida artística
                                                     </FormDescription>
                                                     <ul className="list-disc list-inside flex flex-col mt-2 text-sm text-gray-600">
-                                                        <li>Formato: PDF</li>
+                                                        <li>Formato: PDF </li>
                                                         <li>Tamaño máximo: 10MB</li>
                                                     </ul>
                                                     <FormControl>
