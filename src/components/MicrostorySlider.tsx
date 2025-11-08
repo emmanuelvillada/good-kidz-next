@@ -159,7 +159,7 @@ export default function MicrostorySlider() {
     }
 
     return (
-        <section className="pt-10 mb-32 bg-transparent" id="microstories">
+        <section className="px-4 sm:px-6 lg:px-8 sm:py-12 lg:py-8 mt-24 bg-transparent" id="microstories">
             <div className="container mx-auto px-4 md:px-6">
                 <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-center text-verde-goodkidz my-4 ">
                     PODCAST
