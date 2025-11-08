@@ -13,8 +13,8 @@ export default function GoodKidzHero() {
                     <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}
                         className="relative hidden lg:flex justify-center items-center xl:w-[1200px] xl:h-[600px] xl:bottom-[-180px] xl:left-[-300px] lg:w-[700px] lg:h-[500px] lg:bottom-[-130px] lg:left-[-100px]" >
                         <Image src={hero} alt="Fundación Good Kidz" className="object-contain w-full h-full " priority />
-                    </motion.div> {/* Imagen Mobile */} <div className="relative flex lg:hidden justify-center items-center w-full h-80 sm:h-96">
-                        <Image src={hero_movil} alt="Fundación Good Kidz" className="object-contain w-full h-full rounded-2xl shadow-xl" priority />
+                    </motion.div> {/* Imagen Mobile */} <div className="relative flex lg:hidden justify-center items-center w-[400px] left-[-20px] h-80 sm:h-96">
+                        <Image src={hero} alt="Fundación Good Kidz" className="object-contain w-full h-full " priority />
                     </div>
                 </div> {/* Indicador de scroll */} <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }} className="flex justify-center mt-12" >
                 </motion.div> </div> </section>)
