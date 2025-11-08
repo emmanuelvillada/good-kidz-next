@@ -2,7 +2,6 @@
 import Image from "next/image"
 import { motion } from "framer-motion"
 import hero from "@/public/hero.png"
-import hero_movil from "@/public/hero-movil.png"
 export default function GoodKidzHero() {
     return (
         <section id="hero" className="w-full   xl:pb-12 lg:pb-8 bg-gradient-to-b from-white via-[#F9FFFB] to-white overflow-hidden" >
