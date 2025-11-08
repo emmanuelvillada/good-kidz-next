@@ -7,7 +7,7 @@ export default function GoodKidzTeam() {
     return (
         <section
             id="team"
-            className="w-full  bg-gradient-to-b from-white via-[#F9FFFB] to-white overflow-hidden"
+            className="w-full pb-12 bg-gradient-to-b from-white via-[#F9FFFB] to-white overflow-hidden"
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -41,7 +41,7 @@ export default function GoodKidzTeam() {
                         className=""
                     >
                         <div className="z
-                    -0 relative xl:w-[1100px] xl:h-[600px] xl:bottom-[-330px] xl:left-[-200px] lg:w-[500px] lg:h-[300px] ">
+                    -0 relative xl:w-[1100px] xl:h-[600px] xl:bottom-[-330px] xl:left-[-200px] lg:w-[600px] lg:h-[400px] lg:bottom-[-100px] ">
                             <Image
                                 src={image}
                                 alt="Equipo Fundación Good Kidz"
