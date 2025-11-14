@@ -11,6 +11,14 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Urbane Rounded';
+  src: url('../public/fonts/UrbaneRounded-Medium.woff2') format('woff2'),
+    url('../public/fonts/UrbaneRounded-Medium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
   font-family: 'Urbane Rounded', sans-serif;
   font-display: swap;

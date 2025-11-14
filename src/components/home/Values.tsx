@@ -1,27 +1,27 @@
 "use client";
 import { motion } from "framer-motion";
-import { Heart, Users, Lightbulb, Leaf } from "lucide-react";
+import { Heart, Users, Lightbulb, Leaf } from 'lucide-react';
 
 const values = [
     {
         icon: Heart,
         title: "Educación Artística",
-        description: "Desarrollamos habilidades creativas y expresivas a través de las artes.",
+        description: "Desarrollamos <span className=\"font-semibold\">habilidades creativas y expresivas</span> a través de las artes.",
     },
     {
         icon: Users,
         title: "Inclusión Social",
-        description: "Creamos espacios seguros y acogedores para todos, sin distinción.",
+        description: "Creamos <span className=\"font-semibold\">espacios seguros y acogedores</span> para todos, sin distinción.",
     },
     {
         icon: Lightbulb,
         title: "Innovación",
-        description: "Buscamos nuevas formas de impactar positivamente la sociedad.",
+        description: "Buscamos <span className=\"font-semibold\">nuevas formas de impactar</span> positivamente la sociedad.",
     },
     {
         icon: Leaf,
         title: "Sostenibilidad",
-        description: "Comprometidos con el cuidado del planeta y nuestras comunidades.",
+        description: "Comprometidos con <span className=\"font-semibold\">el cuidado del planeta</span> y nuestras comunidades.",
     },
 ];
 
@@ -44,9 +44,9 @@ export default function Values() {
                         <span className="text-verde-goodkidz">Valores</span>
                     </h2>
                     <div className="w-24 h-1 bg-verde-goodkidz mx-auto rounded-full"></div>
-                    <p className="text-gray-600 max-w-2xl mx-auto mt-6 text-base sm:text-lg leading-relaxed">
-                        En GOOD KIDZ creemos en los valores que inspiran, fortalecen y transforman
-                        nuestras acciones para construir un futuro más consciente y solidario.
+                    <p className="text-gray-600 max-w-2xl mx-auto mt-6 text-base sm:text-lg leading-relaxed font-light">
+                        En GOOD KIDZ creemos en <span className="font-semibold">los valores</span> que inspiran, fortalecen y transforman
+                        nuestras acciones para construir un <span className="font-semibold">futuro más consciente y solidario</span>.
                     </p>
                 </motion.div>
 
@@ -69,9 +69,10 @@ export default function Values() {
                                 <h3 className="text-lg font-bold text-gray-900 mb-3">
                                     {value.title}
                                 </h3>
-                                <p className="text-gray-600 text-sm leading-relaxed">
-                                    {value.description}
-                                </p>
+                                <p
+                                    className="text-gray-600 text-sm leading-relaxed font-light"
+                                    dangerouslySetInnerHTML={{ __html: value.description }}
+                                />
                             </motion.div>
                         );
                     })}

@@ -101,7 +101,7 @@ export default function Header() {
                   e.preventDefault();
                   handleNavigation(link.href);
                 }}
-                className=" rounded-xl text- text-white bg-verde-goodkidz transition-colors duration-200 text-base font-medium cursor-pointer p-3  hover:bg-verde-goodkidz/80"
+                className=" rounded-xl text-black bg-verde-goodkidz transition-colors duration-200 text-base font-medium cursor-pointer p-3  hover:bg-verde-goodkidz/80"
               >
                 {link.label}
               </a>

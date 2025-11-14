@@ -26,10 +26,10 @@ export default function GoodKidzTeam() {
 
                         <div className="w-80 h-1 bg-verde-goodkidz rounded-full"></div>
 
-                        <p className="text-base sm:text-lg text-gray-700 leading-relaxed max-w-xl">
-                            En GOOD KIDZ creemos que los sueños se construyen con personas
-                            comprometidas, creativas y apasionadas por transformar la realidad.
-                            Nuestro equipo es el corazón que impulsa cada iniciativa.
+                        <p className="text-base sm:text-lg text-gray-700 leading-relaxed max-w-xl font-light">
+                            En GOOD KIDZ creemos que <span className="font-semibold">los sueños se construyen</span> con personas
+                            comprometidas, creativas y apasionadas por <span className="font-semibold">transformar la realidad</span>.
+                            Nuestro equipo es <span className="font-semibold">el corazón</span> que impulsa cada iniciativa.
                         </p>
                     </motion.div>
 
@@ -40,10 +40,9 @@ export default function GoodKidzTeam() {
                         transition={{ duration: 0.6 }}
                         className=""
                     >
-                        <div className="z
-                    -0 relative xl:w-[1100px] xl:h-[600px] xl:bottom-[-330px] xl:left-[-200px] lg:w-[600px] lg:h-[400px] lg:bottom-[-100px] ">
+                        <div className="z-0 relative xl:w-[1100px] xl:h-[600px] xl:bottom-[-330px] xl:left-[-200px] lg:w-[600px] lg:h-[400px] lg:bottom-[-100px]">
                             <Image
-                                src={image}
+                                src={image || "/placeholder.svg"}
                                 alt="Equipo Fundación Good Kidz"
                                 width={1200}
                                 height={600}
@@ -104,7 +103,7 @@ export default function GoodKidzTeam() {
                             <h3 className="text-lg font-semibold text-verde-goodkidz">
                                 {persona.nombre}
                             </h3>
-                            <p className="text-sm text-gray-600">{persona.rol}</p>
+                            <p className="text-sm text-gray-600 font-light">{persona.rol}</p>
                             <a
                                 href={`mailto:${persona.correo}`}
                                 className="text-xs text-verde-goodkidz/80 hover:underline mt-1 block"

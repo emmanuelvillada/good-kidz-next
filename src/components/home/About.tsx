@@ -1,7 +1,6 @@
 "use client"
 import { motion, useMotionValue, useTransform, animate } from "framer-motion"
 import { useEffect } from "react"
-import { Sparkles } from "lucide-react"
 
 export default function About() {
     const valores = ["Educación Artística", "Desarrollo Personal", "Inclusión Social", "Innovación Educativa"]
@@ -35,15 +34,13 @@ export default function About() {
                     className="text-center mb-16"
                 >
                     <div className="flex items-center justify-center gap-2 mb-4">
-                        <Sparkles className="text-primary" size={24} />
-                        <h2 className="text-4xl md:text-5xl font-bold text-foreground">
-                            SOBRE <span className="text-primary">GOOD KIDZ</span>
+                        <h2 className="text-4xl md:text-5xl font-bold text-foreground text-verde-goodkidz">
+                            SOBRE <span className="text-primary text-verde-goodkidz">GOOD KIDZ</span>
                         </h2>
                     </div>
-                    <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto mb-8 rounded-full"></div>
-                    <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
-                        Es la idea original de <strong>FEID y su familia</strong> con la intención de transformar positivamente la
-                        sociedad.
+                    <div className="w-24 h-1 bg-gradient-to-r from-verde-goodkidz to-verde-goodkidz/50 mx-auto mb-8 rounded-full"></div>
+                    <p className="text-base sm:text-lg text-foreground/70 max-w-3xl mx-auto font-light leading-relaxed">
+                        Es la idea original de <span className="font-semibold">FEID y su familia</span> con la intención de <span className="font-semibold">transformar positivamente la sociedad</span>.
                     </p>
                 </motion.div>
                 <div className="grid md:grid-cols-2 gap-8 sm:gap-12 mb-16">
@@ -51,15 +48,16 @@ export default function About() {
                         initial={{ opacity: 0, x: -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.5 }}
-                        className="space-y-6 p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all border-l-4 border-primary"
+                        className="space-y-6 p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all border-l-4 border-verde-goodkidz"
                     >
-                        <h3 className="text-3xl font-bold text-primary">Nuestra Misión</h3>
-                        <p className="text-lg text-foreground/70 leading-relaxed">
-                            Fomentar la adquisición de habilidades para la vida de niños, jóvenes y adultos a través del aprendizaje y
-                            práctica de actividades creativas, para el cultivo de la sensibilidad, la adquisición de buenos hábitos y
-                            sentido de pertenencia, mediante la conformación de grupos de diferentes edades, géneros y condición en
-                            los campos de las artes, las artesanías y, con miras a la formación, la integración y el empleo productivo
-                            del tiempo libre.
+                        <h3 className="text-3xl font-bold text-verde-goodkidz">Nuestra Misión</h3>
+                        <p className="text-base sm:text-lg text-foreground/70 leading-relaxed font-light">
+                            La Fundación GOOD KIDZ es una <span className="font-semibold">organización sin ánimo de lucro</span> que impulsa <span className="font-semibold">el desarrollo humano</span> a través de
+                            proyectos formativos de carácter artístico, recreativo y lúdico promoviendo <span className="font-semibold">inclusión, conciencia
+                                ambiental, autoconocimiento y bienestar</span>. Con raíces en Medellín y alianzas con instituciones educativas y
+                            otras organizaciones, impulsa iniciativas que <span className="font-semibold">fortalecen el tejido social</span> y mejoran la calidad de vida de
+                            las comunidades diversas, sin distinción, frente a los retos sociales, ambientales y económicos del
+                            presente.
                         </p>
                     </motion.article>
 
@@ -69,24 +67,28 @@ export default function About() {
                         transition={{ duration: 0.5 }}
                         className="space-y-6 p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all border-l-4 border-accent"
                     >
-                        <h3 className="text-3xl font-bold text-accent">Nuestra Visión</h3>
-                        <p className="text-lg text-foreground/70 leading-relaxed">
-                            Ser un referente en la educación artística y el desarrollo integral de niños y jóvenes, promoviendo la
-                            inclusión y la innovación en todos nuestros programas.
+                        <h3 className="text-3xl font-bold text-verde-goodkidz">Nuestra Visión</h3>
+                        <p className="text-base sm:text-lg text-foreground/70 leading-relaxed font-light">
+                            Para el 2035, la Fundación GOOD KIDZ será <span className="font-semibold">reconocida como un referente de transformación social</span> a través
+                            de las artes, la educación y la recreación, fomentando <span className="font-semibold">conciencia ambiental, inclusión y bienestar</span> en
+                            comunidades diversas a nivel local, nacional e internacional. Consolidará <span className="font-semibold">vínculos de colaboración</span> con
+                            instituciones educativas, fundaciones y organizaciones afines que compartan nuestros propósitos de apoyo a
+                            territorios y comunidades con historias por transformar, fortaleciendo así un <span className="font-semibold">compromiso firme con la
+                                equidad, la diversidad y la sostenibilidad</span>.
                         </p>
                         <ul className="space-y-4">
                             {valores.map((value, index) => (
                                 <li key={index} className="flex items-center gap-3">
                                     <svg
                                         aria-hidden="true"
-                                        className="w-6 h-6 text-primary"
+                                        className="w-6 h-6 text-verde-goodkidz "
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
                                     >
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                                     </svg>
-                                    <span className="text-foreground/80">{value}</span>
+                                    <span className="text-foreground/80 font-light">{value}</span>
                                 </li>
                             ))}
                         </ul>
@@ -98,7 +100,7 @@ export default function About() {
                     transition={{ duration: 0.5 }}
                     className="bg-white p-8 sm:p-12 rounded-2xl shadow-lg"
                 >
-                    <h3 className="text-3xl font-bold text-primary mb-8 text-center">Nuestro Impacto</h3>
+                    <h3 className="text-3xl font-bold text-verde-goodkidz mb-8 text-center">Nuestro Impacto</h3>
                     <div className="grid grid-cols-2 gap-6 sm:gap-8">
                         {stats.map((stat, index) => (
                             <motion.div
@@ -109,7 +111,7 @@ export default function About() {
                                 <p className="text-4xl font-bold text-primary mb-2">
                                     <AnimatedCounter to={stat.value} />+
                                 </p>
-                                <p className="text-sm text-foreground/70 font-medium">{stat.label}</p>
+                                <p className="text-sm text-foreground/70 font-light">{stat.label}</p>
                             </motion.div>
                         ))}
                     </div>
