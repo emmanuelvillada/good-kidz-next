@@ -1,13 +1,7 @@
-'use client';
-import { useRouter } from 'next/navigation'; // App Router
-import { ArrowRight } from 'lucide-react';
 
 export default function MaintenanceModal() {
-    const router = useRouter();
 
-    const handleNavigate = () => {
-        router.push('/form');
-    };
+
 
 
     return (
@@ -17,16 +11,14 @@ export default function MaintenanceModal() {
 
                 {/* Mensaje de acceso */}
                 <div className="bg-blue-50 rounded-xl p-6 mb-6">
-                    <p className="text-slate-700 mb-4">
-                        Accede a nuestro formulario:
+                    <h2 className="text-2xl font-semibold mb-4 text-blue-800">Página en mantenimiento</h2>
+                    <p className="text-blue-700 mb-4">
+                        Estamos realizando mejoras en nuestro sitio web para brindarte una mejor experiencia.
+                        Durante este tiempo, algunas funcionalidades pueden no estar disponibles.
                     </p>
-                    <button
-                        onClick={() => handleNavigate()}
-                        className="inline-flex items-center gap-2 bg-verde-goodkidz hover:bg-verde-goodkidz/80 text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl"
-                    >
-                        Ir al Formulario Arte y Vida
-                        <ArrowRight className="w-5 h-5" />
-                    </button>
+                    <p className="text-blue-700">
+                        Agradecemos tu paciencia y comprensión. ¡Volveremos pronto con novedades emocionantes!
+                    </p>
                 </div>
 
 
