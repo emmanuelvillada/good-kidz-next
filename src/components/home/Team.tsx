@@ -84,7 +84,7 @@ export default function GoodKidzTeam() {
                         {
                             nombre: "NATALIA OCHOA HOYOS",
                             rol: "Comunicación",
-                            correo: "info@goodkidz.org",
+                            correo: "comunicacion@goodkidz.org",
                         },
                         {
                             nombre: "SALOMÉ VILLADA SÁNCHEZ",
