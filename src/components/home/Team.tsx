@@ -19,12 +19,10 @@ export default function GoodKidzTeam() {
                         className="space-y-6 sm:space-y-8 z-10"
                     >
                         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-verde-goodkidz leading-tight">
-                            <span>NUESTRO</span>
-                            <br />
-                            <span>EQUIPO</span>
+                            <span>Nuestro Equipo</span>
                         </h1>
 
-                        <div className="w-80 h-1 bg-verde-goodkidz rounded-full"></div>
+                        <div className="w-80 h-1 bg-gradient-to-r from-verde-goodkidz to-verde-goodkidz/50 rounded-full"></div>
 
                         <p className="text-base sm:text-lg text-gray-700 leading-relaxed max-w-xl font-light">
                             En GOOD KIDZ creemos que <span className="font-semibold">los sueños se construyen</span> con personas

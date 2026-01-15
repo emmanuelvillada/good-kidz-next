@@ -159,13 +159,14 @@ export default function MicrostorySlider() {
     }
 
     return (
-        <section className="px-4 sm:px-6 lg:px-8 sm:py-12 lg:py-8 mt-24 bg-transparent" id="microstories">
+        <section className=" px-4 sm:px-6 lg:px-8 sm:pb-16 lg:pb-24 mt-12 bg-transparent" id="microstories">
             <div className="container mx-auto px-4 md:px-6">
+
                 <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-center text-verde-goodkidz my-4 ">
                     PODCAST
                 </h2>
                 <div>
-                    <div className="bg-verde-goodkidz w-32 h-1 mx-auto mb-6"></div>
+                    <div className="bg-gradient-to-r from-verde-goodkidz to-verde-goodkidz/50 rounded-full w-32 h-1 mx-auto mb-6"></div>
                 </div>
                 <p className="text-base sm:text-lg text-black mb-12 text-center">
                     Un viaje sonoro tejido con la imaginación y la sabiduría

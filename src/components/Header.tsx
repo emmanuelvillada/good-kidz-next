@@ -11,11 +11,10 @@ import { useRouter, usePathname } from 'next/navigation';
 const navLinks: { href: string; label: string }[] = [
   { href: '#mision', label: '¿Qué queremos lograr?' },
   { href: '#team', label: '¿Quiénes somos?' },
-  { href: '/form', label: 'Arte y vida ' }
+  { href: '/form', label: 'Arte y vida ' },
+  { href: '/podcast', label: 'Podcast' },
 
 ];
-
-
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -51,10 +50,14 @@ export default function Header() {
   const handleNavigation = (href: string) => {
     if (href.startsWith("#")) {
       if (pathname !== "/") {
-        setPendingHash(href); // Guarda el hash para hacer scroll después
-        router.push("/"); // Primero navega a la home
+        // Guarda el hash en sessionStorage
+        sessionStorage.setItem('scrollToSection', href);
+        router.push("/");
       } else {
-        window.location.hash = href; // Si ya estamos en home, actualiza el hash directamente
+        const element = document.querySelector(href);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
       }
     } else {
       router.push(href);

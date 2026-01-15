@@ -43,7 +43,7 @@ export default function Values() {
                         Nuestros{" "}
                         <span className="text-verde-goodkidz">Valores</span>
                     </h2>
-                    <div className="w-24 h-1 bg-verde-goodkidz mx-auto rounded-full"></div>
+                    <div className="w-24 h-1 bg-gradient-to-r from-verde-goodkidz to-verde-goodkidz/50 rounded-full mx-auto"></div>
                     <p className="text-gray-600 max-w-2xl mx-auto mt-6 text-base sm:text-lg leading-relaxed font-light">
                         En GOOD KIDZ creemos en <span className="font-semibold">los valores</span> que inspiran, fortalecen y transforman
                         nuestras acciones para construir un <span className="font-semibold">futuro más consciente y solidario</span>.
