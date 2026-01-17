@@ -11,7 +11,7 @@ import { useRouter, usePathname } from 'next/navigation';
 const navLinks: { href: string; label: string }[] = [
   { href: '#mision', label: '¿Qué queremos lograr?' },
   { href: '#team', label: '¿Quiénes somos?' },
-  { href: '/form', label: 'Arte y vida ' },
+  { href: '/events', label: 'Eventos y actividades ' },
   { href: '/podcast', label: 'Podcast' },
 
 ];

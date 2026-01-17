@@ -52,12 +52,14 @@ export default function About() {
                     >
                         <h3 className="text-3xl font-bold text-verde-goodkidz">Nuestra Misión</h3>
                         <p className="text-base sm:text-lg text-foreground/70 leading-relaxed font-light">
-                            La Fundación GOOD KIDZ es una <span className="font-semibold">organización sin ánimo de lucro</span> que impulsa <span className="font-semibold">el desarrollo humano</span> a través de
-                            proyectos formativos de carácter artístico, recreativo y lúdico promoviendo <span className="font-semibold">inclusión, conciencia
-                                ambiental, autoconocimiento y bienestar</span>. Con raíces en Medellín y alianzas con instituciones educativas y
-                            otras organizaciones, impulsa iniciativas que <span className="font-semibold">fortalecen el tejido social</span> y mejoran la calidad de vida de
-                            las comunidades diversas, sin distinción, frente a los retos sociales, ambientales y económicos del
-                            presente.
+                            La Fundación <span className="font-semibold">GOOD KIDZ</span> es una organización sin ánimo de lucro que
+                            impulsa el desarrollo humano a través de proyectos formativos de
+                            carácter artístico, recreativo y lúdico promoviendo inclusión, conciencia
+                            ambiental, autoconocimiento y bienestar. Con raíces en Medellín y alianzas
+                            con instituciones educativas y otras organizaciones, impulsa iniciativas que
+                            fortalecen el tejido social y mejoran la calidad de vida de las comunidades
+                            diversas, sin distinción, frente a los retos sociales, ambientales y económicos
+                            del presente.
                         </p>
                     </motion.article>
 
@@ -69,32 +71,20 @@ export default function About() {
                     >
                         <h3 className="text-3xl font-bold text-verde-goodkidz">Nuestra Visión</h3>
                         <p className="text-base sm:text-lg text-foreground/70 leading-relaxed font-light">
-                            Para el 2035, la Fundación GOOD KIDZ será <span className="font-semibold">reconocida como un referente de transformación social</span> a través
-                            de las artes, la educación y la recreación, fomentando <span className="font-semibold">conciencia ambiental, inclusión y bienestar</span> en
-                            comunidades diversas a nivel local, nacional e internacional. Consolidará <span className="font-semibold">vínculos de colaboración</span> con
-                            instituciones educativas, fundaciones y organizaciones afines que compartan nuestros propósitos de apoyo a
-                            territorios y comunidades con historias por transformar, fortaleciendo así un <span className="font-semibold">compromiso firme con la
-                                equidad, la diversidad y la sostenibilidad</span>.
+                            Para el 2035, la Fundación <span className="font-semibold">GOOD KIDZ</span> será reconocida como
+                            un referente de transformación social a través de las artes, la educación
+                            y la recreación, fomentando conciencia ambiental, inclusión y bienestar
+                            en comunidades diversas a nivel local, nacional e internacional.
+                            Consolidará vínculos de colaboración con instituciones educativas,
+                            fundaciones y organizaciones afines que compartan nuestros propósitos
+                            de apoyo a territorios y comunidades con historias por transformar,
+                            fortaleciendo así un compromiso firme con la equidad, la diversidad
+                            y la sostenibilidad.
                         </p>
-                        <ul className="space-y-4">
-                            {valores.map((value, index) => (
-                                <li key={index} className="flex items-center gap-3">
-                                    <svg
-                                        aria-hidden="true"
-                                        className="w-6 h-6 text-verde-goodkidz "
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span className="text-foreground/80 font-light">{value}</span>
-                                </li>
-                            ))}
-                        </ul>
+
                     </motion.article>
                 </div>
-                <motion.div
+                {/* <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
@@ -115,7 +105,7 @@ export default function About() {
                             </motion.div>
                         ))}
                     </div>
-                </motion.div>
+                </motion.div> */}
             </div>
         </section>
     )

@@ -31,7 +31,7 @@ export default function GoodKidzHero() {
                     </motion.div>
                     {/* Imagen Desktop */}
                     <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}
-                        className="relative hidden lg:flex justify-center items-center xl:w-[1200px] xl:h-[600px] xl:bottom-[-180px] xl:left-[-300px] lg:w-[700px] lg:h-[500px] lg:bottom-[-130px] lg:left-[-100px]" >
+                        className="relative hidden lg:flex justify-center items-center xl:w-[1100px] xl:h-[500px] xl:bottom-[-180px] xl:left-[-300px] lg:w-[700px] lg:h-[500px] lg:bottom-[-130px] lg:left-[-100px]" >
                         <Image src={hero || "/placeholder.svg"} alt="Fundación Good Kidz" className="object-contain w-full h-full " priority />
                     </motion.div>
                     {/* Imagen Mobile */}
