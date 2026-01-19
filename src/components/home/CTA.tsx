@@ -22,16 +22,9 @@ export default function CallToAction() {
                     </div>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
+
                         <motion.a
-                            href="#contact"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="px-8 py-4 bg-verde-goodkidz text-white font-semibold rounded-full hover:bg-verde-goodkidz/90 transition-all duration-300 shadow-lg hover:shadow-xl"
-                        >
-                            Quiero Colaborar
-                        </motion.a>
-                        <motion.a
-                            href="#about"
+                            href="/eventos"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className="px-8 py-4 border-2 border-verde-goodkidz text-verde-goodkidz font-semibold rounded-full hover:bg-verde-goodkidz/5 transition-all duration-300"
