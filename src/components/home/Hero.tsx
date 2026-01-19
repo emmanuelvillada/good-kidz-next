@@ -22,10 +22,10 @@ export default function GoodKidzHero() {
                             className="pt-4"
                         >
                             <a
-                                href="#about"
+                                href="/events"
                                 className="inline-block px-8 py-3 bg-verde-goodkidz text-white font-semibold rounded-full hover:bg-verde-goodkidz/90 transition-all duration-300 hover:shadow-lg hover:scale-105"
                             >
-                                Conoce Nuestro Impacto
+                                Conoce Nuestros Proyectos
                             </a>
                         </motion.div>
                     </motion.div>

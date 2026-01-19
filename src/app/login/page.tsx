@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-// 🎯 Zod Schema
 const schema = z.object({
     email: z.string().email('Correo inválido'),
     password: z.string().min(6, 'Mínimo 6 caracteres'),
