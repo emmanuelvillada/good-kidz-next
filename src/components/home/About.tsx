@@ -40,7 +40,6 @@ export default function About() {
                     </div>
                     <div className="w-24 h-1 bg-gradient-to-r from-verde-goodkidz to-verde-goodkidz/50 mx-auto mb-8 rounded-full"></div>
                     <p className="text-base sm:text-lg text-foreground/70 max-w-3xl mx-auto font-light leading-relaxed">
-                        Es la idea original de <span className="font-semibold">FEID y su familia</span> con la intención de <span className="font-semibold">transformar positivamente la sociedad</span>.
                     </p>
                 </motion.div>
                 <div className="grid md:grid-cols-2 gap-8 sm:gap-12 mb-16">

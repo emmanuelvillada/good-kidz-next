@@ -25,7 +25,7 @@ export default function GoodKidzTeam() {
                         <div className="w-80 h-1 bg-gradient-to-r from-verde-goodkidz to-verde-goodkidz/50 rounded-full"></div>
 
                         <p className="text-base sm:text-lg text-gray-700 leading-relaxed max-w-xl font-light">
-                            En GOOD KIDZ  sabemos que las iniciativas florecen  gracias a las personas.
+                            En <span className=" font-semibold"> GOOD KIDZ </span> sabemos que las iniciativas florecen  gracias a las personas.
                             Nuestro equipo diverso y sensible es la energía que inspira, crea y sostiene
                             cada proyecto.
                         </p>

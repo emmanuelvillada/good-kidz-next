@@ -13,7 +13,7 @@ export default function GoodKidzHero() {
                         </div>
                         <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.6 }} className="text-base sm:text-lg text-foreground/70 leading-relaxed max-w-xl font-light" >
                             En la Fundación
-                            <span className="text-green-600 font-semibold"> GOOD KIDZ </span>  creemos en <span className="font-semibold">la magia de lo sencillo</span>: un pincel, una canción, un juego compartido. Desde ahí nace <span className="font-semibold">la fuerza para transformar realidades</span>, abrazar la diversidad e imaginar un futuro donde <span className="font-semibold">la esperanza, la equidad y el cuidado mutuo</span> se entretejen en nuestro planeta verde.
+                            <span className=" font-semibold"> GOOD KIDZ </span>  creemos en <span className="font-semibold">la magia de lo sencillo</span>: un pincel, una canción, un juego compartido. Desde ahí nace <span className="font-semibold">la fuerza para transformar realidades</span>, abrazar la diversidad e imaginar un futuro donde <span className="font-semibold">la esperanza, la equidad y el cuidado mutuo</span> se entretejen en nuestro planeta verde.
                         </motion.p>
                         <motion.div
                             initial={{ opacity: 0, y: 10 }}
