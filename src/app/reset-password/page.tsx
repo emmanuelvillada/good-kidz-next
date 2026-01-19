@@ -1,40 +1,34 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { supabase } from '@/lib/supabase'
 
 export default function ResetPasswordPage() {
-    const supabase = createClientComponentClient()
-    const [password, setPassword] = useState('')
     const [ready, setReady] = useState(false)
+    const [password, setPassword] = useState('')
     const [message, setMessage] = useState('')
 
     useEffect(() => {
-        // Auth helpers procesa automáticamente el token del link
         supabase.auth.getSession().then(({ data }) => {
             if (data.session) {
                 setReady(true)
             } else {
-                setMessage('❌ El link de recuperación es inválido o expiró')
+                setMessage('❌ Link inválido o expirado')
             }
         })
-    }, [supabase])
+    }, [])
 
     const handleReset = async () => {
-        const { error } = await supabase.auth.updateUser({
-            password,
-        })
+        const { error } = await supabase.auth.updateUser({ password })
 
         if (error) {
             setMessage(error.message)
         } else {
-            setMessage('✅ Contraseña actualizada correctamente')
+            setMessage('✅ Contraseña actualizada')
         }
     }
 
-    if (!ready) {
-        return <p>Cargando sesión de recuperación...</p>
-    }
+    if (!ready) return <p>Cargando sesión de recuperación...</p>
 
     return (
         <div style={{ padding: 40 }}>
@@ -42,14 +36,12 @@ export default function ResetPasswordPage() {
 
             <input
                 type="password"
-                placeholder="Nueva contraseña"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                placeholder="Nueva contraseña"
             />
 
-            <button onClick={handleReset}>
-                Cambiar contraseña
-            </button>
+            <button onClick={handleReset}>Cambiar contraseña</button>
 
             {message && <p>{message}</p>}
         </div>

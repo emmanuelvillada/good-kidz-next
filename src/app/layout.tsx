@@ -6,6 +6,7 @@ import type { Metadata } from 'next'
 
 
 
+
 export const metadata: Metadata = {
   title: 'Good Kidz',
   description: 'Fundación sin animo de lucro que ayuda a la sociedad a través del arte, la educación y la cultura.',
@@ -40,6 +41,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+
       </body>
     </html>
   )
