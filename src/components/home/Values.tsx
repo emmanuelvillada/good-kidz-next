@@ -29,7 +29,7 @@ export default function Values() {
     return (
         <section
             id="values"
-            className="w-full bg-gradient-to-b from-white via-[#F9FFFB] to-white overflow-hidden py-10 "
+            className="w-full bg-gradient-to-b from-white via-[#F9FFFB] to-white overflow-hidden pb-10 "
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Título */}
