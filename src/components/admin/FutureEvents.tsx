@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
+import { supabase as supabaseClient } from '@/lib/supabase';
 import { v4 as uuidv4 } from 'uuid'
 import { TrashIcon, PlusIcon } from '@heroicons/react/24/outline'
 import { Card } from '@/components/ui/card'
@@ -14,7 +14,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import validateImageDimensions from '@/lib/validateImageDimensions'
 import { EventCard } from './FutureEventCard' // Asegúrate de que la ruta sea correcta
 
-const supabase = createPagesBrowserClient()
+const supabase = supabaseClient;
 
 const eventSchema = z.object({
     title: z.string().min(1, 'Título requerido').max(100, 'Máximo 100 caracteres'),

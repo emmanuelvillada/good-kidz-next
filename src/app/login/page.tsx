@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
+import { supabase as supabaseClient } from '@/lib/supabase';
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -16,7 +16,7 @@ type FormData = z.infer<typeof schema>
 
 export default function LoginPage() {
     const router = useRouter()
-    const supabase = createPagesBrowserClient()
+    const supabase = supabaseClient
     const [loading, setLoading] = useState(false)
     const [errorMsg, setErrorMsg] = useState('')
 
