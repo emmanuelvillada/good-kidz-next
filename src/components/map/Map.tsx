@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from "leaflet";
 import { useState, useEffect } from 'react';
-import { supabaseClient } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase';
 
 
 
@@ -22,7 +22,7 @@ export default function Map() {
 
     useEffect(() => {
         const fetchPositions = async () => {
-            const { data, error } = await supabaseClient
+            const { data, error } = await supabase
                 .from('locations')
                 .select('latitude, longitude');
 
