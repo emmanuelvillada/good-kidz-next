@@ -29,7 +29,7 @@ export async function middleware(req: NextRequest) {
         data: { session },
     } = await supabase.auth.getSession()
 
-    // 🔒 Proteger rutas admin
+
     if (req.nextUrl.pathname.startsWith('/admin') && !session) {
         return NextResponse.redirect(new URL('/login', req.url))
     }

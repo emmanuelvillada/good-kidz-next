@@ -1,10 +1,10 @@
-import UpcomingEvents from "@/components/home/UpcomingEvents";
 import Events from "@/components/home/Events";
+import Hero from "@/components/events/Hero";
 
 export default function EventsPage() {
     return (
-        <div className="min-h-screen bg-gradient-to-b from-white to-[#F9FFFB] my-24">
-            <UpcomingEvents />
+        <div className="">
+            <Hero />
             <Events />
         </div>
     );
