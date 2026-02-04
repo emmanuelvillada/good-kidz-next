@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import EventsCard from "./EventsCard";
-import { Sparkles, Heart } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 export default function EventsHero() {
     const eventosPermanentes = [
@@ -132,8 +132,8 @@ export default function EventsHero() {
                         viewport={{ once: true }}
                         className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
                     >
-                        Descubre cómo nuestros proyectos artísticos, recreativos y lúdicos están{" "}
-                        <span className="text-verde-goodkidz font-semibold">transformando vidas</span> en la comunidad.
+                        Descubre nuestros <span className="text-verde-goodkidz font-semibold">proyectos</span> artísticos, recreativos y lúdicos{" "}
+
                     </motion.p>
                 </motion.div>
 
@@ -175,7 +175,6 @@ export default function EventsHero() {
                     className="text-center mt-16 md:mt-20"
                 >
                     <div className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-verde-goodkidz/5 to-verde-goodkidz/10 rounded-full border border-verde-goodkidz/20">
-                        <Heart className="w-5 h-5 text-verde-goodkidz animate-pulse" />
                         <p className="text-sm md:text-base font-medium text-gray-700">
                             Iniciativas que se renuevan cada año para crear un impacto duradero
                         </p>
