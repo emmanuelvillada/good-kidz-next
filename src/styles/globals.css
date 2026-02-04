@@ -5,7 +5,8 @@
 /* Si quieres incluir la fuente en bold */
 @font-face {
   font-family: 'Urbane Rounded';
-  src: url('../public/fonts/UrbaneRounded-Bold.woff2') format('woff2'),
+  src:
+    url('../public/fonts/UrbaneRounded-Bold.woff2') format('woff2'),
     url('../public/fonts/UrbaneRounded-Bold.woff') format('woff');
   font-weight: bold;
   font-style: normal;
@@ -13,7 +14,8 @@
 
 @font-face {
   font-family: 'Urbane Rounded';
-  src: url('../public/fonts/UrbaneRounded-Medium.woff2') format('woff2'),
+  src:
+    url('../public/fonts/UrbaneRounded-Medium.woff2') format('woff2'),
     url('../public/fonts/UrbaneRounded-Medium.woff') format('woff');
   font-weight: normal;
   font-style: normal;
@@ -113,8 +115,9 @@ body {
   .shadow-3xl {
     --tw-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
     --tw-shadow-colored: 0 35px 60px -15px var(--tw-shadow-color);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
-      var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    box-shadow:
+      var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+      var(--tw-shadow);
   }
 }
 
@@ -156,4 +159,18 @@ body {
 
 html {
   scroll-behavior: smooth;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
