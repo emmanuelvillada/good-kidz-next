@@ -1,47 +1,33 @@
 "use client"
-import { motion, useMotionValue, useTransform, animate } from "framer-motion"
-import { useEffect } from "react"
+import { motion } from "framer-motion"
+// import { useEffect } from "react"
 
 export default function About() {
-    const valores = ["Educación Artística", "Desarrollo Personal", "Inclusión Social", "Innovación Educativa"]
+    // const valores = ["Educación Artística", "Desarrollo Personal", "Inclusión Social", "Innovación Educativa"]
 
-    const stats = [
-        { label: "Niños Beneficiados", value: 1300 },
-        { label: "Programas Educativos", value: 50 },
-        { label: "Proyectos Ejecutados", value: 100 },
-        { label: "Colaboraciones", value: 20 },
-    ]
+    // const stats = [
+    //     { label: "Niños Beneficiados", value: 1300 },
+    //     { label: "Programas Educativos", value: 50 },
+    //     { label: "Proyectos Ejecutados", value: 100 },
+    //     { label: "Colaboraciones", value: 20 },
+    // ]
 
-    function AnimatedCounter({ from = 0, to }: { from?: number; to: number }) {
-        const count = useMotionValue(from)
-        const rounded = useTransform(count, (latest) => Math.floor(latest))
+    // function AnimatedCounter({ from = 0, to }: { from?: number; to: number }) {
+    //     const count = useMotionValue(from)
+    //     const rounded = useTransform(count, (latest) => Math.floor(latest))
 
-        useEffect(() => {
-            const controls = animate(count, to, { duration: 2.5 })
-            return controls.stop
-        }, [to])
+    //     useEffect(() => {
+    //         const controls = animate(count, to, { duration: 2.5 })
+    //         return controls.stop
+    //     }, [to])
 
-        return <motion.span>{rounded}</motion.span>
-    }
+    //     // return <motion.span>{rounded}</motion.span>
+    // }
 
     return (
-        <section id="about" className="t-16 sm:py-20 lg:py-24 bg-muted">
-            <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    className="text-center mb-16"
-                >
-                    <div className="flex items-center justify-center gap-2 mb-4">
-                        <h2 className="text-4xl md:text-5xl font-bold text-foreground text-verde-goodkidz">
-                            SOBRE <span className="text-primary text-verde-goodkidz">GOOD KIDZ</span>
-                        </h2>
-                    </div>
-                    <div className="w-24 h-1 bg-gradient-to-r from-verde-goodkidz to-verde-goodkidz/50 mx-auto mb-8 rounded-full"></div>
-                    <p className="text-base sm:text-lg text-foreground/70 max-w-3xl mx-auto font-light leading-relaxed">
-                    </p>
-                </motion.div>
+        <section id="about" className="t-16  bg-muted">
+            <div className="container mx-auto px-4 sm:px-6 max-w-7xl pt-10">
+
                 <div className="grid md:grid-cols-2 gap-8 sm:gap-12 mb-16">
                     <motion.article
                         initial={{ opacity: 0, x: -50 }}
@@ -49,7 +35,7 @@ export default function About() {
                         transition={{ duration: 0.5 }}
                         className="space-y-6 p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all border-l-4 border-verde-goodkidz"
                     >
-                        <h3 className="text-3xl font-bold text-verde-goodkidz">Nuestra Misión</h3>
+                        <h3 className="text-3xl font-bold text-verde-goodkidz"> Misión</h3>
                         <p className="text-base sm:text-lg text-foreground/70 leading-relaxed font-light">
                             La Fundación <span className="font-semibold">GOOD KIDZ</span> es una organización sin ánimo de lucro que
                             impulsa el desarrollo humano a través de proyectos formativos de
@@ -68,7 +54,7 @@ export default function About() {
                         transition={{ duration: 0.5 }}
                         className="space-y-6 p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all border-l-4 border-accent"
                     >
-                        <h3 className="text-3xl font-bold text-verde-goodkidz">Nuestra Visión</h3>
+                        <h3 className="text-3xl font-bold text-verde-goodkidz"> Visión</h3>
                         <p className="text-base sm:text-lg text-foreground/70 leading-relaxed font-light">
                             Para el 2035, la Fundación <span className="font-semibold">GOOD KIDZ</span> será reconocida como
                             un referente de transformación social a través de las artes, la educación

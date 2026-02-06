@@ -8,17 +8,24 @@ export default function EventsHero() {
     const eventosPermanentes = [
         {
             title: "Arte y vida",
-            description: "Texto de descripción.....",
+            description: "Convocamos para celebrar la vida y honrar la tierra a través del arte, desde las diferentes visiones y técnicas de artistas, con experiencia o sin experiencia y de todas las edades.",
             imageUrl: "placeholder.svg",
             isPermanent: true,
             category: "arte-vida" as const,
         },
         {
             title: "Arte y siembra",
-            description: "Texto de descripción.....",
+            description: "Un espacio para sembrar y cosechar en colectivo, aprender sobre los alimentos y las plantas, siempre transversalizado por el arte, la juntanza, el trabajo en equipo y el cuidado del medio ambiente.",
             imageUrl: "/eventos/siembra-comunitaria.jpg",
             isPermanent: true,
             category: "arte-siembra" as const,
+        },
+        {
+            title: "Festival de Microcuento Infantil Ilustrado",
+            description: "Una fiesta para reconocer los relatos cortos que construyen las infancias, con temas relacionados al planeta verde y su cuidado, sustentados con ilustraciones que invitan a pensar en palabras e imágenes.",
+            imageUrl: "/eventos/festival-microcuento.jpg",
+            isPermanent: true,
+            category: "Festival de Microcuento Infantil Ilustrado" as const,
         },
     ];
 
