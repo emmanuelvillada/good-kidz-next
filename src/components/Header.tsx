@@ -9,14 +9,12 @@ import logo from '@/public/logo.png';
 import { useRouter, usePathname } from 'next/navigation';
 
 const navLinks: { href: string; label: string }[] = [
-  { href: '/', label: '¿Qué queremos lograr?' },
-  { href: '/', label: '¿Quiénes somos?' },
-  { href: '/', label: '¿Como te puedes unir?' }
-
+  { href: '#mision', label: '¿Qué queremos lograr?' },
+  { href: '#team', label: '¿Quiénes somos?' },
+  // { href: '/events', label: 'Eventos y actividades ' },
+  { href: '/podcast', label: 'Podcast' },
 
 ];
-
-
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -52,10 +50,14 @@ export default function Header() {
   const handleNavigation = (href: string) => {
     if (href.startsWith("#")) {
       if (pathname !== "/") {
-        setPendingHash(href); // Guarda el hash para hacer scroll después
-        router.push("/"); // Primero navega a la home
+        // Guarda el hash en sessionStorage
+        sessionStorage.setItem('scrollToSection', href);
+        router.push("/");
       } else {
-        window.location.hash = href; // Si ya estamos en home, actualiza el hash directamente
+        const element = document.querySelector(href);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
       }
     } else {
       router.push(href);
@@ -102,7 +104,7 @@ export default function Header() {
                   e.preventDefault();
                   handleNavigation(link.href);
                 }}
-                className=" rounded-xl text- text-white bg-verde-goodkidz transition-colors duration-200 text-base font-medium cursor-pointer p-3  hover:bg-verde-goodkidz/80"
+                className=" rounded-xl text-black bg-verde-goodkidz transition-colors duration-200 text-base font-medium cursor-pointer p-3  hover:bg-verde-goodkidz/80"
               >
                 {link.label}
               </a>

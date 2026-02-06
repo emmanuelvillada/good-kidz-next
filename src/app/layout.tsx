@@ -4,11 +4,9 @@ import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import type { Metadata } from 'next'
 
-
-
 export const metadata: Metadata = {
   title: 'Good Kidz',
-  description: 'Fundación sin animo de lucro que ayuda a la sociedad a través del arte, la educación y la cultura.',
+  description: 'Fundación sin ánimo de lucro que ayuda a la sociedad a través del arte, la educación y la cultura.',
   keywords: ['fundación', 'arte', 'educación', 'cultura', 'niños', 'Medellín'],
   authors: [{ name: 'Good Kidz' }],
   openGraph: {
@@ -20,6 +18,11 @@ export const metadata: Metadata = {
     type: 'website',
   },
   robots: 'index, follow',
+  icons: {
+    icon: '/favicon.ico',
+  },
+  viewport: 'width=device-width, initial-scale=1',
+  themeColor: '#34D399',
 }
 
 export default function RootLayout({
@@ -28,21 +31,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="es" >
-      <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#34D399" />
-      </head>
-      <body className="min-h-screen flex flex-col bg-gray-50 p-0 m-0">
+    <html lang="es">
+      <body className="min-h-screen flex flex-col bg-gray-50">
         <Header />
-        <main className="flex-grow w-full pt-20 px-0 m-0">
+        <main className="flex-grow w-full pt-20">
           {children}
         </main>
         <Footer />
       </body>
     </html>
   )
-
 }
-

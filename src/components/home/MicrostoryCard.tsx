@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { useRef, useState, useEffect, useCallback } from 'react'
 import { Play, Pause } from 'lucide-react'
-import { supabaseClient } from '@/lib/supabase'
+import { supabase } from '@/lib/supabase';
 
 type MicrocuentoCardProps = {
     id: string
@@ -72,7 +72,7 @@ export default function MicrocuentoCard({
     // función para registrar la vista (una sola vez por sesión de reproducción)
     const registerView = useCallback(async () => {
         try {
-            const { data, error } = await supabaseClient.rpc('increment_microcuento_visita', {
+            const { data, error } = await supabase.rpc('increment_microcuento_visita', {
                 p_id: id,
             })
             if (data) {

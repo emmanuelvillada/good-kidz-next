@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
+import { supabase as supabaseCLient } from '@/lib/supabase';
 import { v4 as uuidv4 } from 'uuid'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
@@ -14,7 +14,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import validateImageDimensions from '@/lib/validateImageDimensions'
 import EventCard from '@/components/admin/EventCard'
 
-const supabase = createPagesBrowserClient()
+const supabase = supabaseCLient;
 //Zod schema
 
 

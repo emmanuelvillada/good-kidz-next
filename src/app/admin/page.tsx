@@ -1,12 +1,11 @@
 // app/admin/page.tsx
-
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { supabase as supabaseClient } from '@/lib/supabase';
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import AdminPanel from '@/components/admin/AdminPanel'
 
 export default async function AdminPage() {
-    const supabase = createServerComponentClient({ cookies })
+    const supabase = supabaseClient
 
     const {
         data: { user },
