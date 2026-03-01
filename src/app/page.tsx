@@ -1,31 +1,32 @@
+'use client';
 import Hero from '@/components/home/Hero';
-// import About from '@/components/home/About';
-import MissionVision from '@/components/home/Mision';
+import About from '@/components/home/About';
+import Values from '@/components/home/Values';
 import Team from '@/components/home/Team';
-import UpcomingEvents from '@/components/home/UpcomingEvents';
-// // import Help from '@/components/Help';
-import MicrostorySlider from '@/components/MicrostorySlider'
-import ProtectedRoute from '@/components/home/ProtectedRoute';
-
-// import TeamCarousel from '@/components/home/TeamCarrousel';
+import CTA from '@/components/home/CTA';
+import { useEffect } from 'react';
 
 export default function Home() {
+  useEffect(() => {
+    const scrollToSection = sessionStorage.getItem('scrollToSection');
+    if (scrollToSection) {
+      sessionStorage.removeItem('scrollToSection');
 
+      setTimeout(() => {
+        const element = document.querySelector(scrollToSection);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+    }
+  }, []);
   return (
     <>
-
       <Hero />
-      {/* <About /> */}
-      <MissionVision />
+      <About />
+      <Values />
       <Team />
-      <MicrostorySlider />
-      <ProtectedRoute />
-      <UpcomingEvents />
-
-      {/* <Blog /> */}
-      {/* <Help /> */}
-      {/* <TeamCarousel /> */}
-
+      <CTA />
     </>
   );
 }

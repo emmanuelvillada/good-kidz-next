@@ -1,125 +1,111 @@
-'use client'
-import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
-import { useEffect } from 'react';
+"use client"
+import { motion, useMotionValue, useTransform, animate } from "framer-motion"
+import { useEffect } from "react"
 
 export default function About() {
-    const valores = [
-        'Educación Artística',
-        'Desarrollo Personal',
-        'Inclusión Social',
-        'Innovación Educativa'
-    ];
+    const valores = ["Educación Artística", "Desarrollo Personal", "Inclusión Social", "Innovación Educativa"]
 
     const stats = [
-        { label: 'Niños Beneficiados', value: 1300 },
-        { label: 'Programas Educativos', value: 50 },
-        { label: 'Proyectos Ejecutados', value: 100 },
-        { label: 'Colaboraciones', value: 20 }
-    ];
+        { label: "Niños Beneficiados", value: 1300 },
+        { label: "Programas Educativos", value: 50 },
+        { label: "Proyectos Ejecutados", value: 100 },
+        { label: "Colaboraciones", value: 20 },
+    ]
 
-    // Hook para animar números suavemente
     function AnimatedCounter({ from = 0, to }: { from?: number; to: number }) {
-        const count = useMotionValue(from);
-        const rounded = useTransform(count, latest => Math.floor(latest));
+        const count = useMotionValue(from)
+        const rounded = useTransform(count, (latest) => Math.floor(latest))
 
         useEffect(() => {
-            const controls = animate(count, to, { duration: 2.5 });
-            return controls.stop;
-        }, [to]);
+            const controls = animate(count, to, { duration: 2.5 })
+            return controls.stop
+        }, [to])
 
-        return <motion.span>{rounded}</motion.span>;
+        return <motion.span>{rounded}</motion.span>
     }
 
     return (
-        <section id="about" className="mt-16 bg-gradient-to-b from-white to-gray-50">
-            <div className="container mx-auto px-6 max-w-7xl">
-
-                {/* Encabezado */}
+        <section id="about" className="t-16 sm:py-20 lg:py-24 bg-muted">
+            <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
                     className="text-center mb-16"
                 >
-                    <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-                        SOBRE GOOD KIDZ
-                    </h2>
-                    <div className="w-24 h-1 bg-verde-goodkidz mx-auto mb-8"></div>
-                    <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                        Es la idea original de <strong>FEID y su familia</strong> con la intención de transformar positivamente la sociedad.
+                    <div className="flex items-center justify-center gap-2 mb-4">
+                        <h2 className="text-4xl md:text-5xl font-bold text-foreground text-verde-goodkidz">
+                            SOBRE <span className="text-primary text-verde-goodkidz">GOOD KIDZ</span>
+                        </h2>
+                    </div>
+                    <div className="w-24 h-1 bg-gradient-to-r from-verde-goodkidz to-verde-goodkidz/50 mx-auto mb-8 rounded-full"></div>
+                    <p className="text-base sm:text-lg text-foreground/70 max-w-3xl mx-auto font-light leading-relaxed">
                     </p>
                 </motion.div>
-
-                {/* Misión y Visión */}
-                <div className="grid md:grid-cols-2 gap-12 mb-20">
-                    {/* Misión */}
+                <div className="grid md:grid-cols-2 gap-8 sm:gap-12 mb-16">
                     <motion.article
                         initial={{ opacity: 0, x: -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.5 }}
-                        className="space-y-6 p-8 bg-white rounded-2xl shadow-xl"
+                        className="space-y-6 p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all border-l-4 border-verde-goodkidz"
                     >
                         <h3 className="text-3xl font-bold text-verde-goodkidz">Nuestra Misión</h3>
-                        <p className="text-lg text-gray-700 leading-relaxed">
-                            Fomentar la adquisición de habilidades para la vida de niños, jóvenes y adultos
-                            a través del aprendizaje y práctica de actividades creativas, para el cultivo de la sensibilidad,
-                            la adquisición de buenos hábitos y sentido de pertenencia, mediante la conformación de grupos
-                            de diferentes edades, géneros y condición en los campos de las artes, las artesanías y,
-                            con miras a la formación, la integración y el empleo productivo del tiempo libre.
+                        <p className="text-base sm:text-lg text-foreground/70 leading-relaxed font-light">
+                            La Fundación <span className="font-semibold">GOOD KIDZ</span> es una organización sin ánimo de lucro que
+                            impulsa el desarrollo humano a través de proyectos formativos de
+                            carácter artístico, recreativo y lúdico promoviendo inclusión, conciencia
+                            ambiental, autoconocimiento y bienestar. Con raíces en Medellín y alianzas
+                            con instituciones educativas y otras organizaciones, impulsa iniciativas que
+                            fortalecen el tejido social y mejoran la calidad de vida de las comunidades
+                            diversas, sin distinción, frente a los retos sociales, ambientales y económicos
+                            del presente.
                         </p>
-
                     </motion.article>
 
-                    {/* Visión */}
                     <motion.article
                         initial={{ opacity: 0, x: 50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.5 }}
-                        className="space-y-6"
+                        className="space-y-6 p-8 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all border-l-4 border-accent"
                     >
-                        <h3 className="text-3xl font-bold text-verde-goodkidz mb-8 mt-8">Nuestra Visión</h3>
-                        <p className="text-lg text-gray-700 leading-relaxed">
-                            Ser un referente en la educación artística y el desarrollo integral de niños y jóvenes,
-                            promoviendo la inclusión y la innovación en todos nuestros programas.
+                        <h3 className="text-3xl font-bold text-verde-goodkidz">Nuestra Visión</h3>
+                        <p className="text-base sm:text-lg text-foreground/70 leading-relaxed font-light">
+                            Para el 2035, la Fundación <span className="font-semibold">GOOD KIDZ</span> será reconocida como
+                            un referente de transformación social a través de las artes, la educación
+                            y la recreación, fomentando conciencia ambiental, inclusión y bienestar
+                            en comunidades diversas a nivel local, nacional e internacional.
+                            Consolidará vínculos de colaboración con instituciones educativas,
+                            fundaciones y organizaciones afines que compartan nuestros propósitos
+                            de apoyo a territorios y comunidades con historias por transformar,
+                            fortaleciendo así un compromiso firme con la equidad, la diversidad
+                            y la sostenibilidad.
                         </p>
-                        <ul className="space-y-4">
-                            {valores.map((value, index) => (
-                                <li key={index} className="flex items-center gap-3">
-                                    <svg aria-hidden="true" className="w-6 h-6 text-verde-goodkidz" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span className="text-gray-700">{value}</span>
-                                </li>
-                            ))}
-                        </ul>
+
                     </motion.article>
                 </div>
-
-                {/* Impacto */}
-                <motion.div
-                    initial={{ opacity: 0, x: 50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
+                {/* <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="bg-white p-8 rounded-2xl shadow-xl"
+                    className="bg-white p-8 sm:p-12 rounded-2xl shadow-lg"
                 >
                     <h3 className="text-3xl font-bold text-verde-goodkidz mb-8 text-center">Nuestro Impacto</h3>
-                    <div className="grid grid-cols-2 gap-8">
+                    <div className="grid grid-cols-2 gap-6 sm:gap-8">
                         {stats.map((stat, index) => (
                             <motion.div
                                 key={index}
-                                className="text-center cursor-pointer"
+                                className="text-center p-4 rounded-lg bg-muted hover:bg-primary/5 transition-colors"
                                 whileHover={{ scale: 1.05 }}
                             >
-                                <p className="text-4xl font-bold text-gray-800 mb-2">
+                                <p className="text-4xl font-bold text-primary mb-2">
                                     <AnimatedCounter to={stat.value} />+
                                 </p>
-                                <p className="text-sm text-gray-600">{stat.label}</p>
+                                <p className="text-sm text-foreground/70 font-light">{stat.label}</p>
                             </motion.div>
                         ))}
                     </div>
-                </motion.div>
-
+                </motion.div> */}
             </div>
         </section>
-    );
+    )
 }

@@ -1,4 +1,4 @@
-import { supabaseClient } from "../supabase"
+import { supabase } from '@/lib/supabase';
 type Member = {
     name: string
     role: string
@@ -7,7 +7,7 @@ type Member = {
 }
 
 export async function getTeam(): Promise<Member[]> {
-    const { data, error } = await supabaseClient
+    const { data, error } = await supabase
         .from('team')
         .select('name, role, photo, bio')
         .order('id', { ascending: true });
