@@ -1,9 +1,7 @@
 'use client';
 import Hero from '@/components/home/Hero';
 import About from '@/components/home/About';
-import Values from '@/components/home/Values';
 import Team from '@/components/home/Team';
-import CTA from '@/components/home/CTA';
 import { useEffect } from 'react';
 
 export default function Home() {
@@ -24,9 +22,7 @@ export default function Home() {
     <>
       <Hero />
       <About />
-      <Values />
       <Team />
-      <CTA />
     </>
   );
 }

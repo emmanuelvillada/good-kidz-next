@@ -7,7 +7,7 @@ export default function GoodKidzTeam() {
     return (
         <section
             id="team"
-            className="w-full pb-12 sm:pt-20 bg-gradient-to-b from-white via-[#F9FFFB] to-white overflow-hidden"
+            className="w-full pt-0 pb-12  bg-gradient-to-b from-white via-[#F9FFFB] to-white overflow-hidden"
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -19,10 +19,10 @@ export default function GoodKidzTeam() {
                         className="space-y-6 sm:space-y-8 z-10"
                     >
                         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-verde-goodkidz leading-tight">
-                            <span>Nuestro Equipo</span>
+                            <span> Equipo</span>
                         </h1>
 
-                        <div className="w-80 h-1 bg-gradient-to-r from-verde-goodkidz to-verde-goodkidz/50 rounded-full"></div>
+                        <div className="w-80 sm:w-48 h-1 bg-gradient-to-r from-verde-goodkidz to-verde-goodkidz/50 rounded-full"></div>
 
                         <p className="text-base sm:text-lg text-gray-700 leading-relaxed max-w-xl font-light">
                             En <span className=" font-semibold"> GOOD KIDZ </span> sabemos que las iniciativas florecen  gracias a las personas.

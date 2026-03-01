@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { CalendarDays, MapPin } from "lucide-react"
+import Image from "next/image"
 
 interface EventCardProps {
     title: string
@@ -11,7 +12,7 @@ interface EventCardProps {
     isPermanent?: boolean
     date?: string
     location?: string
-    category: "arte-vida" | "arte-siembra" | "actividad"
+    category: "arte-vida" | "arte-siembra" | "actividad" | "Festival de Microcuento Infantil Ilustrado"
 }
 
 export default function EventsCard({
@@ -26,19 +27,21 @@ export default function EventsCard({
     const categoryColors = {
         "arte-vida": "bg-accent text-accent-foreground",
         "arte-siembra": "bg-primary text-primary-foreground",
+        "Festival de Microcuento Infantil Ilustrado": "bg-primary text-primary-foreground",
         "actividad": "bg-secondary text-secondary-foreground",
     }
 
     const categoryLabels = {
         "arte-vida": "Arte y Vida",
         "arte-siembra": "Arte y Siembra",
+        "Festival de Microcuento Infantil Ilustrado": "Festival de Microcuento Infantil Ilustrado",
         "actividad": "Actividad",
     }
 
     return (
         <Card className="group overflow-hidden border-border/50 bg-card transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
             <div className="relative aspect-[4/3] overflow-hidden">
-                <img
+                <Image
                     src={imageUrl || "/placeholder.svg"}
                     alt={title}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"

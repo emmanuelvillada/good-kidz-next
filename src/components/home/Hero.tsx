@@ -15,19 +15,7 @@ export default function GoodKidzHero() {
                             En la Fundación
                             <span className=" font-semibold"> GOOD KIDZ </span>  creemos en <span className="font-semibold">la magia de lo sencillo</span>: un pincel, una canción, un juego compartido. Desde ahí nace <span className="font-semibold">la fuerza para transformar realidades</span>, abrazar la diversidad e imaginar un futuro donde <span className="font-semibold">la esperanza, la equidad y el cuidado mutuo</span> se entretejen en nuestro planeta verde.
                         </motion.p>
-                        <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.4, duration: 0.6 }}
-                            className="pt-4"
-                        >
-                            <a
-                                href="/events"
-                                className="inline-block px-8 py-3 bg-verde-goodkidz text-white font-semibold rounded-full hover:bg-verde-goodkidz/90 transition-all duration-300 hover:shadow-lg hover:scale-105"
-                            >
-                                Conoce Nuestros Proyectos
-                            </a>
-                        </motion.div>
+
                     </motion.div>
                     {/* Imagen Desktop */}
                     <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}
