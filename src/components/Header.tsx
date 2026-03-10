@@ -13,6 +13,7 @@ const navLinks: { href: string; label: string }[] = [
   { href: '#team', label: '¿Quiénes somos?' },
   // { href: '/events', label: 'Eventos y actividades ' },
   { href: '/podcast', label: 'Podcast' },
+  { href: 'https://docs.google.com/forms/d/e/1FAIpQLSe99WChgMH3XqZV3Ou_qW6DakVC5C8vcfHLJQ_XrCLlFWRY3g/viewform', label: 'Formulario Festival del Microcuento' },
 
 ];
 
